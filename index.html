@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Authentication</title>
+    
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      (function() {
+        try {
+          var darkModeStored = localStorage.getItem('darkmode');
+          if (darkModeStored === 'true') {
+            document.documentElement.classList.add('dark');
+            document.body.classList.add('darkmode');  
+          }
+        } catch (e) {
+          console.error('Erro ao verificar modo escuro:', e);
+        }
+      })();
+    </script>
+  </body>
+
+</html>

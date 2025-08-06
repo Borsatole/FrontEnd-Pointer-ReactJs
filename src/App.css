@@ -1,0 +1,80 @@
+@import "tailwindcss";
+@plugin "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
+
+#root {
+  /* max-width: 1280px; */
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+}
+
+:root {
+  /* cores principais */
+  --corPrincipal: #4f39f6;
+  --corPrincipalHover: #615fff;
+
+  /* bases */
+  --base-color: white;
+  --base-variant: #e8e9ed;
+
+  /* menu */
+  --sidebarcolor: #1701c1;
+  --sidebarsecondarycolor: #3607cf;
+  --sidebartext-color: #fcfdff;
+  /* menu - hovers */
+  --sidebarhover-color: #ffffff56;
+  --sidebarhover-text-color: #ffffff;
+
+  /* textos */
+  --text-color: #111528;
+  --text-color2: #232738;
+}
+
+.darkmode {
+  /* cores principais */
+  --corPrincipal: #4f39f6;
+  --corPrincipalHover: #615fff;
+
+  /* bases */
+  --base-color: #111528;
+  --base-variant: #232738;
+
+  /* menu */
+  --sidebarcolor: #232738;
+  --sidebarsecondarycolor: #232738;
+  --sidebartext-color: #fcfdff;
+  /* menu - hovers */
+  --sidebarhover-color: #ffffff56;
+  --sidebarhover-text-color: #ffffff;
+
+  /* textos */
+  --text-color: #e8e9ed;
+  --secondary-text: #e8e9ed;
+  --corTexto1: #fcfdff;
+}
+
+html {
+  font-family: Poppins, sans-serif;
+}
+
+body {
+  background-color: var(--base-color);
+  color: var(--text-color);
+}
+
+#theme-switch {
+  height: 50px;
+  width: 50px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: var(--base-variant);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+#theme-switch svg {
+  fill: var(--text-color);
+}
