@@ -2,42 +2,67 @@ import * as React from "react";
 
 type ChildrenProps = {
   children: React.ReactNode;
-};
+} & React.TableHTMLAttributes<HTMLTableElement>;
 
-export function Tabela({ children }: ChildrenProps) {
+export function Tabela({ children, ...rest }: ChildrenProps) {
   return (
-    <table className="min-w-full border-collapse border border-gray-300 shadow-lg rounded-lg overflow-hidden">
+    <table
+      className="min-w-full  shadow-lg rounded-lg overflow-hidden border-separate space-y-2"
+      {...rest}
+    style={{
+      border: "1px solid var(--base-variant)",
+    }}>
       {children}
     </table>
   );
 }
 
-export function LinhaTabela({ children, tipo = "" }: LinhaTabelaProps) {
-  if (tipo === "body") {
-    return <tr className="hover:bg-gray-50 transition">{children}</tr>;
-  }
-
-  return (
-    <tr className="bg-gray-100 text-gray-700 uppercase text-sm">{children}</tr>
-  );
-}
 
 type LinhaTabelaProps = {
   children: React.ReactNode;
   tipo?: string;
+} & React.HTMLAttributes<HTMLTableRowElement>;
+
+export function LinhaTabela({ children, tipo = "", ...rest }: LinhaTabelaProps) {
+  if (tipo === "body") {
+    return (
+      <tr className="hover:bg-[var(--base-variant)] transition" {...rest}>
+        {children}
+      </tr>
+    );
+  }
+
+  return (
+    <tr
+      className="bg-[var(--base-variant)] text-[var(--text-color)] uppercase text-sm"
+      {...rest}
+    >
+      {children}
+    </tr>
+  );
 }
 
-export function CelulaTabela({ children, tipo = "body" }: CelulaTabelaProps) {
-  if (tipo !== "body") {
-    return <th className="px-6 py-3 text-left">{children}</th>;
-  }
-  return <td className="px-6 py-4">{children}</td>;
-}
 
 type CelulaTabelaProps = {
   children: React.ReactNode;
   tipo?: string;
-};
+} & React.HTMLAttributes<HTMLTableCellElement>;
+
+export function CelulaTabela({ children, tipo = "body", ...rest }: CelulaTabelaProps) {
+  if (tipo !== "body") {
+    return (
+      <th className="px-6 py-3 text-left" {...rest}>
+        {children}
+      </th>
+    );
+  }
+  return (
+    <td className="px-6 py-4" {...rest}>
+      {children}
+    </td>
+  );
+}
+
 
 type ButtonProps = {
   onClick: () => void;

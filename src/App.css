@@ -19,22 +19,23 @@
   --base-variant: #e8e9ed;
 
   /* menu */
-  --sidebarcolor: #1701c1;
-  --sidebarsecondarycolor: #3607cf;
-  --sidebartext-color: #fcfdff;
+  --sidebarcolor: #232738;
+  --sidebarsecondarycolor: #0e0e10;
+  --sidebartext-color: #878787;
   /* menu - hovers */
-  --sidebarhover-color: #ffffff56;
+  --sidebarhover-color: #ff1e00;
   --sidebarhover-text-color: #ffffff;
 
   /* textos */
   --text-color: #111528;
   --text-color2: #232738;
+  --text-white: #fcfdff;
 }
 
 .darkmode {
   /* cores principais */
-  --corPrincipal: #4f39f6;
-  --corPrincipalHover: #615fff;
+    --corPrincipal: #ff1e00;
+  --corPrincipalHover: rgb(255, 167, 95);
 
   /* bases */
   --base-color: #111528;

@@ -84,7 +84,7 @@ export default function TelaLogin() {
               </div>
               
               <div>
-                <Button className="bg-[--corPrincipal]" type="submit" loading={loading} wsize="w-full">Entrar</Button>
+                <Button className="" type="submit" loading={loading} wsize="w-full" >Entrar</Button>
                 
               </div>
             </form>
@@ -92,7 +92,7 @@ export default function TelaLogin() {
               Não tem cadastro?{" "}
               <a
                 href="#"
-                className="font-semibold text-indigo-600 hover:text-indigo-500"
+                className="font-semibold text-[var(--corPrincipal)] hover:text-[var(--corPrincipalHover)]"
               >
                 Cadastre-se
               </a>
