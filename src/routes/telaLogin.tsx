@@ -84,7 +84,7 @@ export default function TelaLogin() {
               </div>
               
               <div>
-                <Button type="submit" loading={loading} wsize="w-full">Entrar</Button>
+                <Button className="bg-[--corPrincipal]" type="submit" loading={loading} wsize="w-full">Entrar</Button>
                 
               </div>
             </form>

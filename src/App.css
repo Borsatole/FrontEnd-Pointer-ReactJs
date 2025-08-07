@@ -11,8 +11,8 @@
 
 :root {
   /* cores principais */
-  --corPrincipal: #4f39f6;
-  --corPrincipalHover: #615fff;
+  --corPrincipal: #ff1e00;
+  --corPrincipalHover: rgb(255, 167, 95);
 
   /* bases */
   --base-color: white;
