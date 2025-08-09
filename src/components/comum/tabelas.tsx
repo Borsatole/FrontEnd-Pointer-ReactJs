@@ -7,15 +7,14 @@ type ChildrenProps = {
 export function Tabela({ children, ...rest }: ChildrenProps) {
   return (
     <table
-      className="min-w-full  shadow-lg rounded-lg overflow-hidden border-separate space-y-2"
+      className="min-w-full text-center shadow-lg rounded-lg border border-[var(--base-variant)] border-collapse"
       {...rest}
-    style={{
-      border: "1px solid var(--base-variant)",
-    }}>
+    >
       {children}
     </table>
   );
 }
+
 
 
 type LinhaTabelaProps = {
@@ -26,7 +25,7 @@ type LinhaTabelaProps = {
 export function LinhaTabela({ children, tipo = "", ...rest }: LinhaTabelaProps) {
   if (tipo === "body") {
     return (
-      <tr className="hover:bg-[var(--base-variant)] transition" {...rest}>
+      <tr className="hover:bg-[var(--base-variant)] text-center transition " {...rest}>
         {children}
       </tr>
     );
@@ -34,7 +33,7 @@ export function LinhaTabela({ children, tipo = "", ...rest }: LinhaTabelaProps) 
 
   return (
     <tr
-      className="bg-[var(--base-variant)] text-[var(--text-color)] uppercase text-sm"
+      className="bg-[var(--base-variant)] text-[var(--text-color)] text-center uppercase text-sm "
       {...rest}
     >
       {children}
@@ -46,22 +45,30 @@ export function LinhaTabela({ children, tipo = "", ...rest }: LinhaTabelaProps) 
 type CelulaTabelaProps = {
   children: React.ReactNode;
   tipo?: string;
+  colspan?: number;
 } & React.HTMLAttributes<HTMLTableCellElement>;
 
 export function CelulaTabela({ children, tipo = "body", ...rest }: CelulaTabelaProps) {
   if (tipo !== "body") {
     return (
-      <th className="px-6 py-3 text-left" {...rest}>
+      <th
+        className="px-6 py-3 text-center border border-[var(--base-variant)] "
+        {...rest}
+      >
         {children}
       </th>
     );
   }
   return (
-    <td className="px-6 py-4" {...rest}>
+    <td
+      className="px-6 py-4 text-center border-b border-[var(--base-variant)] "
+      {...rest}
+    >
       {children}
     </td>
   );
 }
+
 
 
 type ButtonProps = {

@@ -11,48 +11,58 @@
 
 :root {
   /* cores principais */
-  --corPrincipal: #ff1e00;
+  --corPrincipal: #FFA000;
   --corPrincipalHover: rgb(255, 167, 95);
 
   /* bases */
-  --base-color: white;
-  --base-variant: #e8e9ed;
+  --base-color: #f2f1f3;
+  --base-variant: #fff;
 
   /* menu */
   --sidebarcolor: #232738;
-  --sidebarsecondarycolor: #0e0e10;
+  --sidebarsecondarycolor: #343851;
   --sidebartext-color: #878787;
+
   /* menu - hovers */
-  --sidebarhover-color: #ff1e00;
+  --sidebarhover-color: #FFA000;
   --sidebarhover-text-color: #ffffff;
 
   /* textos */
   --text-color: #111528;
   --text-color2: #232738;
   --text-white: #fcfdff;
+
+  /* Fundo Modal */
+  --fundo-modal: var(--base-color);
 }
 
 .darkmode {
   /* cores principais */
-    --corPrincipal: #ff1e00;
+    --corPrincipal: #FFA000;
   --corPrincipalHover: rgb(255, 167, 95);
 
   /* bases */
   --base-color: #111528;
   --base-variant: #232738;
 
+  
+
   /* menu */
   --sidebarcolor: #232738;
-  --sidebarsecondarycolor: #232738;
-  --sidebartext-color: #fcfdff;
+  --sidebarsecondarycolor: #343851;
+  --sidebartext-color: #878787;
   /* menu - hovers */
-  --sidebarhover-color: #ffffff56;
+  --sidebarhover-color: #FFA000;
   --sidebarhover-text-color: #ffffff;
 
   /* textos */
   --text-color: #e8e9ed;
   --secondary-text: #e8e9ed;
   --corTexto1: #fcfdff;
+
+  /* Fundo Modal */
+  --fundo-modal: var(--base-color);
+  
 }
 
 html {

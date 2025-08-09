@@ -9,24 +9,12 @@ interface LoadingProps {
 
 export default function Loading({ color = "#ffffff", escala = "1" }: LoadingProps) {
   return (
-    // <div
-    //   className="dot-spinner"
-    //   style={{
-    //     ["--uib-color" as any]: color,
-    //     transform: `scale(${escala})`,
-    //   }}
-    // >
-    //   <div className="dot-spinner__dot"></div>
-    //   <div className="dot-spinner__dot"></div>
-    //   <div className="dot-spinner__dot"></div>
-    //   <div className="dot-spinner__dot"></div>
-    //   <div className="dot-spinner__dot"></div>
-    //   <div className="dot-spinner__dot"></div>
-    //   <div className="dot-spinner__dot"></div>
-    //   <div className="dot-spinner__dot"></div>
-    // </div>
 
-    <div className="loader"></div>
+    <div className="loader" style={{
+      color: `${color}`,
+      
+      
+    }}></div>
 
   );
 }

@@ -15,7 +15,7 @@ export default function Dashboard() {
     <BarraSuperior />
     <Container tipo="principal">
       <MenuLateral />
-      <TituloPagina>Dashboard</TituloPagina>
+      <TituloPagina>Controle de Estoque</TituloPagina>
 
       <TabelaProdutos />
 

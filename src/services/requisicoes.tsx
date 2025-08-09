@@ -21,7 +21,7 @@ export async function requisicaoGet(rota: string) {
     if (response.status === 200 && response.data.success === true) {
       return response;
     } else {
-      if (response.data.error === "Token inválido") {
+      if (response.data.error === "Token inválido" || response.data.error === "Token expirado") {
         window.location.href = "/login";
       }
 
@@ -127,7 +127,7 @@ export async function requisicaoPut(rota: string, dados: Record<string, any>) {
   }
 }
 
-export async function requisicaoDelete(rota: string, dados: Record<string, any>) {
+export async function requisicaoDelete(rota: string,) {
   const token = localStorage.getItem("token");
 
   try {
@@ -136,7 +136,7 @@ export async function requisicaoDelete(rota: string, dados: Record<string, any>)
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      data: {...dados},
+
     });
 
     if (response.status === 200 && response.data.success === true) {

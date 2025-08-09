@@ -1,23 +1,29 @@
 import * as React from "react";
+import { Select } from "flowbite-react";
+import type { SelectProps } from "flowbite-react";
 
-interface SelectProps extends React.InputHTMLAttributes<HTMLSelectElement> {
-  selectedCoupon?: string;
+interface SelectModificadoProps extends SelectProps {
+  children: React.ReactNode;
 }
 
-export function Select({ selectedCoupon, ...rest } : SelectProps) {
+export const SelectModificado = React.forwardRef<
+  HTMLSelectElement,
+  SelectModificadoProps
+>(({ children, className, ...rest }, ref) => {
   return (
-    <select
-      name="tipo"
-      className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-      defaultValue={selectedCoupon}
-      required
+    <Select
+      ref={ref}
       {...rest}
+      className={`${className ?? ""} focus:ring-corPrincipal focus:ring-2 focus:ring-offset-0 focus:outline-none`}
+      style={{
+        color: "var(--cortexto)",
+        borderColor: "var(--base-variant)",
+        backgroundColor: "var(--base-color)",
+      }}
     >
-      <option value="percent">Porcentagem</option>
-      <option value="valor">Valor Fixo</option>
-    </select>
+      {children}
+    </Select>
   );
-}
+});
 
-
-export default Select;
+SelectModificado.displayName = "SelectModificado";

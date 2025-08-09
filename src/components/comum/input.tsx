@@ -1,51 +1,46 @@
-
-
-
-
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   id: string;
   type?: string;
   placeholder?: string;
   autoComplete?: string;
-  defaultValue?: string | number;
-  required?: boolean;
-  min?: string;
-  max?: string;
+  inputRef?: React.Ref<HTMLInputElement>;
+  min?: string | number;
+  max?: string | number;
 }
-
 
 export function Input({
   id,
-  type,
-  placeholder,
-  defaultValue,
-  autoComplete,
+  type = "text",
+  inputRef,
+  placeholder = "",
+  autoComplete = "off",
   min,
   max,
-  required,
-  ...rest 
+  required = false,
+  value,
+  defaultValue,
+  ...rest
 }: InputProps) {
   return (
     <input
-      id={id || ""}
-      type={type || "text"}
-      placeholder={placeholder || ""}
-      autoComplete={autoComplete || "off"}
-      className={`w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600`}
-      defaultValue={defaultValue || ""}
-      min={min || ""}
-      max={max || ""}
-      required={required || false}
+      id={id}
+      type={type}
+      ref={inputRef}
+      placeholder={placeholder}
+      autoComplete={autoComplete}
+      className={`bg-[var(--base-color)] w-full px-4 py-2 border border-[var(--base-variant)] rounded-md focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--corPrincipal)]`}
+      min={min}
+      max={max}
+      required={required}
+      {...(value !== undefined
+        ? { value }
+        : { defaultValue: defaultValue ?? "" })}
       {...rest}
+      style={{
+        color: "var(--cortexto)",
+        borderColor: "var(--base-variant)",
+        backgroundColor: "var(--base-color)",
+      }}
     />
   );
 }
-
-
-
-
-
-
-
-
-
