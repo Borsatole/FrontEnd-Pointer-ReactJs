@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
 import { ThemeProvider, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { BsBoxSeamFill } from "react-icons/bs";
+import { BiCategory } from "react-icons/bi";
+import { CgAddR } from "react-icons/cg";
+
+
 
 import {
   PrimeraLetraMaiuscula,
@@ -20,6 +24,7 @@ import { Produto } from "components/tipos";
 import ModalEditarProduto from "./ModalEditarProduto";
 import ModalAdicionarProduto from "./ModalAdicionarProduto";
 import { Button } from "../../components/comum/button";
+import ModalCategorias from "./ModalCategorias";
 
 
 
@@ -41,6 +46,7 @@ function TabelaCadastros({}) {
   const [queryFiltro, setQueryFiltro] = useState("");
   
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
+  const [AbrirModalCategorias, setAbrirModalCategorias] = useState(false);
 
   useEffect(() => {
     setLoadingSpiner(true);
@@ -93,9 +99,21 @@ function TabelaCadastros({}) {
 
   return (
     <>
-      <div className="flex gap-2 items-center">
-        <Button onClick={() => setAbrirModalNovoRegistro(true)} wsize="w-40">
-          <span>Novo Produto</span>
+      <div className="flex justify-between">
+
+          <Button onClick={() => setAbrirModalNovoRegistro(true)}>
+            <p className="flex items-center gap-2">
+            <CgAddR size={20} />
+            <span>Novo Produto</span>
+          </p>
+          </Button>
+
+
+        <Button onClick={() => setAbrirModalCategorias(true)}>
+          <p className="flex items-center gap-2">
+            <BiCategory size={20} />
+            <span>Categorias</span>
+          </p>
         </Button>
 
         
@@ -125,7 +143,7 @@ function TabelaCadastros({}) {
             </TableHead>
             <TableBody className="divide-y divide-[var(--base-color)]">
                 {cadastros.length === 0 ? (
-                  <TableRow>
+                  <TableRow className="">
                     <TableCell colSpan={5} className="text-center">
                       Nenhum cadastro encontrado
                     </TableCell>
@@ -134,46 +152,46 @@ function TabelaCadastros({}) {
               {cadastros.map((produto) => (
   (() => {
     return (
-      <TableRow
-  key={String(produto.id ?? "sem-id")}
-  className={`transition-all duration-500 ease-in-out ${
-    removendoIds.includes(produto.id ?? -1) ? "efeito-excluir" : ""
-  }`}
->
-        <TableCell className="whitespace-nowrap text-center flex items-center justify-center">
-          <div className="bg-[var(--base-color)] rounded-full">
-            <BsBoxSeamFill className="w-12 h-12 p-3" color="var(--corPrincipal)"/>
-          </div>
-        </TableCell>
-        <TableCell className="whitespace-nowrap font-medium">{produto.id}</TableCell>
-        <TableCell className="whitespace-nowrap font-medium">{PrimeraLetraMaiuscula(produto.nome)}</TableCell>
-        <TableCell className="whitespace-nowrap font-medium">{produto.quantidade}</TableCell>
-        <TableCell className="whitespace-nowrap font-medium">{PrimeraLetraMaiuscula(produto.categoria)}</TableCell>
-        
+          <TableRow
+      key={String(produto.id ?? "sem-id")}
+      className={`transition-all duration-500 ease-in-out   ${
+        removendoIds.includes(produto.id ?? -1) ? "efeito-excluir" : ""
+      }`}
+    >
+            <TableCell className="whitespace-nowrap text-center flex items-center justify-center " >
+              <div className="bg-[var(--base-color)] rounded-full">
+                <BsBoxSeamFill className="w-12 h-12 p-3" color="var(--corPrincipal)"/>
+              </div>
+            </TableCell>
+            <TableCell className="whitespace-nowrap font-medium">{produto.id}</TableCell>
+            <TableCell className="whitespace-nowrap font-medium">{PrimeraLetraMaiuscula(produto.nome)}</TableCell>
+            <TableCell className="whitespace-nowrap font-medium">{produto.quantidade}</TableCell>
+            <TableCell className="whitespace-nowrap font-medium">{PrimeraLetraMaiuscula(produto.categoria)}</TableCell>
+            
 
-        <TableCell className="font-medium">
-  <div className="flex justify-center gap-2">
-    <Tooltip tooltip="Editar Servidor">
-      <button
-        className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
-        onClick={() => setSelectedProduto(produto)}
-      >
-        <FaEdit className="w-5 h-5 cursor-pointer" />
-      </button>
-    </Tooltip>
-    <Tooltip tooltip="Deletar Servidor">
-      <button
-        className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
-        onClick={() => handleDeletar({ produto, setRelistar })}
-      >
-        <FaTrashAlt className="w-5 h-5 cursor-pointer" />
-      </button>
-    </Tooltip>
-  </div>
-        </TableCell>
+            <TableCell className="font-medium">
+      <div className="flex justify-center gap-2">
+        <Tooltip tooltip="Editar Servidor">
+          <button
+            className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
+            onClick={() => setSelectedProduto(produto)}
+          >
+            <FaEdit className="w-5 h-5 cursor-pointer" />
+          </button>
+        </Tooltip>
+        <Tooltip tooltip="Deletar Servidor">
+          <button
+            className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
+            onClick={() => handleDeletar({ produto, setRelistar })}
+          >
+            <FaTrashAlt className="w-5 h-5 cursor-pointer" />
+          </button>
+        </Tooltip>
+      </div>
+            </TableCell>
 
-        
-      </TableRow>
+            
+          </TableRow>
     );
   })()
 ))}
@@ -233,13 +251,6 @@ function TabelaCadastros({}) {
       />
 )}
 
-    {/* {abrirModalNovoServidor === true && 
-    <ModalNovoServidor
-      setAbrirModalNovoServidor={setAbrirModalNovoServidor}
-      setRelistarServidores={setRelistarServidores}
-      setLoading={setLoading}
-    />} */}
-
     {AbrirModalNovoRegistro === true &&
     <ModalAdicionarProduto
         AbrirModalNovoRegistro={AbrirModalNovoRegistro}
@@ -250,6 +261,14 @@ function TabelaCadastros({}) {
         setLoadingSpiner={setLoadingSpiner}
       />
       }
+
+      {AbrirModalCategorias === true &&
+      <ModalCategorias
+        AbrirModalCategorias={AbrirModalCategorias}
+        setAbrirModalCategorias={setAbrirModalCategorias}
+      
+      />
+        }
     </>
   );
 }

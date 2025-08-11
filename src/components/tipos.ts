@@ -7,3 +7,7 @@ export interface Produto {
   updated_at?: string;
 }
 
+export interface Categoria {
+  id: number;
+  nome: string;
+}

@@ -11,7 +11,7 @@ export function Button({
   type = "button",
   onClick,
   loading,
-  wsize,
+  className,
   ...rest
 }: ButtonProps) {
   return (
@@ -20,17 +20,7 @@ export function Button({
       type={type}
       disabled={loading || false}
       onClick={onClick || (() => {})}
-      className={`${wsize || "w-full"} px-4 min-h-10 py-2 mt-2 text-sm font-medium text-white rounded-md cursor-pointer`}
-      style={{
-        backgroundColor: "var(--corPrincipal)",
-        color: "var(--text-white)",
-      }}
-      onMouseOver={(e) =>
-        (e.currentTarget.style.backgroundColor = "var(--corPrincipalHover)")
-      }
-      onMouseOut={(e) =>
-        (e.currentTarget.style.backgroundColor = "var(--corPrincipal)")
-      }
+      className={`${className || ""} text-white px-4 min-h-10 py-2 mt-2 text-sm font-medium rounded-md cursor-pointer  bg-[var(--corPrincipal)] hover:bg-[var(--corPrincipalHover)]  transition-all`}
     >
       {loading ? (
         <div className="flex items-center justify-center max-h-6 scale-65">

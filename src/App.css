@@ -13,6 +13,7 @@
   /* cores principais */
   --corPrincipal: #FFA000;
   --corPrincipalHover: rgb(255, 167, 95);
+  
 
   /* bases */
   --base-color: #f2f1f3;
@@ -39,7 +40,7 @@
 .darkmode {
   /* cores principais */
     --corPrincipal: #FFA000;
-  --corPrincipalHover: rgb(255, 167, 95);
+  --corPrincipalHover: rgb(250, 123, 20);
 
   /* bases */
   --base-color: #111528;

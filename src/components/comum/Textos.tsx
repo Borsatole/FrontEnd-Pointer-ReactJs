@@ -21,7 +21,7 @@ export function Paragrafo({ children } : TextosProps) {
 
 export function H2({ children } : TextosProps) {
   return (
-    <h2 className="text-2xl font-bold text-gray-900 text-left mb-8">
+    <h2 className="text-2xl font-bold text-left ">
       {children}
     </h2>
   );
@@ -31,7 +31,7 @@ export function H2({ children } : TextosProps) {
 
 export function H3({ children } : TextosProps) {
   return (
-    <h3 className="text-xl font-bold leading-6 text-gray-900 mb-4">
+    <h3 className="text-xl font-bold leading-6 ">
       {children}
     </h3>
   );

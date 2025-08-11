@@ -5,6 +5,7 @@ import { Label } from "../../components/comum/label";
 import { SelectModificado } from "../../components/comum/select";
 import { useEffect } from "react";
 import { requisicaoGet } from "../../services/requisicoes";
+import { Categoria } from "../tipos";
 
 interface Produto {
   id: number;
@@ -28,7 +29,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
   });
 
   const [produtos, setProdutos] = useState<Produto[]>([]);
-  const [categorias, setCategorias] = useState<string[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -124,8 +125,8 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
         >
           <option value="">Todos</option>
           {categorias.map((categoria) => (
-            <option key={categoria} value={categoria}>
-              {categoria}
+            <option key={categoria.id} value={categoria.nome}>
+              {categoria.nome}
             </option>
           ))}
         </SelectModificado>
