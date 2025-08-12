@@ -94,7 +94,7 @@ export async function editarProduto({
     const response = await requisicaoPost(`/Estoque/editar-registro.php`, data);
 
     
-    const msg = response?.data?.message ?? 'Erro ao editar o servidor!';
+    const msg = response?.data?.message ?? 'Erro ao editar a requisição!';
 
     if (response?.data?.success) {
       setProdutos(produtos.map((produto) => (produto.id === data.id ? data : produto)));
@@ -107,7 +107,7 @@ export async function editarProduto({
       setRelistar(true);
     }
   } catch {
-    Alerta('toast', 'error', 'Erro inesperado ao editar o servidor!');
+    Alerta('toast', 'error', 'Erro inesperado ao editar a requisição!');
     setRelistar(true);
   } finally {
     setLoadingSpiner(false);
@@ -138,7 +138,7 @@ export function adicionarProduto({ data, produtos,
   
     .then((response) => {
       console.log(response);
-      const msg = response?.data?.message ?? 'Erro ao criar o servidor!';
+      const msg = response?.data?.message ?? 'Erro ao criar a requisição!';
       if (response?.data?.success) {
         
         Alerta('toast', 'success', msg);
@@ -149,7 +149,7 @@ export function adicionarProduto({ data, produtos,
       }
     })
     .catch(() => {
-      Alerta('toast', 'error', 'Erro inesperado ao criar o servidor!');
+      Alerta('toast', 'error', 'Erro inesperado ao criar a requisição!');
     })
     .finally(() => {
       setLoadingSpiner(false);

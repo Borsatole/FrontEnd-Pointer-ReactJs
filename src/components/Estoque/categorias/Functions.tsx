@@ -4,7 +4,7 @@ import Alerta from "../../../components/comum/alertas";
 import Swal from "sweetalert2";
 
 const MSG_ERRO_GENERICO = 'Erro inesperado ao processar a requisição!';
-const MSG_ERRO_CRIACAO = 'Erro ao criar o servidor!';
+const MSG_ERRO_CRIACAO = 'Erro ao criar a requisição!';
 
 interface AdicionarCategoria {
   data: Categoria;

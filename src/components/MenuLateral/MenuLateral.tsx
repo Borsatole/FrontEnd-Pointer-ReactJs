@@ -65,28 +65,8 @@ const MenuLateral = () => {
       }`}
     >
       <BtnFecharMenuLateral funcao={fecharMenu} />
-
-      <div className="flex flex-col items-center mt-6 -mx-2">
-        {dadosMenuLateral.avatar && (
-          <img
-            className="object-cover w-10 h-10 mx-2 rounded-full"
-            src={`${import.meta.env.VITE_API}/Backend/Usuario/avatar/${dadosMenuLateral.avatar}`}
-            alt="Avatar"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.onerror = null;
-              target.src = "https://placehold.co/100x100";
-            }}
-          />
-        )}
-        <h4 className="mt-2 font-medium">{dadosMenuLateral.nome}</h4>
-        <p className="text-sm font-medium">{dadosMenuLateral.email}</p>
-      </div>
-
-      
-
       <div className="flex flex-col justify-between flex-1 mt-6">
-        <nav>
+        <nav className="flex-1 pt-4">
           {/* <OpcaoMenu
             nome="Dashboard"
             rota="/"
@@ -99,6 +79,10 @@ const MenuLateral = () => {
 
          
 
+          
+        </nav>
+
+        <div className="flex items-center ">
           <hr className="my-8 border-[var(--corPrincipal)]" />
 
           <button
@@ -120,7 +104,7 @@ const MenuLateral = () => {
             </svg>
             <span className="mx-4 font-medium">Sair</span>
           </button>
-        </nav>
+        </div>
       </div>
     </aside>
   );

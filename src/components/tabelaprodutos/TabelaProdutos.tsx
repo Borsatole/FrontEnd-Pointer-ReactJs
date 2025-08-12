@@ -165,7 +165,7 @@ function TabelaCadastros({}) {
 
             <TableCell className="font-medium">
       <div className="flex justify-center gap-2">
-        <Tooltip tooltip="Editar Servidor">
+        <Tooltip tooltip="Editar">
           <button
             className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
             onClick={() => setSelectedProduto(produto)}
@@ -173,7 +173,7 @@ function TabelaCadastros({}) {
             <FaEdit className="w-5 h-5 cursor-pointer" />
           </button>
         </Tooltip>
-        <Tooltip tooltip="Deletar Servidor">
+        <Tooltip tooltip="Deletar">
           <button
             className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
             onClick={() => handleDeletar({ produto, setRelistar })}

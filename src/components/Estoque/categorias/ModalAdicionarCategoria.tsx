@@ -38,7 +38,6 @@ return (
       <form onSubmit={handleSubmit}>
         {/* campos do form */}
         <FormGroup label="Nome da Categoria" id="categoria">
-          <Label htmlFor="categoria">Nome da Categoria</Label>
           <Input inputRef={formRefs.categoria} id="categoria" type="text" placeholder="Digite o nome da categoria" />
         </FormGroup>
 

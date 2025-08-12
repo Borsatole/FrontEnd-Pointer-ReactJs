@@ -132,7 +132,7 @@ export default function Categorias() {
 
             <TableCell className="font-medium">
       <div className="flex justify-center gap-2">
-        <Tooltip tooltip="Editar Servidor">
+        <Tooltip tooltip="Editar Categoria">
           <button
             className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
             onClick={() => setSelectedCategoria(categoria)}
