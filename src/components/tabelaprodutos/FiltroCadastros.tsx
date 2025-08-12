@@ -76,26 +76,24 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     <>
     <form className="flex flex-col bg-[var(--base-variant)] rounded-lg p-3.5 mt-3.5 mb-5.5" onSubmit={(e) => e.preventDefault()}>
       <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4  p-4">
-        <FormGroup>
-          <Label htmlFor="id">Filtrar Codigo</Label>
+        <FormGroup id="id" label="ID">
           <Input
             id="id"
             name="id"
             type="text"
             value={filtros.id}
-            placeholder="Ex: 14999999999"
+            placeholder=""
             onChange={handleChange}
           />
         </FormGroup>
 
-        <FormGroup>
-          <Label htmlFor="nome">Filtrar Nome</Label>
+        <FormGroup id="nome" label="Nome">
           <Input
             id="nome"
             name="nome"
             type="text"
             value={filtros.nome}
-            placeholder="Ex: user123"
+            placeholder=""
             onChange={handleChange}
           />
         </FormGroup>
@@ -103,32 +101,35 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
         
 
       
-        <FormGroup>
-          <Label htmlFor="quantidade">Filtrar Quantidade</Label>
+        <FormGroup id="quantidade" label="Qtd">
           <Input
             id="quantidade"
             name="quantidade"
             type="text"
             value={filtros.quantidade}
-            placeholder="Ex: 10"
+            placeholder=""
             onChange={handleChange}
           />
         
         </FormGroup>
 
-        <FormGroup>
-          <Label htmlFor="categoria">Filtrar Categoria</Label>
+        <FormGroup id="categoria" label="categoria">
+          
           <SelectModificado
+          id="categoria"
           name="categoria"
           value={filtros.categoria}
           onChange={handleChange}
         >
           <option value="">Todos</option>
+
           {categorias.map((categoria) => (
             <option key={categoria.id} value={categoria.nome}>
               {categoria.nome}
             </option>
           ))}
+
+          <option value="Sem Categoria">Sem Categoria</option>
         </SelectModificado>
         </FormGroup>
 

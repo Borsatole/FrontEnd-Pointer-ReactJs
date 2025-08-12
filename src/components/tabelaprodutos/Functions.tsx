@@ -91,7 +91,6 @@ export async function editarProduto({
 }: EditarProduto) {
   setLoadingSpiner(true);
   try {
-    console.log(data);
     const response = await requisicaoPost(`/Estoque/editar-registro.php`, data);
 
     

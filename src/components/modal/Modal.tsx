@@ -23,7 +23,8 @@ function Modal({ IsOpen, onClose, children, ...rest }: any) {
       onClick={onClose} // Clique fora fecha o modal
     >
       <div
-        className="relative p-8 rounded w-[95%] lg:w-[55%] min-h-[60vh] max-h-[90vh] overflow-y-auto"
+        {...rest}
+        className={`relative p-8 rounded w-[95%] lg:w-[55%] min-h-[60vh] max-h-[90vh] overflow-y-auto ${rest.className}`}
         style={{ backgroundColor: "var(--base-variant)" }}
         onClick={(e) => e.stopPropagation()} // Impede fechar clicando dentro
       >

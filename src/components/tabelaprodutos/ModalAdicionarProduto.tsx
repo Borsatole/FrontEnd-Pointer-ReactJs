@@ -8,6 +8,10 @@ import { requisicaoGet } from "../../services/requisicoes";
 import { SelectModificado } from "../../components/comum/select";
 import { Spinner } from "flowbite-react";
 import { adicionarProduto } from "./Functions";
+import { Categoria } from "../tipos";
+import { Link } from "react-router-dom";
+import { Label } from "../../components/comum/label";
+
 
 interface ModalAdicionarProdutoProps {
   AbrirModalNovoRegistro: boolean;
@@ -27,7 +31,7 @@ function ModalAdicionarProduto({
   setLoadingSpiner
 }: ModalAdicionarProdutoProps) {
   
-  const [categorias, setCategorias] = useState<string[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(true);
 
@@ -89,13 +93,14 @@ function ModalAdicionarProduto({
   }
 
   return (
-    <Modal IsOpen={true} onClose={() => setAbrirModalNovoRegistro(false)}>
+    <Modal IsOpen={true} onClose={() => setAbrirModalNovoRegistro(false)} className="min-h-auto">
       <form onSubmit={handleSubmit}>
         <FormGroup label="Nome do Produto" id="nome">
           <Input inputRef={formRefs.nome} id="nome" type="text" required disabled={isLoading} />
         </FormGroup>
 
         <FormGroup label="Quantidade" id="quantidade">
+
           <Input
             inputRef={formRefs.quantidade}
             id="quantidade"
@@ -108,8 +113,9 @@ function ModalAdicionarProduto({
 
         <FormGroup label="Categoria" id="categoria">
           <SelectModificado
+            id="categoria"
             ref={formRefs.categoria}
-            defaultValue={categorias[0] || ""}
+            defaultValue={categorias[0].nome || ""}
             style={{
               backgroundColor: "var(--base-variant)",
               color: "var(--text-color)",
@@ -120,16 +126,23 @@ function ModalAdicionarProduto({
           >
             
             {categorias.map((categoria) => (
-              <option key={categoria} value={categoria}>
-                {categoria}
+              <option key={categoria.id} value={categoria.nome}>
+                {categoria.nome}
               </option>
             ))}
           </SelectModificado>
         </FormGroup>
 
-        <Button loading={isLoading} wsize="w-full mt-4" type="submit" disabled={isLoading}>
-          Adicionar
-        </Button>
+        <div className="flex gap-2">
+          <Button loading={isLoading} wsize="w-full mt-4" type="submit" disabled={isLoading}>
+            Adicionar
+          </Button>
+          <Link to={"/estoque-categorias"}>
+          <Button loading={isLoading} wsize="w-full mt-4" type="submit" disabled={isLoading}>
+            Criar Categoria
+          </Button>
+          </Link>
+        </div>
       </form>
     </Modal>
   );

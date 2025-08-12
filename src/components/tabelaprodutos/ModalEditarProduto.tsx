@@ -8,6 +8,7 @@ import { requisicaoGet } from "../../services/requisicoes";
 import { SelectModificado } from "../../components/comum/select";
 import { Spinner } from "flowbite-react";
 import { editarProduto } from "./Functions";
+import { Categoria } from "../tipos";
 
 interface ModalEditarProdutoProps {
   selectedProduto: Produto | null;
@@ -29,7 +30,7 @@ function ModalEditarProduto({
   
   const produto = produtos.find((p) => p.id === selectedProduto?.id);
 
-  const [categorias, setCategorias] = useState<string[]>([]);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [isLoading, setIsLoading] = useState(false); 
   const [isLoadingInit, setIsLoadingInit] = useState(true);
 
@@ -103,7 +104,7 @@ function ModalEditarProduto({
   }
 
   return (
-    <Modal IsOpen={true} onClose={() => setSelectedProduto(null)}>
+    <Modal IsOpen={true} onClose={() => setSelectedProduto(null)} className="min-h-auto">
       <form onSubmit={handleSubmit}>
         <FormGroup label="Código" id="codigo">
           <Input defaultValue={produto?.id} id="codigo" type="text" disabled />
@@ -127,7 +128,7 @@ function ModalEditarProduto({
         <FormGroup label="Categoria" id="categoria">
           <SelectModificado
             ref={formRefs.categoria}
-            defaultValue={produto?.categoria || categorias[0] || ""}
+            defaultValue={produto?.categoria || categorias[0].nome || ""}
             style={{
               backgroundColor: "var(--base-variant)",
               color: "var(--text-color)",
@@ -136,9 +137,9 @@ function ModalEditarProduto({
             required
             disabled={isLoading}
           >
-            {categorias.map((categoria) => (
-              <option key={categoria} value={categoria}>
-                {categoria}
+            {categorias.map(categoria => (
+              <option key={categoria.id} value={categoria.nome}>
+                {categoria.nome}
               </option>
             ))}
           </SelectModificado>

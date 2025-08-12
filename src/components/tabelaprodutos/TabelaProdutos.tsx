@@ -4,6 +4,7 @@ import { BsBoxSeamFill } from "react-icons/bs";
 import { BiCategory } from "react-icons/bi";
 import { CgAddR } from "react-icons/cg";
 
+import {Link} from "react-router-dom";
 
 
 import {
@@ -24,11 +25,11 @@ import { Produto } from "components/tipos";
 import ModalEditarProduto from "./ModalEditarProduto";
 import ModalAdicionarProduto from "./ModalAdicionarProduto";
 import { Button } from "../../components/comum/button";
-import ModalCategorias from "./ModalCategorias";
 
 
 
 function TabelaCadastros({}) {
+
   const [cadastros, setCadastros] = useState<Produto[]>([]);
 
   const [selectedProduto, setSelectedProduto] = useState<Produto | null>(null);
@@ -46,7 +47,6 @@ function TabelaCadastros({}) {
   const [queryFiltro, setQueryFiltro] = useState("");
   
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
-  const [AbrirModalCategorias, setAbrirModalCategorias] = useState(false);
 
   useEffect(() => {
     setLoadingSpiner(true);
@@ -108,13 +108,7 @@ function TabelaCadastros({}) {
           </p>
           </Button>
 
-
-        <Button onClick={() => setAbrirModalCategorias(true)}>
-          <p className="flex items-center gap-2">
-            <BiCategory size={20} />
-            <span>Categorias</span>
-          </p>
-        </Button>
+       
 
         
       </div>
@@ -262,13 +256,6 @@ function TabelaCadastros({}) {
       />
       }
 
-      {AbrirModalCategorias === true &&
-      <ModalCategorias
-        AbrirModalCategorias={AbrirModalCategorias}
-        setAbrirModalCategorias={setAbrirModalCategorias}
-      
-      />
-        }
     </>
   );
 }

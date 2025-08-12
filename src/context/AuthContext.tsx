@@ -69,9 +69,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.removeItem("token");
     setAuth({ token: null, loggedIn: false });
 
-    setTimeout(() => {
+    
       navigate("/login", { replace: true });
-    }, 1000);
+    
   };
 
   return (

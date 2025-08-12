@@ -8,6 +8,6 @@ export interface Produto {
 }
 
 export interface Categoria {
-  id: number;
+  id?: number;
   nome: string;
 }

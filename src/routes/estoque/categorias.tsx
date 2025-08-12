@@ -1,42 +1,36 @@
-import React from 'react'
-import { useState, useEffect, useRef } from "react";
-import Modal from "../../components/modal/Modal";
-import LoadingSpiner from "../../components/loader/LoadingSpiner";
+import {useEffect, useState } from "react";
 
-import { ThemeProvider, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 
-import {
-    handleDeletar,
-  PrimeraLetraMaiuscula,
-  
-} from "./Functions";
 
-import { Input } from "../../components/comum/input";
-import { FormGroup } from "../../components/comum/FormGroup";
+import BarraSuperior from "../../components/barraSuperior";
+import MenuLateral from "../../components/MenuLateral/MenuLateral";
+import Container from "../../components/comum/container";
+import { TituloPagina } from "../../components/comum/Textos";
 import { Button } from "../../components/comum/button";
-import { Produto } from "../../components/tipos";
-import { requisicaoGet } from "../../services/requisicoes";
-import { SelectModificado } from "../../components/comum/select";
-import { Spinner } from "flowbite-react";
-import { H2 } from '../../components/comum/Textos';
+
+import {handleDeletar} from "../../components/Estoque/categorias/Functions";
 
 import { CgAddR } from "react-icons/cg";
+import { Categoria } from "components/tipos";
+import { requisicaoGet } from "../../services/requisicoes";
+import { Spinner, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, ThemeProvider } from "flowbite-react";
 import Tooltip from '../../components/tooltip/tooltipwrapper';
-import { FaEdit, FaTrashAlt } from 'react-icons/fa';
-import { Categoria } from "../tipos";
-interface ModalCategoriasProps {
-    AbrirModalCategorias:boolean,
-    setAbrirModalCategorias:React.Dispatch<React.SetStateAction<boolean>>
-}
+import LoadingSpiner from "../../components/loader/LoadingSpiner";
+import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { PrimeraLetraMaiuscula } from "../../components/tabelaprodutos/Functions";
+import ModalAdicionarCategoria from "../../components/Estoque/categorias/ModalAdicionarCategoria";
+import ModalEditarCategoria from "../../components/Estoque/categorias/ModalEditarCategoria";
 
-function ModalCategorias({
-AbrirModalCategorias,
-setAbrirModalCategorias
-}:ModalCategoriasProps) {
+
+export default function Categorias() {
+    
     const [loading, setLoading] = useState(true);
     const [loadingSpiner, setLoadingSpiner] = useState(true);
     const [categorias, setCategorias] = useState<Categoria[]>([]);
     const [relistar, setRelistar] = useState(false);
+
+    const [AbirModalAdicionarCategoria, setAbirModalAdicionarCategoria] = useState(false);
+    const [selectedCategoria, setSelectedCategoria] = useState<Categoria | null>(null);
 
 
     useEffect(() => {
@@ -47,12 +41,10 @@ setAbrirModalCategorias
           setCategorias(response.data.categorias);
           setLoading(false);
           setLoadingSpiner(false);
+          setRelistar(false);
         }
       });
     }, [relistar]);
-
-
-    if (!AbrirModalCategorias) return null;
 
     const customTheme = {
     table: {
@@ -81,38 +73,30 @@ setAbrirModalCategorias
     },
   };
 
-
-    if (loading && categorias.length === 0) {
-    return (
-      <Modal IsOpen={true} onClose={() => setAbrirModalCategorias(false)}>
-        <div className="fixed inset-0 flex items-center justify-center">
-          <Spinner size="xl" className="fill-[var(--corPrincipal)]" />
-        </div>
-      </Modal>
-    );
-  }
-
   return (
-    <Modal IsOpen={true} onClose={() => setAbrirModalCategorias(false)}>
+    <>
+    <BarraSuperior />
+    <Container tipo="principal">
+      <MenuLateral />
+      <TituloPagina>Categorias de Estoque</TituloPagina>
+      
+      <div className="flex flex-col gap-2 w-full mb-2">
 
-        <div className="flex flex-col gap-2 items-start w-full mb-2">
-          <H2>Categorias</H2>
-
-          <Button onClick={() => setRelistar(true)} >
+        <div className="self-start">
+          <Button onClick={() => setAbirModalAdicionarCategoria(true)}>
             <p className="flex items-center gap-2">
-            <CgAddR size={20} />
-            <span>Nova Categoria</span>
-          </p>
+              <CgAddR size={20} />
+              <span>Nova Categoria</span>
+            </p>
           </Button>
-          
         </div>
 
-        {categorias.length === 0 ? (
+          {categorias.length === 0 ? (
           <p>Não há categorias cadastradas.</p>
           
         ) : (
           <LoadingSpiner loading={loadingSpiner}>
-        <div className="w-full overflow-x-auto h-[50vh]">
+        <div className="w-full overflow-x-auto h-[70vh]">
         <ThemeProvider theme={customTheme}>
           <Table className="w-full text-center divide-y divide-[var(--base-color)] mt-3  rounded-lg">
             <TableHead>
@@ -151,15 +135,15 @@ setAbrirModalCategorias
         <Tooltip tooltip="Editar Servidor">
           <button
             className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
-            onClick={() => alert("Editar Servidor")}
+            onClick={() => setSelectedCategoria(categoria)}
           >
             <FaEdit className="w-5 h-5 cursor-pointer" />
           </button>
         </Tooltip>
-        <Tooltip tooltip="Deletar Servidor">
+        <Tooltip tooltip="Deletar Categoria">
           <button
             className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
-            onClick={() => alert("Deletar Servidor")}
+            onClick={() => handleDeletar({categoria, setRelistar})}
           >
             <FaTrashAlt className="w-5 h-5 cursor-pointer" />
           </button>
@@ -177,10 +161,38 @@ setAbrirModalCategorias
           </Table>
         </ThemeProvider>
         </div>
-      </LoadingSpiner>
+          </LoadingSpiner>
         )}
-    </Modal>
-  )
+      </div>
+
+
+    </Container>
+
+    {AbirModalAdicionarCategoria && (
+      <ModalAdicionarCategoria 
+        setAbrirModalAdicionarCategoria={setAbirModalAdicionarCategoria}
+        ModalAdicionarCategoria={AbirModalAdicionarCategoria}
+        IsOpen={AbirModalAdicionarCategoria}
+        onClose={() => setAbirModalAdicionarCategoria(false)}
+        setRelistar={setRelistar}
+
+      />
+      
+    )}
+
+    {selectedCategoria && (
+      <ModalEditarCategoria 
+        IsOpen={selectedCategoria !== null}
+        onClose={() => setSelectedCategoria(null)}
+        setRelistar={setRelistar}
+        setSelectedCategoria={setSelectedCategoria}
+        selectedCategoria={selectedCategoria}
+      />
+    )}
+
+    </>
+  );
 }
 
-export default ModalCategorias
+
+

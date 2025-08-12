@@ -3,9 +3,12 @@ import { requisicaoGet } from "../../services/requisicoes";
 import { AuthContext } from "../../context/AuthContext";
 import { useMenu } from "../../context/MenuContext";
 
+import { HiOutlineCube } from "react-icons/hi";
+
+
 import Swal from "sweetalert2";
 import Loading from "../../components/loader/Loading";
-import OpcaoMenu from "../../components/MenuLateral/OpcaoMenu";
+import {OpcaoMenu, OpcaoMenuComSubmenu} from "../../components/MenuLateral/OpcaoMenu";
 import { BtnFecharMenuLateral } from "../../components/MenuLateral/botoesMenu";
 
 // Ícones
@@ -80,33 +83,23 @@ const MenuLateral = () => {
         <p className="text-sm font-medium">{dadosMenuLateral.email}</p>
       </div>
 
+      
+
       <div className="flex flex-col justify-between flex-1 mt-6">
         <nav>
-          <OpcaoMenu
+          {/* <OpcaoMenu
             nome="Dashboard"
             rota="/"
             svg={<MenuLateralDashboard />}
-          />
-          <OpcaoMenu
-            nome="Meus Pedidos"
-            rota="/"
-            svg={<MenuLateralMeusPedidos />}
-          />
-          <OpcaoMenu 
-            nome="Perfil" 
-            rota="/" 
-            svg={<MenuLateralPerfil />} 
-          />
+          /> */}
+          <OpcaoMenuComSubmenu nome="Estoque" svg={<HiOutlineCube size={25} />}>
+            <OpcaoMenu nome="Produtos" rota="/" />
+            <OpcaoMenu nome="Categorias" rota="/estoque-categorias"  />
+          </OpcaoMenuComSubmenu>
 
-          {dadosMenuLateral.tipoDeUsuario === "admin" && (
-            <OpcaoMenu
-              nome="Administrador"
-              rota="/"
-              svg={<MenuLateralAdmin />}
-            />
-          )}
+         
 
-          <hr className="my-8 border-gray-300" />
+          <hr className="my-8 border-[var(--corPrincipal)]" />
 
           <button
             onClick={ConfirmSair}

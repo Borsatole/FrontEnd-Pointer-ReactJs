@@ -19,6 +19,7 @@ function TelaLoading() {
 
 const TelaLogin = lazy(() => import("./telaLogin"));
 const Dashboard = lazy(() => import("./Dashboard"));
+const EstoqueCategorias = lazy(() => import("./estoque/categorias"));
 
 const Rotas = () => {
   return (
@@ -46,6 +47,14 @@ const Rotas = () => {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/estoque-categorias"
+          element={
+            <ProtectedRoute>
+              <EstoqueCategorias />
             </ProtectedRoute>
           }
         />
