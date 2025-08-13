@@ -1,4 +1,4 @@
-import { requisicaoDelete, requisicaoPost } from "@services/requisicoes";
+import { requisicaoDelete, requisicaoGet, requisicaoPost } from "@services/requisicoes";
 import { Categoria } from "@src/components/tipos";
 import Alerta from "@components/comum/alertas";
 import Swal from "sweetalert2";
@@ -71,7 +71,7 @@ export async function handleDeletar({ categoria, setRelistar }: Deletar) {
   if (!result.isConfirmed) return;
 
   try {
-    const response = await requisicaoDelete(`/Estoque/deletar-categoria.php?id=${categoria.id}`);
+    const response = await requisicaoGet(`/Estoque/deletar-categoria.php?id=${categoria.id}`);
 
     if (response?.data?.success) {
       setRelistar(true);

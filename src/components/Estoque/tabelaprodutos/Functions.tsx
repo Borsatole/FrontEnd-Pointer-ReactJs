@@ -1,4 +1,4 @@
-import { requisicaoDelete, requisicaoPost, requisicaoPut } from "@services/requisicoes";
+import { requisicaoDelete, requisicaoGet, requisicaoPost, requisicaoPut } from "@services/requisicoes";
 import { Produto } from "@components/tipos";
 import Swal from 'sweetalert2'
 import Alerta from "@components/comum/alertas";
@@ -38,9 +38,10 @@ export function handleDeletar({ produto, setRelistar }: Deletar) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Chama a API para deletar
-      requisicaoDelete(`/Estoque/deletar-registro.php?id=${produto.id}`)
+      requisicaoGet(`/Estoque/deletar-registro.php?id=${produto.id}`)
         .then((response) => {
           if (response?.data.success) {
+            console.log(response);
             // Atualiza a listagem após sucesso
             setRelistar(true);
 
