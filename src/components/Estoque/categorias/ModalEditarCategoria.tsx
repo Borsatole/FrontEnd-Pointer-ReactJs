@@ -1,8 +1,8 @@
-import Modal from "../../../components/modal/Modal";
-import { Button } from "../../../components/comum/button";
-import { FormGroup } from "../../../components/comum/FormGroup";
-import { Input } from "../../../components/comum/input";
-import { Categoria } from "../../../components/tipos";
+import Modal from "@components/modal/Modal";
+import { Button } from "@components/comum/button";
+import { FormGroup } from "@components/comum/FormGroup";
+import { Input } from "@components/comum/input";
+import { Categoria } from "@components/tipos";
 import { useRef } from "react";
 import { editarCategoria } from "./Functions";
 

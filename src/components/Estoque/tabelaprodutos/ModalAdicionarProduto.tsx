@@ -1,16 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import Modal from "../../components/modal/Modal";
-import { Input } from "../../components/comum/input";
-import { FormGroup } from "../../components/comum/FormGroup";
-import { Button } from "../../components/comum/button";
-import { Produto } from "../../components/tipos";
-import { requisicaoGet } from "../../services/requisicoes";
-import { SelectModificado } from "../../components/comum/select";
+import Modal from "@components/modal/Modal";
+import { Input } from "@components/comum/input";
+import { FormGroup } from "@components/comum/FormGroup";
+import { Button } from "@components/comum/button";
+import { Produto } from "@components/tipos";
+import { requisicaoGet } from "@services/requisicoes";
+import { SelectModificado } from "@components/comum/select";
 import { Spinner } from "flowbite-react";
 import { adicionarProduto } from "./Functions";
-import { Categoria } from "../tipos";
+import { Categoria } from "@src/components/tipos";
 import { Link } from "react-router-dom";
-import { Label } from "../../components/comum/label";
 
 
 interface ModalAdicionarProdutoProps {
@@ -115,7 +114,8 @@ function ModalAdicionarProduto({
           <SelectModificado
             id="categoria"
             ref={formRefs.categoria}
-            defaultValue={categorias[0].nome || ""}
+            defaultValue={categorias[0]?.nome || ""}
+
             style={{
               backgroundColor: "var(--base-variant)",
               color: "var(--text-color)",

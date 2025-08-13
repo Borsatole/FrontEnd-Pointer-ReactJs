@@ -1,7 +1,7 @@
-import { requisicaoDelete, requisicaoPost, requisicaoPut } from "../../services/requisicoes";
-import { Produto } from "../../components/tipos";
+import { requisicaoDelete, requisicaoPost, requisicaoPut } from "@services/requisicoes";
+import { Produto } from "@components/tipos";
 import Swal from 'sweetalert2'
-import Alerta from "../../components/comum/alertas";
+import Alerta from "@components/comum/alertas";
 
 
 export function PrimeraLetraMaiuscula(str: string): string {

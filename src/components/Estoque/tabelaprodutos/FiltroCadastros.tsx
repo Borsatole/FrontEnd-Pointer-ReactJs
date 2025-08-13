@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { FormGroup } from "../../components/comum/FormGroup";
-import { Input } from "../../components/comum/input";
-import { Label } from "../../components/comum/label";
-import { SelectModificado } from "../../components/comum/select";
+import { FormGroup } from "@components/comum/FormGroup";
+import { Input } from "@components/comum/input";
+import { SelectModificado } from "@components/comum/select";
 import { useEffect } from "react";
-import { requisicaoGet } from "../../services/requisicoes";
-import { Categoria } from "../tipos";
+import { requisicaoGet } from "@services/requisicoes";
+import { Categoria } from "@src/components/tipos";
 
 interface Produto {
   id: number;

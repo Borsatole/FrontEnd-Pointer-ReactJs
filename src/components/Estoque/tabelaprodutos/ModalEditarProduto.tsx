@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from "react";
-import Modal from "../../components/modal/Modal";
-import { Input } from "../../components/comum/input";
-import { FormGroup } from "../../components/comum/FormGroup";
-import { Button } from "../../components/comum/button";
-import { Produto } from "../../components/tipos";
-import { requisicaoGet } from "../../services/requisicoes";
-import { SelectModificado } from "../../components/comum/select";
+import Modal from "@components/modal/Modal";
+import { Input } from "@components/comum/input";
+import { FormGroup } from "@components/comum/FormGroup";
+import { Button } from "@components/comum/button";
+import { Produto } from "@components/tipos";
+import { requisicaoGet } from "@services/requisicoes";
+import { SelectModificado } from "@components/comum/select";
 import { Spinner } from "flowbite-react";
 import { editarProduto } from "./Functions";
-import { Categoria } from "../tipos";
+import { Categoria } from "@src/components/tipos";
 
 interface ModalEditarProdutoProps {
   selectedProduto: Produto | null;

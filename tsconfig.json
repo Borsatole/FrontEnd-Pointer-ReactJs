@@ -10,7 +10,14 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./src",
-    "types": ["vite/client"]
+    "types": ["vite/client"],
+    "paths": {
+      "@src/*": ["*"],
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"],
+      "@utils/*": ["utils/*"],
+      "@services/*": ["services/*"]
+    }
   },
   "include": ["src", "vite-env.d.ts"]
 }

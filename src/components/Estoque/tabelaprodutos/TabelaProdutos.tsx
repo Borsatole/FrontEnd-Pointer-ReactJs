@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { ThemeProvider, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import { BsBoxSeamFill } from "react-icons/bs";
-import { BiCategory } from "react-icons/bi";
 import { CgAddR } from "react-icons/cg";
 
-import {Link} from "react-router-dom";
 
 
 import {
@@ -15,17 +13,17 @@ import {
 
 
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import Tooltip from "../../components/tooltip/tooltipwrapper";
-import LoadingSkeleton from "../../components/loader/LoadingSkeleton";
-import LoadingSpiner from "../../components/loader/LoadingSpiner";
-import { requisicaoGet } from "../../services/requisicoes";
-import { FiltroCadastros } from "./FiltroCadastros";
 
-import { Produto } from "components/tipos";
+import Tooltip from "@components/tooltip/tooltipwrapper";
+import LoadingSkeleton from "@components/loader/LoadingSkeleton";
+import LoadingSpiner from "@components/loader/LoadingSpiner";
+import { requisicaoGet } from "@services/requisicoes";
+import { FiltroCadastros } from "./FiltroCadastros";
+import { Produto } from "@components/tipos";
+
+import { Button } from "@components/comum/button";
 import ModalEditarProduto from "./ModalEditarProduto";
 import ModalAdicionarProduto from "./ModalAdicionarProduto";
-import { Button } from "../../components/comum/button";
-
 
 
 function TabelaCadastros({}) {

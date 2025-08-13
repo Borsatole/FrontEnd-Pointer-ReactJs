@@ -37,7 +37,7 @@ export default function TelaLogin() {
 
 
         // Redireciona para o Dashboard
-        navigate("/dashboard");
+        navigate("/");
       } else {
         console.log(response);
         Alerta("swal", "error", `${response?.data?.message || "Ops! Algo deu errado."}`);

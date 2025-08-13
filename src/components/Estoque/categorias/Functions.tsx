@@ -1,6 +1,6 @@
-import { requisicaoDelete, requisicaoPost } from "../../../services/requisicoes";
-import { Categoria } from "../../tipos";
-import Alerta from "../../../components/comum/alertas";
+import { requisicaoDelete, requisicaoPost } from "@services/requisicoes";
+import { Categoria } from "@src/components/tipos";
+import Alerta from "@components/comum/alertas";
 import Swal from "sweetalert2";
 
 const MSG_ERRO_GENERICO = 'Erro inesperado ao processar a requisição!';

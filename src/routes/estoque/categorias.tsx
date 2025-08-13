@@ -17,7 +17,7 @@ import { Spinner, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRo
 import Tooltip from '../../components/tooltip/tooltipwrapper';
 import LoadingSpiner from "../../components/loader/LoadingSpiner";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { PrimeraLetraMaiuscula } from "../../components/tabelaprodutos/Functions";
+import { PrimeraLetraMaiuscula } from "../../components/Estoque/tabelaprodutos/Functions";
 import ModalAdicionarCategoria from "../../components/Estoque/categorias/ModalAdicionarCategoria";
 import ModalEditarCategoria from "../../components/Estoque/categorias/ModalEditarCategoria";
 

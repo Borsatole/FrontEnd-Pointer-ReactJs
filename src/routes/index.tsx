@@ -18,7 +18,10 @@ function TelaLoading() {
 }
 
 const TelaLogin = lazy(() => import("./telaLogin"));
-const Dashboard = lazy(() => import("./Dashboard"));
+
+
+// importando as rotas de estoque
+const EstoqueControle = lazy(() => import("./estoque/controle-estoque"));
 const EstoqueCategorias = lazy(() => import("./estoque/categorias"));
 
 const Rotas = () => {
@@ -36,17 +39,17 @@ const Rotas = () => {
           path="/"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <EstoqueControle />
             </ProtectedRoute>
           }
         />
         <Route path="/login" element={<TelaLogin />} />
 
         <Route
-          path="/dashboard"
+          path="/estoque"
           element={
             <ProtectedRoute>
-              <Dashboard />
+              <EstoqueControle />
             </ProtectedRoute>
           }
         />

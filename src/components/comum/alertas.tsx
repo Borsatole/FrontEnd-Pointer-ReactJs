@@ -16,6 +16,7 @@ function Alerta(alerta = "toast", tipo = "success", mensagem = "") {
       pauseOnHover: true,
       draggable: true,
       progress: undefined,
+      
       theme: "light",
     });
   }
@@ -38,6 +39,7 @@ function Alerta(alerta = "toast", tipo = "success", mensagem = "") {
       icon: tipo,
       title: mensagem,
       showConfirmButton: true,
+      confirmButtonColor: "var(--corPrincipal)",
     });
   }
 
@@ -47,6 +49,7 @@ function Alerta(alerta = "toast", tipo = "success", mensagem = "") {
       title: mensagem,
       showConfirmButton: true,
       timer: 1500,
+      confirmButtonColor: "var(--corPrincipal)",
     });
   }
 }
