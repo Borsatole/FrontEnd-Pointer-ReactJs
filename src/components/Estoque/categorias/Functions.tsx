@@ -50,7 +50,7 @@ export async function adicionarCategoria({
   if (!data || !data.nome) return;
 
   try {
-    const response = await requisicaoPost(`/Estoque/adicionar-categoria.php`, data);
+    const response = await requisicaoPost(`/Estoque/categoria/adicionar-categoria.php`, data);
     const msg = response?.data?.message ?? MSG_ERRO_CRIACAO;
 
     if (response?.data?.success) {
@@ -71,7 +71,7 @@ export async function handleDeletar({ categoria, setRelistar }: Deletar) {
   if (!result.isConfirmed) return;
 
   try {
-    const response = await requisicaoDelete(`/Estoque/deletar-categoria.php?id=${categoria.id}`);
+    const response = await requisicaoDelete(`/Estoque/categoria/deletar-categoria.php?id=${categoria.id}`);
 
     if (response?.data?.success) {
       setRelistar(true);
@@ -107,7 +107,7 @@ export async function editarCategoria({
   if (!data || !data.nome) return;
 
   try {
-    const response = await requisicaoPut(`/Estoque/editar-categoria.php`, data);
+    const response = await requisicaoPut(`/Estoque/categoria/editar-categoria.php`, data);
     const msg = response?.data?.message ?? MSG_ERRO_CRIACAO;
 
     if (response?.data?.success) {

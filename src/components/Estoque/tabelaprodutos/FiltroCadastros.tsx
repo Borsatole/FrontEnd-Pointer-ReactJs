@@ -64,7 +64,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
         }
       });
 
-      requisicaoGet('/Estoque/categorias.php').then((response) => {
+      requisicaoGet('/Estoque/categoria/categorias.php').then((response) => {
         if (response?.data.success) {
           setCategorias(response.data.categorias);
         }

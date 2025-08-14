@@ -39,7 +39,6 @@ export function Input({
       style={{
         color: "var(--cortexto)",
         borderColor: "var(--base-variant)",
-        backgroundColor: "var(--base-color)",
       }}
     />
   );

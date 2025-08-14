@@ -4,6 +4,8 @@ function DarkmodeButton() {
   const { theme, toggleTheme } = useTheme();
 
   return (
+    <div>
+
     <button
       id="theme-switch"
       onClick={toggleTheme}
@@ -34,6 +36,7 @@ function DarkmodeButton() {
         </svg>
       )}
     </button>
+    </div>
   );
 }
 

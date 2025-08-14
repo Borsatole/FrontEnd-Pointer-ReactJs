@@ -90,3 +90,9 @@ body {
 #theme-switch svg {
   fill: var(--text-color);
 }
+
+ @keyframes panBackground {
+        0% { background-position: center bottom; }
+        50% { background-position: center center; }
+        100% { background-position: center top; }
+    }

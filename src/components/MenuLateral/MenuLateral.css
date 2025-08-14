@@ -44,7 +44,7 @@
    -------------------------------------------------------------------------- */
 @media (max-width: 968px) {
   .menu-lateral {
-    width: 100%; /* O menu ocupa toda a largura em dispositivos móveis */
+    width: 70%; /* O menu ocupa toda a largura em dispositivos móveis */
   }
 
   .menu-lateral.menu-aberto {

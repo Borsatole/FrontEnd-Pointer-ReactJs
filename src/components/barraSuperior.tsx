@@ -5,14 +5,14 @@ import { BtnAbrirMenuLateral } from './MenuLateral/botoesMenu'
 function BarraSuperior() {
 
   return (
-    <nav className=" barra-superior w-full p-4 flex justify-between items-center">
+    <nav className="w-full p-4 flex justify-between items-center">
       
-      <Tooltip tooltip="Abrir Menu" position="left">
+          <div>
           <BtnAbrirMenuLateral />
-        </Tooltip>
+          </div>
 
 
-        <div className='flex gap-3'>
+        <div className=''>
           <Tooltip tooltip="Alterne entre tema claro e escuro" position="left">
             <DarkmodeButton />
           </Tooltip>

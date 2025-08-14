@@ -1,6 +1,7 @@
 
 
 export default function LoadingSkeleton({size, color}: any) {
+
   return (
     <div
       className="flex flex-wrap mt-6 flex-col animate-pulse"
