@@ -38,7 +38,6 @@ export function handleDeletar({ produto, setRelistar }: Deletar) {
       requisicaoDelete(`/Estoque/deletar-registro.php?id=${produto.id}`)
         .then((response) => {
           if (response?.data.success) {
-            console.log(response);
             // Atualiza a listagem após sucesso
             setRelistar(true);
 
@@ -135,7 +134,6 @@ export function adicionarProduto({ data, produtos,
   requisicaoPost(`/Estoque/adicionar-registro.php`, data)
   
     .then((response) => {
-      console.log(response);
       const msg = response?.data?.message ?? 'Erro ao criar a requisição!';
       if (response?.data?.success) {
         
