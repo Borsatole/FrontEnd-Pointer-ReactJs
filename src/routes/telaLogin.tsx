@@ -6,8 +6,11 @@ import { requisicaoPost } from "@services/requisicoes";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Input } from "@components/comum/input";
 import { Button } from "@components/comum/button";
+import { useMenu } from "@src/context/MenuContext";
+
 
 export default function TelaLogin() {
+  const { fecharMenu } = useMenu();
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
@@ -24,6 +27,7 @@ export default function TelaLogin() {
 
       if (response?.data.success && response.data.JWT) {
         Alerta("swal", "success", `${response.data.message}`);
+        fecharMenu();
         login(response.data.JWT);
         navigate("/");
       } else {
