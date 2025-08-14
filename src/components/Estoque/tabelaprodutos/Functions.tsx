@@ -8,8 +8,6 @@ export function PrimeraLetraMaiuscula(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-
-
 export function gerarPaginas(paginaAtual: number, total: number, max = 5): number[] {
     const paginas = [];
     const metade = Math.floor(max / 2);
@@ -18,8 +16,7 @@ export function gerarPaginas(paginaAtual: number, total: number, max = 5): numbe
     if (fim - inicio + 1 < max) inicio = Math.max(1, fim - max + 1);
     for (let i = inicio; i <= fim; i++) paginas.push(i);
     return paginas;
-  }
-
+}
  
 interface Deletar {
   produto: Produto
@@ -38,7 +35,7 @@ export function handleDeletar({ produto, setRelistar }: Deletar) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Chama a API para deletar
-      requisicaoGet(`/Estoque/deletar-registro.php?id=${produto.id}`)
+      requisicaoDelete(`/Estoque/deletar-registro.php?id=${produto.id}`)
         .then((response) => {
           if (response?.data.success) {
             console.log(response);
@@ -92,7 +89,7 @@ export async function editarProduto({
 }: EditarProduto) {
   setLoadingSpiner(true);
   try {
-    const response = await requisicaoPost(`/Estoque/editar-registro.php`, data);
+    const response = await requisicaoPut(`/Estoque/editar-registro.php`, data);
 
     
     const msg = response?.data?.message ?? 'Erro ao editar a requisição!';

@@ -1,4 +1,4 @@
-import { requisicaoDelete, requisicaoGet, requisicaoPost } from "@services/requisicoes";
+import { requisicaoDelete, requisicaoGet, requisicaoPost, requisicaoPut } from "@services/requisicoes";
 import { Categoria } from "@src/components/tipos";
 import Alerta from "@components/comum/alertas";
 import Swal from "sweetalert2";
@@ -71,7 +71,7 @@ export async function handleDeletar({ categoria, setRelistar }: Deletar) {
   if (!result.isConfirmed) return;
 
   try {
-    const response = await requisicaoGet(`/Estoque/deletar-categoria.php?id=${categoria.id}`);
+    const response = await requisicaoDelete(`/Estoque/deletar-categoria.php?id=${categoria.id}`);
 
     if (response?.data?.success) {
       setRelistar(true);
@@ -107,7 +107,7 @@ export async function editarCategoria({
   if (!data || !data.nome) return;
 
   try {
-    const response = await requisicaoPost(`/Estoque/editar-categoria.php`, data);
+    const response = await requisicaoPut(`/Estoque/editar-categoria.php`, data);
     const msg = response?.data?.message ?? MSG_ERRO_CRIACAO;
 
     if (response?.data?.success) {
@@ -115,6 +115,7 @@ export async function editarCategoria({
       setRelistar(true);
       setSelectedCategoria(null);
     } else {
+      
       alertaToast('error', msg);
     }
   } catch {
