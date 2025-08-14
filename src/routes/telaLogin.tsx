@@ -70,28 +70,7 @@ export default function TelaLogin() {
         </form>
       </div>
 
-      <style>
-        {`
-          @keyframes panZoom {
-            0% {
-              background-position: center bottom;
-              background-size: 100%;
-            }
-            50% {
-              background-position: center center;
-              background-size: 120%;
-            }
-            100% {
-              background-position: center bottom;
-              background-size: 100%;
-            }
-          }
-
-          .animate-panZoom {
-            animation: panZoom 80s ease-in-out infinite alternate;
-          }
-        `}
-      </style>
+      
     </div>
   );
 }

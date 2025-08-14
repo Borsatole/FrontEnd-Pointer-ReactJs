@@ -75,7 +75,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     <>
     <form className="flex flex-col bg-[var(--base-variant)] rounded-lg p-3.5 mt-3.5 mb-5.5" onSubmit={(e) => e.preventDefault()}>
       <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4  p-4">
-        <FormGroup id="id" label="ID">
+        <FormGroup id="cod" label="COD">
           <Input
             id="id"
             name="id"
@@ -86,7 +86,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
           />
         </FormGroup>
 
-        <FormGroup id="nome" label="Nome">
+        <FormGroup id="nome" label="NOME">
           <Input
             id="nome"
             name="nome"
@@ -100,19 +100,33 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
         
 
       
-        <FormGroup id="quantidade" label="Qtd">
-          <Input
+        <FormGroup id="quantidade" label="QUANTIDADE">
+          {/* <Input
             id="quantidade"
             name="quantidade"
             type="text"
             value={filtros.quantidade}
             placeholder=""
             onChange={handleChange}
-          />
+          /> */}
+
+          <SelectModificado
+          id="quantidade"
+          name="quantidade"
+          value={filtros.quantidade}
+          onChange={handleChange}
+        >
+          <option value="">Todos</option>
+          <option value="5">Menor que 5</option>
+          <option value="20">Menor que 20</option>
+          <option value="50">Menor que 50</option>
+          <option value="100">Menor que 100</option>
+          <option value="200">Menor que 200</option>
+          </SelectModificado>
         
         </FormGroup>
 
-        <FormGroup id="categoria" label="categoria">
+        <FormGroup id="categoria" label="CATEGORIA">
           
           <SelectModificado
           id="categoria"

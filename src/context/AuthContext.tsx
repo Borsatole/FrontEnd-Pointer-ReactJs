@@ -6,8 +6,9 @@ import React, {
   ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
-import Alerta from "../components/comum/alertas";
-import { requisicaoPost } from "../services/requisicoes";
+import Alerta from "@components/comum/alertas";
+import { requisicaoPost } from "@services/requisicoes";
+import { useMenu } from "../context/MenuContext";
 
 
 interface AuthData {
@@ -28,12 +29,15 @@ interface AuthProviderProps {
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+  const { fecharMenu } = useMenu();
   const navigate = useNavigate();
 
   const [auth, setAuth] = useState<AuthData>({
     token: localStorage.getItem("token"),
     loggedIn: !!localStorage.getItem("token"),
   });
+
+  
 
 
   const verificaToken = useCallback(async (token: string) => {
@@ -62,7 +66,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = (token: string) => {
     localStorage.setItem("token", token);
     setAuth({ token, loggedIn: true });
+    
+    
   };
+
+  
 
   // Função de logout
   const logout = () => {
