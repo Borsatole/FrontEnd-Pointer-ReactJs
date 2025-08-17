@@ -74,7 +74,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
   return (
     <>
     <form className="flex flex-col bg-[var(--base-variant)] rounded-lg p-3.5 mt-3.5 mb-5.5" onSubmit={(e) => e.preventDefault()}>
-      <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4  p-4">
+      <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4 ">
         <FormGroup id="cod" label="COD">
           <Input
             id="id"
@@ -101,14 +101,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
 
       
         <FormGroup id="quantidade" label="QUANTIDADE">
-          {/* <Input
-            id="quantidade"
-            name="quantidade"
-            type="text"
-            value={filtros.quantidade}
-            placeholder=""
-            onChange={handleChange}
-          /> */}
+          
 
           <SelectModificado
           id="quantidade"

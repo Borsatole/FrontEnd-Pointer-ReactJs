@@ -43,7 +43,7 @@ function ModalEditarProduto({
   // Busca categorias
   useEffect(() => {
     setIsLoadingInit(true);
-    requisicaoGet("/Estoque/categorias.php")
+    requisicaoGet("/Estoque/categoria/categorias.php")
       .then((response) => {
         if (response?.data.success) {
           setCategorias(response.data.categorias);
