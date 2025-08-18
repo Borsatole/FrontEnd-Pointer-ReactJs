@@ -9,6 +9,8 @@ import { SelectModificado } from "@components/comum/select";
 import { Spinner } from "flowbite-react";
 import { editarProduto } from "./Functions";
 import { Categoria } from "@src/components/tipos";
+import { FiPlus, FiMinus } from "react-icons/fi";
+
 
 interface ModalEditarProdutoProps {
   selectedProduto: Produto | null;
@@ -122,7 +124,42 @@ function ModalEditarProduto({
             min="0"
             required
             disabled={isLoading}
+          
           />
+
+          {/* botao para aumentar ou diminuir a quantidade */}
+          <div className="flex gap-1 mt-1">
+  <button
+    type="button"
+    onClick={() => {
+      if (formRefs.quantidade.current) {
+        formRefs.quantidade.current.value = String(
+          Number(formRefs.quantidade.current.value) + 1
+        );
+      }
+    }}
+    disabled={isLoading}
+    className="p-2 rounded-[30%] bg-[var(--corPrincipal)] text-white shadow-md hover:bg-[var(--corPrincipalHover)]/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    <FiPlus size={15} />
+  </button>
+
+  <button
+    type="button"
+    onClick={() => {
+      if (formRefs.quantidade.current) {
+        formRefs.quantidade.current.value = String(
+          Number(formRefs.quantidade.current.value) - 1
+        );
+      }
+    }}
+    disabled={isLoading}
+    className="p-2 rounded-[30%] bg-[var(--corPrincipal)] text-white shadow-md hover:bg-[var(--corPrincipalHover)]/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    <FiMinus size={15} />
+  </button>
+</div>
+        
         </FormGroup>
 
         <FormGroup label="Categoria" id="categoria">

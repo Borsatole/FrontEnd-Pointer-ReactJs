@@ -4,7 +4,6 @@ import { useMenu } from "../../context/MenuContext";
 
 import { HiOutlineChevronDown, HiOutlineChevronUp } from "react-icons/hi";
 
-
 interface OpcaoMenuProps {
   nome: string;
   svg?: React.ReactNode;
@@ -22,12 +21,16 @@ export function OpcaoMenu({ nome, svg, rota }: OpcaoMenuProps) {
 
   return (
     <Link
-      className="flex items-center px-4 py-2 mt-5 rounded-lg hvPrincipal cursor-pointer"
+      className="group flex items-center px-4 py-3  hover:bg-[var(--corPrincipal)]/10 
+                 hover:text-[var(--corPrincipal)] transition-all duration-200 cursor-pointer 
+                 border-l-4 border-transparent hover:border-[var(--corPrincipal)] rounded-r-lg"
       onClick={fecharMenu}
       to={rota || "#"}
     >
-      {svg || ""}
-      <span className="mx-4 font-medium">{nome || ""}</span>
+      <div className="w-6 h-6 flex items-center justify-center group-hover:text-[var(--corPrincipal)] transition-colors">
+        {svg}
+      </div>
+      <span className="ml-3 font-medium text-sm">{nome}</span>
     </Link>
   );
 }
@@ -36,23 +39,35 @@ export function OpcaoMenuComSubmenu({ nome, svg, children }: OpcaoMenuComSubmenu
   const [aberto, setAberto] = useState(false);
 
   return (
-    <div>
+    <div className="mb-1">
       <button
-        className="flex items-center justify-between w-full px-4 py-2  rounded-lg hvPrincipal cursor-pointer transition-all"
+        className="group w-full flex items-center justify-between px-4 py-3  
+                   hover:bg-[var(--corPrincipal)]/10 hover:text-[var(--corPrincipal)] 
+                   transition-all duration-200 cursor-pointer border-l-4 border-transparent 
+                   hover:border-[var(--corPrincipal)] rounded-r-lg"
         onClick={() => setAberto(!aberto)}
         type="button"
       >
         <div className="flex items-center">
-          {svg}
-          <span className="mx-3 font-medium">{nome}</span>
+          <div className="w-6 h-6 flex items-center justify-center group-hover:text-[var(--corPrincipal)] transition-colors">
+            {svg}
+          </div>
+          <span className="ml-3 font-medium text-sm">{nome}</span>
         </div>
-        <span>{aberto ? <HiOutlineChevronUp />: <HiOutlineChevronDown />}</span>
+        <div className={` group-hover:text-[var(--corPrincipal)] transition-all duration-200 ${aberto ? 'rotate-0' : 'rotate-0'}`}>
+          {aberto ? <HiOutlineChevronUp className="w-4 h-4" /> : <HiOutlineChevronDown className="w-4 h-4" />}
+        </div>
       </button>
-      {aberto && (
-        <div className="text-sm flex flex-col  rounded-lg">
-          {children}
+      
+      <div className={`overflow-hidden transition-all duration-300 ease-in-out ${
+        aberto ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+      }`}>
+        <div className="ml-6 mt-1 border-l-2 ">
+          <div className="pl-4 space-y-1">
+            {children}
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { useMenu } from "../../context/MenuContext";
 
 import { HiOutlineCube } from "react-icons/hi";
 import { HiOutlineViewGrid } from "react-icons/hi";
-
+import { HiChartBar } from "react-icons/hi";
 
 import Swal from "sweetalert2";
 import {OpcaoMenu, OpcaoMenuComSubmenu} from "../../components/MenuLateral/OpcaoMenu";
@@ -16,8 +16,7 @@ import "./MenuLateral.css";
 const MenuLateral = () => {
   const { logout } = useContext(AuthContext);
   const { menuAberto, fecharMenu } = useMenu();
-
-
+  
   const ConfirmSair = () => {
     Swal.fire({
       title: "Deseja realmente sair?",
@@ -34,34 +33,45 @@ const MenuLateral = () => {
     });
   };
 
-  
-
   return (
     <aside
-      className={`flex flex-col h-screen px-4 py-8 overflow-y-auto corPrincipalBg menu-lateral ${
+      className={`flex flex-col h-screen px-4 py-6 overflow-y-auto corPrincipalBg menu-lateral ${
         menuAberto ? "menu-aberto" : ""
       }`}
     >
       <BtnFecharMenuLateral funcao={fecharMenu} />
-      <div className="flex flex-col justify-between flex-1 mt-6">
-        <nav className="flex flex-col  pt-4 gap-3">
+      
+      {/* Logo Section */}
+      <div className="flex items-center justify-center mb-6 cursor-pointer">
+        <div className="w-full flex justify-center max-w-[100%] p-3 bg-[var(--corPrincipal)]/10 rounded-lg backdrop-blur-sm">
+          <img 
+            src={`/logo.png`}  
+            className="w-[60%] h-auto object-contain " 
+            alt="Logo" 
+          />
+        </div>
+      </div>
+
+      
+      
+      <div className="flex flex-col justify-between flex-1">
+        <nav className="flex flex-col gap-3">
           <OpcaoMenu nome="Dashboard" svg={<HiOutlineViewGrid size={25} />} rota="/" />
+          <OpcaoMenu nome="Financeiro" svg={<HiChartBar size={25} />} rota="/" />
           <OpcaoMenuComSubmenu nome="Estoque" svg={<HiOutlineCube size={25} />}>
             <OpcaoMenu nome="Produtos" rota="/estoque" />
             <OpcaoMenu nome="Categorias" rota="/estoque-categorias"  />
           </OpcaoMenuComSubmenu>
-
-         
-
-          
         </nav>
 
-        <div className="flex items-center ">
-          <hr className="my-8 border-[var(--corPrincipal)]" />
-
+        {/* Logout Section */}
+        <div className="mt-auto">
+          <hr className="my-6 border-white/30" />
           <button
             onClick={ConfirmSair}
-            className="flex items-center w-full px-4 py-2 cursor-pointer rounded-lg hvPrincipal"
+            className="w-full group flex items-center px-4 py-3  hover:bg-[var(--corPrincipal)]/10 
+                 hover:text-[var(--corPrincipal)] transition-all duration-200 cursor-pointer 
+                 border-l-4 border-transparent hover:border-[var(--corPrincipal)] rounded-r-lg"
           >
             <svg
               className="w-5 h-5"
