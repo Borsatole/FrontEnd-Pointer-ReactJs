@@ -45,6 +45,28 @@ const Rotas = () => {
         />
         <Route path="/login" element={<TelaLogin />} />
 
+        {/* rotas do financeiro */}
+        <Route
+          path="/financeiro"
+          element={
+            <ProtectedRoute>
+              <EstoqueControle />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/financeiro-categorias"
+          element={
+            <ProtectedRoute>
+              <EstoqueCategorias />
+            </ProtectedRoute>
+          }
+        />
+
+
+
+        {/* rotas de estoque */}
         <Route
           path="/estoque"
           element={

@@ -21,13 +21,13 @@ export function OpcaoMenu({ nome, svg, rota }: OpcaoMenuProps) {
 
   return (
     <Link
-      className="group flex items-center px-4 py-3  hover:bg-[var(--corPrincipal)]/10 
+      className="group flex items-center px-4 py-3 hover:bg-[var(--corPrincipal)]/10 
                  hover:text-[var(--corPrincipal)] transition-all duration-200 cursor-pointer 
                  border-l-4 border-transparent hover:border-[var(--corPrincipal)] rounded-r-lg"
       onClick={fecharMenu}
       to={rota || "#"}
     >
-      <div className="w-6 h-6 flex items-center justify-center group-hover:text-[var(--corPrincipal)] transition-colors">
+      <div className=" flex items-center justify-center group-hover:text-[var(--corPrincipal)] transition-colors">
         {svg}
       </div>
       <span className="ml-3 font-medium text-sm">{nome}</span>
@@ -63,7 +63,7 @@ export function OpcaoMenuComSubmenu({ nome, svg, children }: OpcaoMenuComSubmenu
         aberto ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
       }`}>
         <div className="ml-6 mt-1 border-l-2 ">
-          <div className="pl-4 space-y-1">
+          <div className=" space-y-1">
             {children}
           </div>
         </div>

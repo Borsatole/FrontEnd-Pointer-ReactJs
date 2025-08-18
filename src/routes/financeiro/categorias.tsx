@@ -1,7 +1,3 @@
-import {useEffect, useState } from "react";
-
-
-
 import BarraSuperior from "@components/barraSuperior";
 import MenuLateral from "@components/MenuLateral/MenuLateral";
 import Container from "@components/comum/container";
