@@ -33,7 +33,7 @@ function TabelaContasFixas({}) {
 
   const [pagina, setPagina] = useState(1);
   const [relistar, setRelistar] = useState(false);
-  const [limitePorPagina, setLimitePorPagina] = useState(20);
+  const [limitePorPagina, setLimitePorPagina] = useState(7);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [totalResultados, setTotalResultados] = useState(0);
 
@@ -206,35 +206,38 @@ function TabelaContasFixas({}) {
 
       {/* Paginação */}
       <div className="flex flex-wrap justify-center items-center gap-2 mt-6">
-        <button
-          className="px-3 py-2 rounded-md bg-[var(--corPrincipal)] text-[var(--text-white)] disabled:opacity-50"
+
+        <Button
           onClick={() => setPagina(1)}
-          disabled={pagina <= 1}
-        >
-          Primeira
-        </button>
+          disabled={pagina <= 1}>Primeira</Button>
+        
 
         {gerarPaginas(pagina, totalPaginas).map((num) => (
-          <button
+          <Button
             key={num}
+            onClick={() => setPagina(num)}
             className={`px-3 py-2 rounded-md border text-sm ${
               num === pagina
                 ? "bg-[var(--corPrincipal)] text-white font-semibold"
                 : "bg-[var(--corPrincipal)] text-[var(--text-white)] opacity-40"
             }`}
-            onClick={() => setPagina(num)}
-          >
-            {num}
-          </button>
+            >{num}</Button>
         ))}
 
-        <button
+        <Button
+          onClick={() => setPagina(totalPaginas)}
+          disabled={pagina >= totalPaginas}
+        >
+          Última
+        </Button>
+
+        {/* <button
           className="px-3 py-2 rounded-md bg-[var(--corPrincipal)] text-[var(--text-white)] disabled:opacity-50"
           onClick={() => setPagina(totalPaginas)}
           disabled={pagina >= totalPaginas}
         >
           Última
-        </button>
+        </button> */}
       </div>
 
       {selectedProduto !== null && (

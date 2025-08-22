@@ -12,15 +12,23 @@ export function Button({
   onClick,
   loading,
   className,
+  disabled,
   ...rest
 }: ButtonProps) {
+  // ✅ Calcular o estado final de disabled
+  const isDisabled = loading || disabled;
+
   return (
     <button
       {...rest}
       type={type}
-      disabled={loading || false}
+      disabled={isDisabled} // ✅ Usar a variável calculada
       onClick={onClick || (() => {})}
-      className={`${className || ""} text-white px-4 min-h-10 py-2 mt-2 text-sm font-medium rounded-md cursor-pointer  bg-[var(--corPrincipal)] hover:bg-[var(--corPrincipalHover)]  transition-all`}
+      className={`${className || ""} text-white px-4 min-h-10 py-2 mt-2 text-sm font-medium rounded-md cursor-pointer transition-all ${
+        isDisabled 
+          ? "opacity-50 cursor-not-allowed bg-[var(--corPrincipal)]"
+          : "bg-[var(--corPrincipal)] hover:bg-[var(--corPrincipalHover)]"
+      }`}
     >
       {loading ? (
         <div className="flex items-center justify-center max-h-6 scale-65">
