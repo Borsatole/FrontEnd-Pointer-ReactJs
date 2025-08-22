@@ -99,6 +99,9 @@ function TabelaCategorias() {
           
           <LoadingSpiner loading={loadingSpiner}>
         <div className="w-full overflow-x-auto h-[70vh]">
+
+          
+          
         <ThemeProvider theme={customTheme}>
           <Table className="w-full text-center divide-y divide-[var(--base-color)] mt-3  rounded-lg">
             <TableHead>

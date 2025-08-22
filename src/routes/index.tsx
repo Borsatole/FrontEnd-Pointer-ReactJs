@@ -4,14 +4,16 @@ import { ProtectedRoute } from "./ProtectedRoute";
 import Loading from "../components/loader/Loading";
 
 function TelaLoading() {
-
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="flex flex-col items-center space-y-4">
         <Loading color="var(--text-color)" />
-        <span className="text-gray-600 text-sm animate-pulse" style={{
-          color: "var(--text-color)"
-        }}>Carregando...</span>
+        <span
+          className="text-gray-600 text-sm animate-pulse"
+          style={{ color: "var(--text-color)" }}
+        >
+          Carregando...
+        </span>
       </div>
     </div>
   );
@@ -19,76 +21,45 @@ function TelaLoading() {
 
 const TelaLogin = lazy(() => import("./telaLogin"));
 
-
-// importando as rotas de estoque
+//estoque
 const EstoqueControle = lazy(() => import("./estoque/controle-estoque"));
 const EstoqueCategorias = lazy(() => import("./estoque/categorias"));
 
+//financeiro
+const Financeiro = lazy(() => import("./financeiro/financeiro"));
+const ContasFixas = lazy(() => import("./financeiro/contas-fixas/contas-fixas"));
+const FinanceiroCategorias = lazy(() => import("./financeiro/financeiro-categorias"));
+
+
+const routes = [
+  { path: "/", element: <EstoqueControle />, protected: true },
+
+  // login não é protegido
+  { path: "/login", element: <TelaLogin />, protected: false },
+
+  // rotas do financeiro
+  { path: "/financeiro", element: <Financeiro />, protected: true },
+  { path: "/financeiro-contas-a-pagar", element: <Financeiro />, protected: true },
+  { path: "/financeiro-contas-a-receber", element: <Financeiro />, protected: true },
+  { path: "/financeiro-contas-fixas", element: <ContasFixas />, protected: true },
+  { path: "/financeiro-categorias", element: <FinanceiroCategorias />, protected: true },
+
+  // rotas de estoque
+  { path: "/estoque", element: <EstoqueControle />, protected: true },
+  { path: "/estoque-categorias", element: <EstoqueCategorias />, protected: true },
+];
+
 const Rotas = () => {
   return (
-    <Suspense
-      fallback={
-        <TelaLoading />
-      }
-      
-    >
-      
+    <Suspense fallback={<TelaLoading />}>
       <Routes>
-
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <EstoqueControle />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/login" element={<TelaLogin />} />
-
-        {/* rotas do financeiro */}
-        <Route
-          path="/financeiro"
-          element={
-            <ProtectedRoute>
-              <EstoqueControle />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
-          path="/financeiro-categorias"
-          element={
-            <ProtectedRoute>
-              <EstoqueCategorias />
-            </ProtectedRoute>
-          }
-        />
-
-
-
-        {/* rotas de estoque */}
-        <Route
-          path="/estoque"
-          element={
-            <ProtectedRoute>
-              <EstoqueControle />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/estoque-categorias"
-          element={
-            <ProtectedRoute>
-              <EstoqueCategorias />
-            </ProtectedRoute>
-          }
-        />
-
-        
-
-        
-
-        
+        {routes.map(({ path, element, protected: isProtected }, index) => (
+          <Route
+            key={index}
+            path={path}
+            element={isProtected ? <ProtectedRoute>{element}</ProtectedRoute> : element}
+          />
+        ))}
       </Routes>
     </Suspense>
   );

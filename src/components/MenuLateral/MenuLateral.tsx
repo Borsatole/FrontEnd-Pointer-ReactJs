@@ -66,10 +66,11 @@ const MenuLateral = () => {
 
 
           <OpcaoMenuComSubmenu nome="Financeiro" svg={<HiChartBar size={25} />}>
-            <OpcaoMenu nome="Indicadores" rota="/"/>
-            <OpcaoMenu nome="Contas a pagar" rota="/"/>
-            <OpcaoMenu nome="Contas a receber" rota="/"/>
-            <OpcaoMenu nome="Categorias" rota="/"/>
+            <OpcaoMenu nome="Indicadores" rota="/financeiro"/>
+            <OpcaoMenu nome="Contas a pagar" rota="/financeiro-contas-a-pagar"/>
+            <OpcaoMenu nome="Contas a receber" rota="/financeiro-contas-a-receber"/>
+            <OpcaoMenu nome="Contas Fixas" rota="/financeiro-contas-fixas"/>
+            <OpcaoMenu nome="Categorias" rota="/financeiro-categorias"/>
           </OpcaoMenuComSubmenu>
 
 
@@ -87,7 +88,7 @@ const MenuLateral = () => {
           <hr className="my-6 border-white/30" />
           <button
             onClick={ConfirmSair}
-            className="w-full group flex items-center px-4 py-3  hover:bg-[var(--corPrincipal)]/10 
+            className="w-full group flex items-center px-4 py-3  hover:bg-[var(--corPrincipalHover)]
                  hover:text-[var(--corPrincipal)] transition-all duration-200 cursor-pointer 
                  border-l-4 border-transparent hover:border-[var(--corPrincipal)] rounded-r-lg"
           >
