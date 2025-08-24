@@ -18,21 +18,26 @@ import Tooltip from "@components/tooltip/tooltipwrapper";
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 import { requisicaoGet } from "@services/requisicoes";
-import { ContaFixa } from "./tipos";
+import { ContaAPagar } from "./tipos";
 
 import { Button } from "@components/comum/button";
 import ModalEditarProduto from "./ModalEditarProduto";
 import ModalAdicionarRegistro from "./ModalAdicionarProduto";
+import { FiltroCadastros } from "./FiltroCadastros";
 
 
 function TabelaContasFixas({}) {
 
-  const [registros, setRegistros] = useState<ContaFixa[]>([]);
+  const [registros, setRegistros] = useState<ContaAPagar[]>([]);
 
-  const [selectedProduto, setSelectedProduto] = useState<ContaFixa | null>(null);
+  const [selectedProduto, setSelectedProduto] = useState<ContaAPagar | null>(null);
 
   const [pagina, setPagina] = useState(1);
   const [relistar, setRelistar] = useState(false);
+
+  const [queryFiltro, setQueryFiltro] = useState("");
+
+  // Parametros de paginacao
   const [limitePorPagina, setLimitePorPagina] = useState(7);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [totalResultados, setTotalResultados] = useState(0);
@@ -45,9 +50,13 @@ function TabelaContasFixas({}) {
   
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
 
+
+
+
+
   useEffect(() => {
     setLoadingSpiner(true);
-    requisicaoGet(`/Financeiro/contas-a-pagar/Contas-fixas/Read.php?pagina=${pagina}&limite=${limitePorPagina}`)
+    requisicaoGet(`/Financeiro/contas-a-pagar/Read.php?${queryFiltro}`)
       .then((response) => {
         if (response?.data.success) {
           setRegistros(response.data.Registros);
@@ -60,7 +69,7 @@ function TabelaContasFixas({}) {
 
       });
 
-  }, [pagina, limitePorPagina, relistar]);
+  }, [pagina, limitePorPagina,queryFiltro, relistar]);
 
  
 
@@ -110,14 +119,18 @@ function TabelaContasFixas({}) {
         
       </div>
 
-      {/* Numero de resultados */}
+      
+
+          <FiltroCadastros onFiltrar={setQueryFiltro} />
+
       <div className="flex justify-between items-center mt-3">
-        <span className="text-lg font-bold text-[var(--text-color)]">
+        <span className="text-lg font-semibold text-[var(--text-color)]">
           ({totalResultados}) resultados encontrados
         </span>
       </div>
 
       <LoadingSpiner loading={loadingSpiner}>
+
         <div className="w-full overflow-x-auto ">
         <ThemeProvider theme={customTheme}>
           <Table className="w-full text-center divide-y divide-[var(--base-color)] mt-3  rounded-lg">
@@ -125,8 +138,10 @@ function TabelaContasFixas({}) {
               <TableRow>
                 <TableHeadCell>ICONE</TableHeadCell>
                 <TableHeadCell>NOME</TableHeadCell>
-                <TableHeadCell>RECORRENCIA</TableHeadCell>
+                <TableHeadCell>CATEGORIA</TableHeadCell>
+                <TableHeadCell>DATA VENCIMENTO</TableHeadCell>
                 <TableHeadCell>VALOR</TableHeadCell>
+                <TableHeadCell>STATUS</TableHeadCell>
                 <TableHeadCell>EDITAR</TableHeadCell>
               </TableRow>
             </TableHead>
@@ -155,15 +170,25 @@ function TabelaContasFixas({}) {
             <TableCell className="whitespace-nowrap font-medium">{PrimeraLetraMaiuscula(Registro.nome)}</TableCell>
             
             <TableCell className="whitespace-nowrap font-medium">
-
-              <div className="flex uppercase text-[var(--corPrincipal)] font-normal  items-center 
-              justify-center gap-2 border-1 border-[var(--corPrincipal)] rounded-lg">
-                {`A cada ${Registro.recorrencia} 
-                ${Registro.recorrencia === 1 ? "mes" : "meses"}`
-                }
-                </div>
+              {PrimeraLetraMaiuscula(Registro.categoria ?? "")}
             </TableCell>
-            <TableCell className="whitespace-nowrap font-medium"> {Number(Registro.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</TableCell>
+
+            <TableCell className="whitespace-nowrap font-medium">
+              {Registro.data_vencimento}
+            </TableCell>
+
+            <TableCell className="whitespace-nowrap font-medium"> 
+              {Number(Registro.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+              </TableCell>
+
+              
+
+            <TableCell className="whitespace-nowrap font-medium">
+              {Registro.data_pagamento 
+                ? "Pago" 
+                : "Pendente"}
+            </TableCell>
+
             
 
             <TableCell className="font-medium">
@@ -231,13 +256,6 @@ function TabelaContasFixas({}) {
           Última
         </Button>
 
-        {/* <button
-          className="px-3 py-2 rounded-md bg-[var(--corPrincipal)] text-[var(--text-white)] disabled:opacity-50"
-          onClick={() => setPagina(totalPaginas)}
-          disabled={pagina >= totalPaginas}
-        >
-          Última
-        </button> */}
       </div>
 
       {selectedProduto !== null && (

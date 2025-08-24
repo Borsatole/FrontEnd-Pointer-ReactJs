@@ -1,5 +1,5 @@
 import { requisicaoDelete,requisicaoPost, requisicaoPut } from "@services/requisicoes";
-import { ContaFixa } from "./tipos";
+import { ContaAPagar } from "./tipos";
 import Swal from 'sweetalert2'
 import Alerta from "@components/comum/alertas";
 
@@ -24,7 +24,7 @@ export function gerarPaginas(paginaAtual: number, total: number, max = 5): numbe
 }
  
 interface Deletar {
-  Registro: ContaFixa
+  Registro: ContaAPagar
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>
 }  
 export function handleDeletar({ Registro, setRelistar }: Deletar) {
@@ -40,7 +40,7 @@ export function handleDeletar({ Registro, setRelistar }: Deletar) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Chama a API para deletar
-      requisicaoDelete(`/Financeiro/Contas-a-pagar/Contas-fixas/Delete.php?id=${Registro.id}`)
+      requisicaoDelete(`/Financeiro/Contas-a-pagar/Delete.php?id=${Registro.id}`)
         .then((response) => {
           if (response?.data.success) {
             // Atualiza a listagem após sucesso
@@ -74,12 +74,12 @@ export function handleDeletar({ Registro, setRelistar }: Deletar) {
 }
 
 interface EditarProduto {
-  data: ContaFixa;
+  data: ContaAPagar;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<ContaFixa | null>>
+  setSelectedProduto: React.Dispatch<React.SetStateAction<ContaAPagar | null>>
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>
-  registros: ContaFixa[]
-  setRegistros: React.Dispatch<React.SetStateAction<ContaFixa[]>>
+  registros: ContaAPagar[]
+  setRegistros: React.Dispatch<React.SetStateAction<ContaAPagar[]>>
 }
 
 export async function editarProduto({
@@ -93,7 +93,7 @@ export async function editarProduto({
 }: EditarProduto) {
   setLoadingSpiner(true);
   try {
-    const response = await requisicaoPut(`/Financeiro/contas-a-pagar/Contas-fixas/Update.php`, data);
+    const response = await requisicaoPut(`/Financeiro/contas-a-pagar/Update.php`, data);
 
     
     const msg = response?.data?.message ?? 'Erro ao editar a requisição!';
@@ -119,9 +119,9 @@ export async function editarProduto({
 
 
 interface NovoProduto {
-  data: ContaFixa;
-  registros: ContaFixa[];
-  setRegistros: React.Dispatch<React.SetStateAction<ContaFixa[]>>;
+  data: ContaAPagar;
+  registros: ContaAPagar[];
+  setRegistros: React.Dispatch<React.SetStateAction<ContaAPagar[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setAbrirModalNovoRegistro: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>
@@ -137,7 +137,7 @@ export function adicionarProduto({ data, registros,
 
   setLoadingSpiner(true);
 
-  requisicaoPost(`/Financeiro/Contas-a-pagar/Contas-fixas/Create.php`, data)
+  requisicaoPost(`/Financeiro/Contas-a-pagar/Create.php`, data)
   
     .then((response) => {
       const msg = response?.data?.message ?? 'Erro ao criar a requisição!';

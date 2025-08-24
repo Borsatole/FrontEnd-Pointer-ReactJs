@@ -19,6 +19,7 @@ export function Input({
   required = false,
   value,
   defaultValue,
+  className = "",
   ...rest
 }: InputProps) {
   return (
@@ -28,7 +29,17 @@ export function Input({
       ref={inputRef}
       placeholder={placeholder}
       autoComplete={autoComplete}
-      className={`bg-[var(--base-color)] w-full px-4 py-2 border border-[var(--base-variant)] rounded-md focus:outline-2 focus:-outline-offset-2 focus:outline-[var(--corPrincipal)]`}
+      className={`
+        bg-[var(--base-color)] 
+        w-full px-4 py-2 
+        border border-[var(--base-variant)] 
+        rounded-md 
+        text-[var(--text-color)] 
+        focus:outline-none 
+        focus:ring-2 focus:ring-[var(--corPrincipal)]
+        transition
+        ${className}
+      `}
       min={min}
       max={max}
       required={required}
@@ -36,10 +47,7 @@ export function Input({
         ? { value }
         : { defaultValue: defaultValue ?? "" })}
       {...rest}
-      style={{
-        color: "var(--cortexto)",
-        borderColor: "var(--base-variant)",
-      }}
     />
   );
 }
+
