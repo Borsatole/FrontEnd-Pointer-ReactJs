@@ -9,6 +9,7 @@ import { HiUserGroup } from "react-icons/hi";
 import { HiOutlineDocumentSearch } from "react-icons/hi";
 import { HiOfficeBuilding } from "react-icons/hi";
 
+import { HiLogin } from "react-icons/hi";
 
 import Swal from "sweetalert2";
 import {OpcaoMenu, OpcaoMenuComSubmenu} from "../../components/MenuLateral/OpcaoMenu";
@@ -86,27 +87,8 @@ const MenuLateral = () => {
         {/* Logout Section */}
         <div className="mt-auto">
           <hr className="my-6 border-white/30" />
-          <button
-            onClick={ConfirmSair}
-            className="w-full group flex items-center px-4 py-3  hover:bg-[var(--corPrincipalHover)]
-                 hover:text-[var(--corPrincipal)] transition-all duration-200 cursor-pointer 
-                 border-l-4 border-transparent hover:border-[var(--corPrincipal)] rounded-r-lg"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-              />
-            </svg>
-            <span className="mx-4 font-medium">Sair</span>
-          </button>
+          <OpcaoMenu nome="Sair" svg={<HiLogin size={25} />} onClick={ConfirmSair} />
+          
         </div>
       </div>
     </aside>

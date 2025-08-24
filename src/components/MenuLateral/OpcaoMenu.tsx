@@ -8,6 +8,7 @@ interface OpcaoMenuProps {
   nome: string;
   svg?: React.ReactNode;
   rota?: string;
+  onClick?: () => void;
 }
 
 interface OpcaoMenuComSubmenuProps {
@@ -16,7 +17,7 @@ interface OpcaoMenuComSubmenuProps {
   children: React.ReactNode; 
 }
 
-export function OpcaoMenu({ nome, svg, rota }: OpcaoMenuProps) {
+export function OpcaoMenu({ nome, svg, rota, ...rest }: OpcaoMenuProps) {
   const { fecharMenu } = useMenu();
 
   return (
@@ -26,6 +27,7 @@ export function OpcaoMenu({ nome, svg, rota }: OpcaoMenuProps) {
                  border-l-4 border-transparent hover:border-[var(--corPrincipal)] rounded-r-lg"
       onClick={fecharMenu}
       to={rota || "#"}
+      {...rest}
     >
       <div className=" flex items-center justify-center group-hover:text-[var(--corPrincipal)] transition-colors">
         {svg}
