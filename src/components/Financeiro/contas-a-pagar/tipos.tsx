@@ -1,15 +1,13 @@
 export interface ContaAPagar {
-  id?: number;
+  id: number;
   nome: string;
+  categoria: string;
   descricao: string;
   valor: number;
-  data_pagamento: number;
-  data_vencimento: number;
-  data_fim?: string;
-  categoria?: string;
-  created_at?: string;
-  updated_at?: string;
+  data_pagamento: string;
+  data_vencimento: string;  
 }
+
 
 export interface Categoria {
   id?: number;

@@ -19,7 +19,7 @@ import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 import { requisicaoGet } from "@services/requisicoes";
 import { ContaAPagar } from "./tipos";
-
+import { Datas, Valores } from "@src/services/funcoes-globais";
 import { Button } from "@components/comum/button";
 import ModalEditarProduto from "./ModalEditarProduto";
 import ModalAdicionarRegistro from "./ModalAdicionarProduto";
@@ -27,7 +27,8 @@ import { FiltroCadastros } from "./FiltroCadastros";
 
 
 function TabelaContasFixas({}) {
-
+  const { dataFormatada } = Datas();
+  const { dinheiro } = Valores();
   const [registros, setRegistros] = useState<ContaAPagar[]>([]);
 
   const [selectedProduto, setSelectedProduto] = useState<ContaAPagar | null>(null);
@@ -58,6 +59,7 @@ function TabelaContasFixas({}) {
     setLoadingSpiner(true);
     requisicaoGet(`/Financeiro/contas-a-pagar/Read.php?${queryFiltro}`)
       .then((response) => {
+        console.log(response);
         if (response?.data.success) {
           setRegistros(response.data.Registros);
           setTotalResultados(response.data.total_registros);
@@ -148,7 +150,7 @@ function TabelaContasFixas({}) {
             <TableBody className="divide-y divide-[var(--base-color)]">
                 {registros.length === 0 ? (
                   <TableRow className="">
-                    <TableCell colSpan={5} className="text-center">
+                    <TableCell colSpan={10} className="text-center">
                       Nenhum cadastro encontrado
                     </TableCell>
                   </TableRow>
@@ -162,32 +164,37 @@ function TabelaContasFixas({}) {
         removendoIds.includes(Registro.id ?? -1) ? "efeito-excluir" : ""
       }`}
     >
-            <TableCell className="whitespace-nowrap text-center flex items-center justify-center " >
+            <TableCell className="whitespace-nowrap text-center flex items-center justify-center">
               <div className="bg-[var(--base-color)] rounded-full">
                 <MdAttachMoney className="w-12 h-12 p-3" color="var(--corPrincipal)"/>
               </div>
             </TableCell>
-            <TableCell className="whitespace-nowrap font-medium">{PrimeraLetraMaiuscula(Registro.nome)}</TableCell>
+            
+            <TableCell className="whitespace-nowrap font-medium">
+              {PrimeraLetraMaiuscula(Registro.nome)}
+            </TableCell>
             
             <TableCell className="whitespace-nowrap font-medium">
               {PrimeraLetraMaiuscula(Registro.categoria ?? "")}
             </TableCell>
 
             <TableCell className="whitespace-nowrap font-medium">
-              {Registro.data_vencimento}
+              {dataFormatada(Registro.data_vencimento)}
             </TableCell>
-
-            <TableCell className="whitespace-nowrap font-medium"> 
-              {Number(Registro.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-              </TableCell>
-
-              
 
             <TableCell className="whitespace-nowrap font-medium">
-              {Registro.data_pagamento 
-                ? "Pago" 
-                : "Pendente"}
+              {dinheiro(Registro.valor)}
             </TableCell>
+
+            <TableCell className="whitespace-nowrap font-medium">
+            <span
+              className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-white text-xs font-semibold ${
+                Registro.data_pagamento ? "bg-green-500" : "bg-red-500"
+              }`}
+            >
+              {Registro.data_pagamento ? "Pago" : "Pendente"}
+            </span>
+          </TableCell>
 
             
 

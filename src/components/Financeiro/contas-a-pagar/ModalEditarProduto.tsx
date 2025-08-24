@@ -4,14 +4,14 @@ import Modal from "@components/modal/Modal";
 import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { ContaFixa } from "./Tipos";
+import { ContaAPagar } from "./tipos";
 import { editarProduto } from "./Functions";
 
 interface ModalEditarProdutoProps {
-  selectedProduto: ContaFixa | null;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<ContaFixa | null>>;
-  registros: ContaFixa[];
-  setRegistros: React.Dispatch<React.SetStateAction<ContaFixa[]>>;
+  selectedProduto: ContaAPagar | null;
+  setSelectedProduto: React.Dispatch<React.SetStateAction<ContaAPagar | null>>;
+  registros: ContaAPagar[];
+  setRegistros: React.Dispatch<React.SetStateAction<ContaAPagar[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -27,44 +27,49 @@ function ModalEditarProduto({
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(false);
 
-  // Refs para os campos do formulário
+  // refs de todos os campos
   const refs = {
     nome: useRef<HTMLInputElement>(null),
+    categoria: useRef<HTMLInputElement>(null),
     descricao: useRef<HTMLInputElement>(null),
     valor: useRef<HTMLInputElement>(null),
-    recorrencia: useRef<HTMLInputElement>(null),
-    dia_vencimento: useRef<HTMLInputElement>(null),
+    data_pagamento: useRef<HTMLInputElement>(null),
+    data_vencimento: useRef<HTMLInputElement>(null),
     data_fim: useRef<HTMLInputElement>(null),
   };
 
   const registro = registros.find((p) => p.id === selectedProduto?.id);
 
-  // Popula os campos com os dados do produto
+  // função auxiliar para setar valor em inputs
+  const setValue = (ref: React.RefObject<HTMLInputElement>, value: string) => {
+    if (ref.current) ref.current.value = value;
+  };
+
+  // preenche os campos com os dados existentes
   const preencherCampos = () => {
     if (!registro || isLoadingInit) return;
 
-    const setValue = (ref: React.RefObject<HTMLInputElement>, value: string) => {
-      if (ref.current) ref.current.value = value;
-    };
-
     setValue(refs.nome, registro.nome || "");
+    setValue(refs.categoria, registro.categoria || "");
     setValue(refs.descricao, registro.descricao || "");
-    setValue(refs.valor, Number(registro.valor || 0).toFixed(2));
-    setValue(refs.recorrencia, String(registro.recorrencia || 0));
-    setValue(refs.dia_vencimento, String(registro.dia_vencimento || 1));
-    setValue(refs.data_fim, registro.data_fim || "");
+    setValue(refs.valor, registro.valor?.toString() || "");
+    setValue(refs.data_pagamento, registro.data_pagamento || "");
+    setValue(refs.data_vencimento, registro.data_vencimento || "");
+
+    setIsLoadingInit(false);
   };
 
   useEffect(preencherCampos, [registro, isLoadingInit]);
 
-  const coletarDadosFormulario = (): ContaFixa => ({
+  // coleta os dados do formulário e transforma nos tipos corretos
+  const coletarDadosFormulario = (): ContaAPagar => ({
     id: selectedProduto!.id,
     nome: refs.nome.current?.value || "",
+    categoria: refs.categoria.current?.value || "",
     descricao: refs.descricao.current?.value || "",
     valor: Number(refs.valor.current?.value) || 0,
-    recorrencia: Number(refs.recorrencia.current?.value) || 0,
-    dia_vencimento: Number(refs.dia_vencimento.current?.value) || 0,
-    data_fim: refs.data_fim.current?.value || "",
+    data_pagamento: refs.data_pagamento.current?.value || "",
+    data_vencimento: refs.data_vencimento.current?.value || "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -74,6 +79,7 @@ function ModalEditarProduto({
     setIsLoading(true);
     try {
       const data = coletarDadosFormulario();
+      console.log(data);
       await editarProduto({
         data,
         registros,
@@ -90,7 +96,7 @@ function ModalEditarProduto({
 
   const fecharModal = () => setSelectedProduto(null);
 
-  // Early returns para casos especiais
+  // não renderiza se não houver produto
   if (!selectedProduto) return null;
 
   if (isLoadingInit) {
@@ -106,94 +112,41 @@ function ModalEditarProduto({
   return (
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-auto">
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Campo Código - Desabilitado */}
+        {/* Código */}
         <FormGroup label="Código" id="codigo">
-          <Input 
-            id="codigo" 
-            type="text" 
-            defaultValue={registro?.id} 
-            disabled 
+          <Input
+            id="codigo"
+            type="text"
+            defaultValue={registro?.id?.toString() || ""}
+            disabled
           />
         </FormGroup>
 
-        {/* Campo Nome */}
         <FormGroup label="Nome do Produto" id="nome">
-          <Input
-            id="nome"
-            type="text"
-            inputRef={refs.nome}
-            required
-            disabled={isLoading}
-          />
+          <Input id="nome" type="text" inputRef={refs.nome} required disabled={isLoading} />
         </FormGroup>
 
-        {/* Campo Descrição */}
+        <FormGroup label="Categoria" id="categoria">
+          <Input id="categoria" type="text" inputRef={refs.categoria} required disabled={isLoading} />
+        </FormGroup>
+
         <FormGroup label="Descrição" id="descricao">
-          <Input
-            id="descricao"
-            type="text"
-            inputRef={refs.descricao}
-            required
-            disabled={isLoading}
-          />
+          <Input id="descricao" type="text" inputRef={refs.descricao} required disabled={isLoading} />
         </FormGroup>
 
-        {/* Campo Valor */}
         <FormGroup label="Valor" id="valor">
-          <Input
-            id="valor"
-            type="number"
-            inputRef={refs.valor}
-            step="0.01"
-            min="0"
-            required
-            disabled={isLoading}
-          />
+          <Input id="valor" type="number" step="0.01" min="0" inputRef={refs.valor} required disabled={isLoading} />
         </FormGroup>
 
-        {/* Campo Recorrência */}
-        <FormGroup label="Recorrência" id="recorrencia">
-          <Input
-            id="recorrencia"
-            type="number"
-            inputRef={refs.recorrencia}
-            min="0"
-            required
-            disabled={isLoading}
-          />
+        <FormGroup label="Data de Pagamento" id="data_pagamento">
+          <Input id="data_pagamento" type="date" inputRef={refs.data_pagamento} disabled={isLoading} />
         </FormGroup>
 
-        {/* Campo Dia de Vencimento */}
-        <FormGroup label="Dia de Vencimento" id="dia_vencimento">
-          <Input
-            id="dia_vencimento"
-            type="number"
-            inputRef={refs.dia_vencimento}
-            min="1"
-            max="31"
-            required
-            disabled={isLoading}
-          />
+        <FormGroup label="Data de Vencimento" id="data_vencimento">
+          <Input id="data_vencimento" type="date" inputRef={refs.data_vencimento} required disabled={isLoading} />
         </FormGroup>
 
-        {/* Campo Data de Fim */}
-        <FormGroup label="Data de Fim" id="data_fim">
-          <Input
-            id="data_fim"
-            type="date"
-            inputRef={refs.data_fim}
-            required
-            disabled={isLoading}
-          />
-        </FormGroup>
-
-
-        <Button
-          type="submit"
-          loading={isLoading}
-          disabled={isLoading}
-          wsize="w-full mt-6"
-        >
+        <Button type="submit" loading={isLoading} disabled={isLoading} wsize="w-full mt-6">
           Salvar Alterações
         </Button>
       </form>
