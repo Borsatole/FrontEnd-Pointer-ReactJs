@@ -1,4 +1,7 @@
 import * as React from "react";
+import { Button } from "./button";
+import {gerarPaginas} from "@services/funcoes-globais";
+
 
 type ChildrenProps = {
   children: React.ReactNode;
@@ -128,4 +131,87 @@ export function ButtonDelete({ onClick }: ButtonProps) {
 
 type ButtonDeleteProps = {
   onClick: () => void;
+}
+
+
+interface MostrarNumeroDeResultadosProps {
+  totalResultados: number
+}
+export function MostrarNumeroDeResultados({totalResultados}:MostrarNumeroDeResultadosProps) {
+  return (
+    <>
+    <div className="flex justify-between items-center mt-3">
+        <span className="text-lg font-semibold text-[var(--text-color)]">
+          ({totalResultados}) resultados encontrados
+        </span>
+      </div>
+    </>
+  );
+}
+
+
+interface RodapeProps {
+  pagina: number,
+  limitePorPagina: number,
+  registros: any[],
+  totalResultados: number
+  totalPaginas: number
+  setPagina: React.Dispatch<React.SetStateAction<number>>
+  setLimitePorPagina: React.Dispatch<React.SetStateAction<number>>
+}
+export function Rodape({
+  pagina,
+  limitePorPagina,
+  registros,
+  totalResultados,
+  totalPaginas,
+  setPagina,
+  setLimitePorPagina
+}:RodapeProps) {
+  return (
+    <>
+      <div className="flex w-full flex-wrap justify-end items-center gap-6 mt-6">
+          {((pagina - 1) * limitePorPagina) + registros.length} de {totalResultados}
+
+        <select
+          value={limitePorPagina}
+          onChange={(e) => setLimitePorPagina(Number(e.target.value))}
+          className=" text-sm p-2 border border-[var(--base-variant)] bg-[var(--base-variant)]  text-[var(--text-color)]"
+        >
+          <option value="7">7</option>
+          <option value="10">10</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+      </div>
+
+      <div className="flex flex-wrap justify-center items-center gap-2 mt-6">
+      
+              <Button
+                onClick={() => setPagina(1)}
+                disabled={pagina <= 1}>Primeira</Button>
+              
+      
+              {gerarPaginas(pagina, totalPaginas).map((num) => (
+                <Button
+                  key={num}
+                  onClick={() => setPagina(num)}
+                  className={`px-3 py-2 rounded-md border text-sm ${
+                    num === pagina
+                      ? "bg-[var(--corPrincipal)] text-white font-semibold"
+                      : "bg-[var(--corPrincipal)] text-[var(--text-white)] opacity-40"
+                  }`}
+                  >{num}</Button>
+              ))}
+      
+              <Button
+                onClick={() => setPagina(totalPaginas)}
+                disabled={pagina >= totalPaginas}
+              >
+                Última
+              </Button>
+      
+        </div>
+    </>
+  );
 }
