@@ -1,20 +1,35 @@
-import { useState, useEffect, useRef } from "react";
-import { Spinner } from "flowbite-react";
+import { useState, useRef } from "react";
 import Modal from "@components/modal/Modal";
 import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { ContaFixa } from "./Tipos";
+import { NovaContaAPagar, ContaAPagar } from "./tipos";
 import { adicionarProduto } from "./Functions";
+import { SelectModificado } from "@src/components/comum/select";
 
 interface ModalAdicionarContaProps {
   AbrirModalNovoRegistro: boolean;
   setAbrirModalNovoRegistro: React.Dispatch<React.SetStateAction<boolean>>;
-  registros: ContaFixa[];
-  setRegistros: React.Dispatch<React.SetStateAction<ContaFixa[]>>;
+  registros: ContaAPagar[];
+  setRegistros: React.Dispatch<React.SetStateAction<ContaAPagar[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+type CampoComRef = "nome" | "categoria" | "descricao" | "valor" | "data_vencimento";
+
+interface CampoConfig {
+  key: CampoComRef;
+  type: "string" | "number";
+}
+
+const CAMPOS_CONFIG: CampoConfig[] = [
+  { key: "nome", type: "string" },
+  { key: "categoria", type: "string" },
+  { key: "descricao", type: "string" },
+  { key: "valor", type: "number" },
+  { key: "data_vencimento", type: "string" },
+];
 
 function ModalAdicionarRegistro({
   AbrirModalNovoRegistro,
@@ -24,31 +39,31 @@ function ModalAdicionarRegistro({
   setLoadingSpiner,
   setRelistar,
 }: ModalAdicionarContaProps) {
-  
   const [isLoading, setIsLoading] = useState(false);
 
   const refs = {
     nome: useRef<HTMLInputElement>(null),
+    categoria: useRef<HTMLSelectElement>(null),
     descricao: useRef<HTMLInputElement>(null),
     valor: useRef<HTMLInputElement>(null),
-    recorrencia: useRef<HTMLInputElement>(null),
-    dia_vencimento: useRef<HTMLInputElement>(null),
-    data_fim: useRef<HTMLInputElement>(null),
+    data_pagamento: useRef<HTMLInputElement>(null),
+    data_vencimento: useRef<HTMLInputElement>(null),
   };
+
+
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const data: Omit<ContaFixa, "id"> = {
+    
+    const data: NovaContaAPagar = {
       nome: refs.nome.current?.value || "",
+      categoria: refs.categoria.current?.value || "",
       descricao: refs.descricao.current?.value || "",
       valor: Number(refs.valor.current?.value) || 0,
-      recorrencia: Number(refs.recorrencia.current?.value) || 0,
-      dia_vencimento: Number(refs.dia_vencimento.current?.value) || 1,
-      data_fim: refs.data_fim.current?.value || "",
-      categoria: "Conta Fixa",
+      data_vencimento: refs.data_vencimento.current?.value || "",
     };
-
+    
     if (!data.nome || !data.valor) return;
 
     setIsLoading(true);
@@ -70,33 +85,40 @@ function ModalAdicionarRegistro({
 
   return (
     <Modal IsOpen={true} onClose={() => setAbrirModalNovoRegistro(false)} className="min-h-auto">
+
       <form onSubmit={handleSubmit} className="space-y-4">
-        <FormGroup label="Nome da Conta" id="nome">
-          <Input inputRef={refs.nome} id="nome" type="text" required disabled={isLoading} />
+        <FormGroup label="Nome do Produto" id="nome">
+          <Input id="nome" type="text" inputRef={refs.nome} 
+          required 
+          disabled={isLoading} />
+        </FormGroup>
+
+        <FormGroup label="Categoria" id="categoria">
+          <SelectModificado
+            id="categoria"
+            ref={refs.categoria}
+            required
+            disabled={isLoading}
+          >
+            <option value="Conta Fixa">Conta Fixa</option>
+          </SelectModificado>
         </FormGroup>
 
         <FormGroup label="Descrição" id="descricao">
-          <Input inputRef={refs.descricao} id="descricao" type="text" disabled={isLoading} />
+          <Input id="descricao" type="text" inputRef={refs.descricao} required disabled={isLoading} />
         </FormGroup>
 
         <FormGroup label="Valor" id="valor">
-          <Input inputRef={refs.valor} id="valor" type="number" step="0.01" min="0" required disabled={isLoading} />
+          <Input id="valor" type="number" step="0.01" min="0" inputRef={refs.valor} 
+          required disabled={isLoading} />
         </FormGroup>
 
-        <FormGroup label="Recorrência (meses)" id="recorrencia">
-          <Input inputRef={refs.recorrencia} id="recorrencia" type="number" min="0" required disabled={isLoading} />
+        <FormGroup label="Data de Vencimento" id="data_vencimento">
+          <Input id="data_vencimento" type="date" inputRef={refs.data_vencimento} required disabled={isLoading} />
         </FormGroup>
 
-        <FormGroup label="Dia de Vencimento" id="dia_vencimento">
-          <Input inputRef={refs.dia_vencimento} id="dia_vencimento" type="number" min="1" max="31" required disabled={isLoading} />
-        </FormGroup>
-
-        <FormGroup label="Data Final (opcional)" id="data_fim">
-          <Input inputRef={refs.data_fim} id="data_fim" type="date" disabled={isLoading} />
-        </FormGroup>
-
-        <Button loading={isLoading} wsize="w-full mt-4" type="submit" disabled={isLoading}>
-          Adicionar Conta Fixa
+        <Button type="submit" loading={isLoading} disabled={isLoading} wsize="w-full mt-6">
+          Salvar Alterações
         </Button>
       </form>
     </Modal>

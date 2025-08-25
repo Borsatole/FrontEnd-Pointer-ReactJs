@@ -4,7 +4,7 @@ import Modal from "@components/modal/Modal";
 import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { ContaFixa } from "./Tipos";
+import { ContaFixa } from "./tipos";
 import { editarProduto } from "./Functions";
 
 interface ModalEditarProdutoProps {

@@ -1,5 +1,5 @@
 import { requisicaoDelete,requisicaoPost, requisicaoPut } from "@services/requisicoes";
-import { ContaAPagar } from "./tipos";
+import { ContaAPagar, NovaContaAPagar} from "./tipos";
 import Swal from 'sweetalert2'
 import Alerta from "@components/comum/alertas";
 
@@ -119,7 +119,7 @@ export async function editarProduto({
 
 
 interface NovoProduto {
-  data: ContaAPagar;
+  data: NovaContaAPagar;
   registros: ContaAPagar[];
   setRegistros: React.Dispatch<React.SetStateAction<ContaAPagar[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;

@@ -4,8 +4,18 @@ export interface ContaAPagar {
   categoria: string;
   descricao: string;
   valor: number;
-  data_pagamento: string;
-  data_vencimento: string;  
+  data_pagamento?: string;
+  data_vencimento?: string;
+}
+
+export interface NovaContaAPagar {
+  id?: number;
+  nome: string;
+  categoria: string;
+  descricao: string;
+  valor: number;
+  data_pagamento?: string;
+  data_vencimento: string;
 }
 
 

@@ -4,8 +4,10 @@ import Modal from "@components/modal/Modal";
 import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { ContaAPagar } from "./tipos";
+import { Categoria, ContaAPagar } from "./tipos";
 import { editarProduto } from "./Functions";
+import { SelectModificado } from "@src/components/comum/select";
+import { requisicaoGet } from "@src/services/requisicoes";
 
 interface ModalEditarProdutoProps {
   selectedProduto: ContaAPagar | null;
@@ -25,52 +27,82 @@ function ModalEditarProduto({
   setRelistar,
 }: ModalEditarProdutoProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingInit, setIsLoadingInit] = useState(false);
+  const [isLoadingInit, setIsLoadingInit] = useState(true);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   // refs de todos os campos
   const refs = {
     nome: useRef<HTMLInputElement>(null),
-    categoria: useRef<HTMLInputElement>(null),
+    categoria: useRef<HTMLSelectElement>(null),
     descricao: useRef<HTMLInputElement>(null),
     valor: useRef<HTMLInputElement>(null),
     data_pagamento: useRef<HTMLInputElement>(null),
     data_vencimento: useRef<HTMLInputElement>(null),
-    data_fim: useRef<HTMLInputElement>(null),
   };
 
   const registro = registros.find((p) => p.id === selectedProduto?.id);
 
-  // função auxiliar para setar valor em inputs
-  const setValue = (ref: React.RefObject<HTMLInputElement>, value: string) => {
-    if (ref.current) ref.current.value = value;
-  };
-
-  // preenche os campos com os dados existentes
+  // Preenche os campos dinamicamente
   const preencherCampos = () => {
     if (!registro || isLoadingInit) return;
 
-    setValue(refs.nome, registro.nome || "");
-    setValue(refs.categoria, registro.categoria || "");
-    setValue(refs.descricao, registro.descricao || "");
-    setValue(refs.valor, registro.valor?.toString() || "");
-    setValue(refs.data_pagamento, registro.data_pagamento || "");
-    setValue(refs.data_vencimento, registro.data_vencimento || "");
+    // Para input normal
+    if (refs.nome.current) {
+      refs.nome.current.value = registro.nome || "";
+    }
 
-    setIsLoadingInit(false);
+    // Para input normal
+    if (refs.descricao.current) {
+      refs.descricao.current.value = registro.descricao || "";
+    }
+
+    // Para input normal
+    if (refs.valor.current) {
+      refs.valor.current.value = String(registro.valor || 0);
+    }
+
+    // Para input normal
+    if (refs.data_pagamento.current) {
+      refs.data_pagamento.current.value = registro.data_pagamento || "";
+    }
+
+    // Para input normal
+    if (refs.data_vencimento.current) {
+      refs.data_vencimento.current.value = registro.data_vencimento || "";
+    }
+
+    // Para select - usando value diretamente
+    if (refs.categoria.current) {
+      refs.categoria.current.value = registro.categoria || "";
+    }
   };
 
   useEffect(preencherCampos, [registro, isLoadingInit]);
 
-  // coleta os dados do formulário e transforma nos tipos corretos
+  useEffect(() => {
+    requisicaoGet(`/Financeiro/categorias/Read.php?setor=contas_a_pagar`)
+      .then((response) => {
+        console.log(response);
+        if (response?.data.success) {
+          setCategorias(response.data.Registros);
+        }
+        setIsLoadingInit(false);
+      });
+
+  }, []);
+
+
+
+  // Coleta dados do formulário dinamicamente
   const coletarDadosFormulario = (): ContaAPagar => ({
-    id: selectedProduto!.id,
-    nome: refs.nome.current?.value || "",
-    categoria: refs.categoria.current?.value || "",
-    descricao: refs.descricao.current?.value || "",
-    valor: Number(refs.valor.current?.value) || 0,
-    data_pagamento: refs.data_pagamento.current?.value || "",
-    data_vencimento: refs.data_vencimento.current?.value || "",
-  });
+      id: selectedProduto!.id,
+      nome: refs.nome.current?.value || "",
+      categoria: refs.categoria.current?.value || "",
+      descricao: refs.valor.current?.value || "",
+      valor: Number(refs.valor.current?.value) || 0,
+      data_pagamento: refs.data_pagamento.current?.value || "",
+      data_vencimento: refs.data_vencimento.current?.value || "",
+    });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -127,7 +159,20 @@ function ModalEditarProduto({
         </FormGroup>
 
         <FormGroup label="Categoria" id="categoria">
-          <Input id="categoria" type="text" inputRef={refs.categoria} required disabled={isLoading} />
+          <SelectModificado
+            id="categoria"
+            ref={refs.categoria}
+            required
+            disabled={isLoading}
+          >
+
+            {categorias.map((categoria) => (
+              <option key={categoria.id} value={categoria.categoria}>
+                {categoria.categoria}
+              </option>
+            ))}
+               
+          </SelectModificado>
         </FormGroup>
 
         <FormGroup label="Descrição" id="descricao">

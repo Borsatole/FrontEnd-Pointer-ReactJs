@@ -18,7 +18,7 @@ import Tooltip from "@components/tooltip/tooltipwrapper";
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 import { requisicaoGet } from "@services/requisicoes";
-import { ContaAPagar } from "./tipos";
+import { ContaAPagar, NovaContaAPagar } from "./tipos";
 import { Datas, Valores } from "@src/services/funcoes-globais";
 import { Button } from "@components/comum/button";
 import ModalEditarProduto from "./ModalEditarProduto";
@@ -51,15 +51,10 @@ function TabelaContasFixas({}) {
   
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
 
-
-
-
-
   useEffect(() => {
     setLoadingSpiner(true);
     requisicaoGet(`/Financeiro/contas-a-pagar/Read.php?${queryFiltro}`)
       .then((response) => {
-        console.log(response);
         if (response?.data.success) {
           setRegistros(response.data.Registros);
           setTotalResultados(response.data.total_registros);
@@ -179,7 +174,7 @@ function TabelaContasFixas({}) {
             </TableCell>
 
             <TableCell className="whitespace-nowrap font-medium">
-              {dataFormatada(Registro.data_vencimento)}
+              {dataFormatada(Registro.data_vencimento ?? "")}
             </TableCell>
 
             <TableCell className="whitespace-nowrap font-medium">
