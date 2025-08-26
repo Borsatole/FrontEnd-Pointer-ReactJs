@@ -5,9 +5,9 @@ import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
 import { Categoria, ContaAPagar } from "./tipos";
-import { editarProduto } from "./Functions";
 import { SelectModificado } from "@src/components/comum/select";
 import { requisicaoGet } from "@src/services/requisicoes";
+import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 
 interface ModalEditarProdutoProps {
   selectedProduto: ContaAPagar | null;
@@ -82,7 +82,6 @@ function ModalEditarProduto({
   useEffect(() => {
     requisicaoGet(`/Financeiro/categorias/Read.php?setor=contas_a_pagar`)
       .then((response) => {
-        console.log(response);
         if (response?.data.success) {
           setCategorias(response.data.Registros);
         }
@@ -112,14 +111,15 @@ function ModalEditarProduto({
     try {
       const data = coletarDadosFormulario();
       console.log(data);
-      await editarProduto({
+      await editarRegistro<ContaAPagar>({
         data,
         registros,
         setRegistros,
         setRelistar,
-        setSelectedProduto,
+        setSelected: setSelectedProduto,
         setLoadingSpiner,
-      });
+        endpoint: "/Financeiro/Contas-a-pagar/Update.php"
+      })
       setSelectedProduto(null);
     } finally {
       setIsLoading(false);

@@ -4,7 +4,7 @@ import { CgAddR } from "react-icons/cg";
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 
 import { PrimeraLetraMaiuscula } from "@services/funcoes-globais";
-import { handleDeletar } from "./Functions";
+import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
@@ -86,7 +86,7 @@ function TabelaContasFixas() {
     {
       icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
       tooltip: "Deletar", 
-      onClick: (registro) => handleDeletar({ Registro: registro, setRelistar }),
+      onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/Contas-a-pagar/Delete.php"}),
     },
   ];
 

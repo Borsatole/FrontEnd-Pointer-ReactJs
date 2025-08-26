@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { MdAttachMoney } from "react-icons/md";
 import { CgAddR } from "react-icons/cg";
-import { Datas, Valores } from "@src/services/funcoes-globais";
+import { Valores } from "@src/services/funcoes-globais";
 
 
 import {
@@ -11,10 +11,7 @@ import {
   handleDeletar
 } from "./Functions";
 
-
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
-
-import Tooltip from "@components/tooltip/tooltipwrapper";
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 import { requisicaoGet } from "@services/requisicoes";

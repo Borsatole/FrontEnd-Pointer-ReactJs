@@ -1,5 +1,5 @@
 export interface ContaAPagar {
-  id: number;
+  id?: number;
   nome: string;
   categoria: string;
   descricao: string;
@@ -8,15 +8,7 @@ export interface ContaAPagar {
   data_vencimento?: string;
 }
 
-export interface NovaContaAPagar {
-  id?: number;
-  nome: string;
-  categoria: string;
-  descricao: string;
-  valor: number;
-  data_pagamento?: string;
-  data_vencimento: string;
-}
+
 
 
 export interface Categoria {

@@ -1,11 +1,12 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Modal from "@components/modal/Modal";
 import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { NovaContaAPagar, ContaAPagar } from "./tipos";
-import { adicionarProduto } from "./Functions";
+import { Categoria, ContaAPagar } from "./tipos";
 import { SelectModificado } from "@src/components/comum/select";
+import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
+import { requisicaoGet } from "@src/services/requisicoes";
 
 interface ModalAdicionarContaProps {
   AbrirModalNovoRegistro: boolean;
@@ -39,7 +40,9 @@ function ModalAdicionarRegistro({
   setLoadingSpiner,
   setRelistar,
 }: ModalAdicionarContaProps) {
-  const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isLoadingInit, setIsLoadingInit] = useState(true);
+    const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   const refs = {
     nome: useRef<HTMLInputElement>(null),
@@ -56,7 +59,7 @@ function ModalAdicionarRegistro({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    const data: NovaContaAPagar = {
+    const data: Omit<ContaAPagar, "id"> = {
       nome: refs.nome.current?.value || "",
       categoria: refs.categoria.current?.value || "",
       descricao: refs.descricao.current?.value || "",
@@ -68,18 +71,30 @@ function ModalAdicionarRegistro({
 
     setIsLoading(true);
     try {
-      await adicionarProduto({
+      await adicionarRegistro<ContaAPagar>({
         data,
         registros,
         setRegistros,
         setRelistar,
         setAbrirModalNovoRegistro,
         setLoadingSpiner,
-      });
+        endpoint: "/Financeiro/Contas-a-pagar/Create.php"
+      })
     } finally {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+      requisicaoGet(`/Financeiro/Categorias/Read.php?setor=contas_a_pagar`)
+        .then((response) => {
+          if (response?.data.success) {
+            setCategorias(response.data.Registros);
+          }
+          setIsLoadingInit(false);
+        });
+  
+    }, []);
 
   if (!AbrirModalNovoRegistro) return null;
 
@@ -100,7 +115,11 @@ function ModalAdicionarRegistro({
             required
             disabled={isLoading}
           >
-            <option value="Conta Fixa">Conta Fixa</option>
+            {categorias.map((categoria) => (
+              <option key={categoria.id} value={categoria.categoria}>
+                {categoria.categoria}
+              </option>
+            ))}
           </SelectModificado>
         </FormGroup>
 
