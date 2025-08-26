@@ -38,12 +38,12 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
   };
 
   const handleLimpar = () => {
-    setFiltros({ id: "", nome: "", categoria: "", data_minima: "", data_maxima: "", data_pagamento: "" });
+    setFiltros({ id: "", nome: "", categoria: "", data_minima: primeiroDia, data_maxima: ultimoDia, data_pagamento: "" });
     onFiltrar("");
   };
 
   useEffect(() => {
-    requisicaoGet('/Financeiro/categorias/Read.php').then((res) => {
+    requisicaoGet('/Financeiro/categorias/Read.php?setor=contas_a_pagar').then((res) => {
       if (res?.data.success) setCategorias(res.data.Registros);
     });
     handleFiltrar();

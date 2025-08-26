@@ -1,25 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Input } from "@components/comum/input";
 import { SelectModificado } from "@components/comum/select";
-import { useEffect } from "react";
 import { requisicaoGet } from "@services/requisicoes";
-import { Categoria } from "@src/components/tipos";
-
-interface Produto {
-  id: number;
-  nome: string;
-  quantidade: number;
-  categoria: string;
-  created_at?: string;
-  updated_at?: string;
-}
+import { Categoria, Produto } from "./tipos";
+import { Datas } from "@src/services/funcoes-globais";
 
 interface FiltroProps {
   onFiltrar: (queryString: string) => void;
 }
 
 export function FiltroCadastros({ onFiltrar }: FiltroProps) {
+
   const [filtros, setFiltros] = useState({
     id: "",
     nome: "",
@@ -27,7 +19,6 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     categoria: "",
   });
 
-  const [produtos, setProdutos] = useState<Produto[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -36,43 +27,26 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
   };
 
   const handleFiltrar = () => {
-    const queryString = Object.entries(filtros)
-      .filter(([_, valor]) => valor.trim() !== "")
-      .map(([chave, valor]) => `${encodeURIComponent(chave)}=${encodeURIComponent(valor)}`)
-      .join("&");
-
-    onFiltrar(queryString);
+    const params = new URLSearchParams();
+    Object.entries(filtros).forEach(([key, value]) => {
+      if (value.trim() !== "") params.append(key, value);
+    });
+    onFiltrar(params.toString());
   };
 
   const handleLimpar = () => {
-    setFiltros({
-      id: "",
-      nome: "",
-      quantidade: "",
-      categoria: "",
-    });
+    setFiltros({ id: "", nome: "", categoria: "", quantidade: "" });
     onFiltrar("");
   };
 
-
-    
-  
-    useEffect(() => {
-      requisicaoGet('/Estoque/Read.php').then((response) => {
-        if (response?.data.success) {
-          setProdutos(response.data.Registros);
-        }
-      });
-
-      requisicaoGet('/Estoque/categoria/Read.php').then((response) => {
-        if (response?.data.success) {
-          setCategorias(response.data.Registros);
-        }
-      });
-    }, []);
+  useEffect(() => {
+    requisicaoGet('/Estoque/categoria/Read.php').then((res) => {
+      if (res?.data.success) setCategorias(res.data.Registros);
+    });
+    handleFiltrar();
+  }, []);
 
   return (
-    <>
     <form className="flex flex-col bg-[var(--base-variant)] rounded-lg p-3.5 mt-3.5 mb-5.5" onSubmit={(e) => e.preventDefault()}>
       <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4 ">
         <FormGroup id="cod" label="COD">
@@ -158,6 +132,5 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
       </div>
 
       </form>
-    </>
   );
 }
