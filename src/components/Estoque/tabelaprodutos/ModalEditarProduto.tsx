@@ -45,10 +45,10 @@ function ModalEditarProduto({
   // Busca categorias
   useEffect(() => {
     setIsLoadingInit(true);
-    requisicaoGet("/Estoque/categoria/categorias.php")
+    requisicaoGet("/Estoque/categoria/Read.php")
       .then((response) => {
         if (response?.data.success) {
-          setCategorias(response.data.categorias);
+          setCategorias(response.data.Registros);
         }
       })
       .finally(() => setIsLoadingInit(false));

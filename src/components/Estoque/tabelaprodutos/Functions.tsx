@@ -35,7 +35,7 @@ export function handleDeletar({ produto, setRelistar }: Deletar) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Chama a API para deletar
-      requisicaoDelete(`/Estoque/deletar-registro.php?id=${produto.id}`)
+      requisicaoDelete(`/Estoque/Delete.php?id=${produto.id}`)
         .then((response) => {
           if (response?.data.success) {
             // Atualiza a listagem após sucesso
@@ -88,7 +88,7 @@ export async function editarProduto({
 }: EditarProduto) {
   setLoadingSpiner(true);
   try {
-    const response = await requisicaoPut(`/Estoque/editar-registro.php`, data);
+    const response = await requisicaoPut(`/Estoque/Update.php`, data);
 
     
     const msg = response?.data?.message ?? 'Erro ao editar a requisição!';
@@ -131,7 +131,7 @@ export function adicionarProduto({ data, produtos,
 
   setLoadingSpiner(true);
 
-  requisicaoPost(`/Estoque/adicionar-registro.php`, data)
+  requisicaoPost(`/Estoque/Create.php`, data)
   
     .then((response) => {
       const msg = response?.data?.message ?? 'Erro ao criar a requisição!';

@@ -185,8 +185,7 @@ export function Rodape({
         </select>
       </div>
 
-      <div className="flex flex-wrap justify-center items-center gap-2 mt-6">
-      
+      <div className="flex flex-wrap justify-center items-center gap-2">
               <Button
                 onClick={() => setPagina(1)}
                 disabled={pagina <= 1}>Primeira</Button>

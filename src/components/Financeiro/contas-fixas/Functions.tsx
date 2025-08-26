@@ -24,12 +24,12 @@ export function gerarPaginas(paginaAtual: number, total: number, max = 5): numbe
 }
  
 interface Deletar {
-  Registro: ContaFixa
+  registro: ContaFixa
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>
 }  
-export function handleDeletar({ Registro, setRelistar }: Deletar) {
+export function handleDeletar({ registro, setRelistar }: Deletar) {
   Swal.fire({
-    title: `Tem certeza que deseja deletar ${Registro.nome || "esse produto"}?`,
+    title: `Tem certeza que deseja deletar ${registro.nome || "esse produto"}?`,
     text: "Você não poderá reverter isso!",
     icon: "warning",
     showCancelButton: true,
@@ -40,7 +40,7 @@ export function handleDeletar({ Registro, setRelistar }: Deletar) {
   }).then((result) => {
     if (result.isConfirmed) {
       // Chama a API para deletar
-      requisicaoDelete(`/Financeiro/Contas-a-pagar/Contas-fixas/Delete.php?id=${Registro.id}`)
+      requisicaoDelete(`/Financeiro/Contas-a-pagar/Contas-fixas/Delete.php?id=${registro.id}`)
         .then((response) => {
           if (response?.data.success) {
             // Atualiza a listagem após sucesso

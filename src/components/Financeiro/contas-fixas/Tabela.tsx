@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { ThemeProvider, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
+
 import { MdAttachMoney } from "react-icons/md";
 import { CgAddR } from "react-icons/cg";
-
+import { Datas, Valores } from "@src/services/funcoes-globais";
 
 
 import {
@@ -25,7 +25,11 @@ import ModalEditarProduto from "./ModalEditarProduto";
 import ModalAdicionarRegistro from "./ModalAdicionarProduto";
 
 
+import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/TabelaDinamica";
+import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas";
+
 function TabelaContasFixas({}) {
+  const { dinheiro } = Valores();
 
   const [registros, setRegistros] = useState<ContaFixa[]>([]);
 
@@ -44,6 +48,53 @@ function TabelaContasFixas({}) {
 
   
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
+
+  // Configuração das colunas da tabela
+    const colunas: ColunaConfig<ContaFixa>[] = [
+      {
+        key: "nome",
+        label: "NOME",
+        render: (registro) => PrimeraLetraMaiuscula(registro.nome),
+      },
+      {
+        key: "recorrencia", 
+        label: "RECORRENCIA",
+        render: (registro) => 
+        <div className="flex uppercase text-[var(--corPrincipal)] font-normal  items-center 
+        justify-center gap-2 border-1 p-1 border-[var(--corPrincipal)] rounded-lg">
+        {`A cada ${registro.recorrencia} 
+        ${registro.recorrencia === 1 ? "mes" : "meses"}`
+        }
+        </div>,
+      },
+      {
+        key: "valor",
+        label: "VALOR",
+        render: (registro) => dinheiro(registro.valor),
+      },
+      
+    ];
+
+     // Configuração das ações da tabela
+      const acoes: AcaoConfig<ContaFixa>[] = [
+        {
+          icon: <FaEdit className="w-5 h-5 cursor-pointer" />,
+          tooltip: "Editar",
+          onClick: (registro) => setSelectedProduto(registro),
+        },
+        {
+          icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
+          tooltip: "Deletar", 
+          onClick: (registro) => handleDeletar({ registro, setRelistar }),
+        },
+      ];
+    
+      // Função para renderizar o ícone de cada linha
+      const iconeItem = () => (
+        <div className="bg-[var(--base-color)] rounded-full">
+          <MdAttachMoney className="w-12 h-12 p-3" color="var(--corPrincipal)" />
+        </div>
+      );
 
   useEffect(() => {
     setLoadingSpiner(true);
@@ -110,135 +161,31 @@ function TabelaContasFixas({}) {
         
       </div>
 
-      {/* Numero de resultados */}
-      <div className="flex justify-between items-center mt-3">
-        <span className="text-lg font-bold text-[var(--text-color)]">
-          ({totalResultados}) resultados encontrados
-        </span>
-      </div>
+      <MostrarNumeroDeResultados totalResultados={totalResultados} />
 
       <LoadingSpiner loading={loadingSpiner}>
-        <div className="w-full overflow-x-auto ">
-        <ThemeProvider theme={customTheme}>
-          <Table className="w-full text-center divide-y divide-[var(--base-color)] mt-3  rounded-lg">
-            <TableHead>
-              <TableRow>
-                <TableHeadCell>ICONE</TableHeadCell>
-                <TableHeadCell>NOME</TableHeadCell>
-                <TableHeadCell>RECORRENCIA</TableHeadCell>
-                <TableHeadCell>VALOR</TableHeadCell>
-                <TableHeadCell>EDITAR</TableHeadCell>
-              </TableRow>
-            </TableHead>
-            <TableBody className="divide-y divide-[var(--base-color)]">
-                {registros.length === 0 ? (
-                  <TableRow className="">
-                    <TableCell colSpan={5} className="text-center">
-                      Nenhum cadastro encontrado
-                    </TableCell>
-                  </TableRow>
-                ) : null}
-              {registros.map((Registro) => (
-  (() => {
-    return (
-          <TableRow
-      key={String(Registro.id ?? "sem-id")}
-      className={`transition-all duration-500 ease-in-out   ${
-        removendoIds.includes(Registro.id ?? -1) ? "efeito-excluir" : ""
-      }`}
-    >
-            <TableCell className="whitespace-nowrap text-center flex items-center justify-center " >
-              <div className="bg-[var(--base-color)] rounded-full">
-                <MdAttachMoney className="w-12 h-12 p-3" color="var(--corPrincipal)"/>
-              </div>
-            </TableCell>
-            <TableCell className="whitespace-nowrap font-medium">{PrimeraLetraMaiuscula(Registro.nome)}</TableCell>
-            
-            <TableCell className="whitespace-nowrap font-medium">
-
-              <div className="flex uppercase text-[var(--corPrincipal)] font-normal  items-center 
-              justify-center gap-2 border-1 border-[var(--corPrincipal)] rounded-lg">
-                {`A cada ${Registro.recorrencia} 
-                ${Registro.recorrencia === 1 ? "mes" : "meses"}`
-                }
-                </div>
-            </TableCell>
-            <TableCell className="whitespace-nowrap font-medium"> {Number(Registro.valor).toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}</TableCell>
-            
-
-            <TableCell className="font-medium">
-      <div className="flex justify-center gap-2">
-        <Tooltip tooltip="Editar">
-          <button
-            className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
-            onClick={() => setSelectedProduto(Registro)}
-          >
-            <FaEdit className="w-5 h-5 cursor-pointer" />
-          </button>
-        </Tooltip>
-        <Tooltip tooltip="Deletar">
-          <button
-            className="bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)]"
-            onClick={() => handleDeletar({ Registro, setRelistar })}
-          >
-            <FaTrashAlt className="w-5 h-5 cursor-pointer" />
-          </button>
-        </Tooltip>
-      </div>
-            </TableCell>
-
-            
-          </TableRow>
-    );
-  })()
-))}
-
-            </TableBody>
-          </Table>
-        </ThemeProvider>
-        </div>
+        <TabelaDinamica<ContaFixa>
+          dados={registros}
+          colunas={colunas}
+          acoes={acoes}
+          iconeItem={iconeItem}
+          removendoIds={removendoIds}
+          keyExtractor={(item) => item.id ?? 0}
+          mensagemVazia="Nenhum cadastro encontrado"
+          className="text-center divide-y divide-[var(--base-color)] mt-3 rounded-lg"
+        />
       </LoadingSpiner>
 
-      {/* Numero de cadastros */}
-      <div className="flex w-full flex-wrap justify-end items-center gap-2 mt-6">
-        {((pagina - 1) * limitePorPagina) + registros.length} de {totalResultados}
-      </div>
-
-      {/* Paginação */}
-      <div className="flex flex-wrap justify-center items-center gap-2 mt-6">
-
-        <Button
-          onClick={() => setPagina(1)}
-          disabled={pagina <= 1}>Primeira</Button>
-        
-
-        {gerarPaginas(pagina, totalPaginas).map((num) => (
-          <Button
-            key={num}
-            onClick={() => setPagina(num)}
-            className={`px-3 py-2 rounded-md border text-sm ${
-              num === pagina
-                ? "bg-[var(--corPrincipal)] text-white font-semibold"
-                : "bg-[var(--corPrincipal)] text-[var(--text-white)] opacity-40"
-            }`}
-            >{num}</Button>
-        ))}
-
-        <Button
-          onClick={() => setPagina(totalPaginas)}
-          disabled={pagina >= totalPaginas}
-        >
-          Última
-        </Button>
-
-        {/* <button
-          className="px-3 py-2 rounded-md bg-[var(--corPrincipal)] text-[var(--text-white)] disabled:opacity-50"
-          onClick={() => setPagina(totalPaginas)}
-          disabled={pagina >= totalPaginas}
-        >
-          Última
-        </button> */}
-      </div>
+      {/* Rodapé da tabela */}
+      <Rodape
+        pagina={pagina}
+        limitePorPagina={limitePorPagina}
+        registros={registros}
+        totalResultados={totalResultados}
+        totalPaginas={totalPaginas}
+        setPagina={setPagina}
+        setLimitePorPagina={setLimitePorPagina}
+      />
 
       {selectedProduto !== null && (
       <ModalEditarProduto

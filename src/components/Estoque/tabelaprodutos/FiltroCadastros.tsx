@@ -58,15 +58,15 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     
   
     useEffect(() => {
-      requisicaoGet('/Estoque/estoque.php').then((response) => {
+      requisicaoGet('/Estoque/Read.php').then((response) => {
         if (response?.data.success) {
-          setProdutos(response.data.cadastros);
+          setProdutos(response.data.Registros);
         }
       });
 
-      requisicaoGet('/Estoque/categoria/categorias.php').then((response) => {
+      requisicaoGet('/Estoque/categoria/Read.php').then((response) => {
         if (response?.data.success) {
-          setCategorias(response.data.categorias);
+          setCategorias(response.data.Registros);
         }
       });
     }, []);

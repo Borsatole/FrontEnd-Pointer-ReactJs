@@ -4,7 +4,7 @@ import BarraSuperior from "../../components/barraSuperior";
 import MenuLateral from "../../components/MenuLateral/MenuLateral";
 import Container from "../../components/comum/container";
 import { TituloPagina } from "../../components/comum/Textos";
-import TabelaProdutos from "../../components/Estoque/tabelaprodutos/TabelaProdutos";
+import Tabela from "../../components/Estoque/tabelaprodutos/Tabela";
 
 
 export default function Dashboard() {
@@ -17,7 +17,7 @@ export default function Dashboard() {
       <MenuLateral />
       <TituloPagina>Controle de Estoque</TituloPagina>
 
-      <TabelaProdutos />
+      <Tabela />
 
 
     </Container>

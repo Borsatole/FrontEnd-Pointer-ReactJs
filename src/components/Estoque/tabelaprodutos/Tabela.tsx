@@ -48,10 +48,10 @@ function TabelaCadastros({}) {
 
   useEffect(() => {
     setLoadingSpiner(true);
-    requisicaoGet(`/Estoque/estoque.php?pagina=${pagina}&limite=${limitePorPagina}&${queryFiltro}`)
+    requisicaoGet(`/Estoque/Read.php?pagina=${pagina}&limite=${limitePorPagina}&${queryFiltro}`)
       .then((response) => {
         if (response?.data.success) {
-          setCadastros(response.data.cadastros);
+          setCadastros(response.data.Registros);
           setTotalResultados(response.data.total_registros);
           setTotalPaginas(response.data.total_paginas);
         }

@@ -5,8 +5,8 @@ import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
 import { Categoria } from "./tipos";
-import { editarProduto } from "./Functions";
-import { SelectModificado } from "@src/components/comum/select";
+// import { editarProduto } from "./Functions";
+import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 
 interface ModalEditarProdutoProps {
   selectedProduto: Categoria | null;
@@ -17,7 +17,7 @@ interface ModalEditarProdutoProps {
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function ModalEditarProduto({
+function ModalEditarRegistro({
   selectedProduto,
   setSelectedProduto,
   registros,
@@ -42,21 +42,17 @@ function ModalEditarProduto({
 
     // Para input normal
     if (refs.categoria.current) {
-      refs.categoria.current.value = registro.categoria || "";
+       refs.categoria.current.value = registro.nome || "";
     }
 
-    // Para select - usando value diretamente
-    if (refs.setor.current) {
-      refs.setor.current.value = registro.setor || "";
-    }
+    
   };
 
   useEffect(preencherCampos, [registro, isLoadingInit]);
 
   const coletarDadosFormulario = (): Categoria => ({
     id: selectedProduto!.id,
-    categoria: refs.categoria.current?.value || "",
-    setor: refs.setor.current?.value || "",
+    nome: refs.categoria.current?.value || "",
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -65,15 +61,16 @@ function ModalEditarProduto({
 
     setIsLoading(true);
     try {
-      const data = coletarDadosFormulario();
-      await editarProduto({
-        data,
-        registros,
-        setRegistros,
-        setRelistar,
-        setSelectedProduto,
-        setLoadingSpiner,
-      });
+      const produtoEditado = coletarDadosFormulario();
+      await editarRegistro<Categoria>({
+      data: produtoEditado,
+      setRelistar,
+      setSelected: setSelectedProduto,
+      setLoadingSpiner,
+      registros,
+      setRegistros,
+      endpoint: "/Estoque/categoria/Update.php"
+    })
       setSelectedProduto(null);
     } finally {
       setIsLoading(false);
@@ -119,18 +116,7 @@ function ModalEditarProduto({
           />
         </FormGroup>
 
-        {/* Campo Setor com Ref Correto */}
-        <FormGroup label="Setor" id="setor">
-          <SelectModificado
-            id="setor"
-            ref={refs.setor}
-            required
-            disabled={isLoading}
-          >
-            <option value="contas_a_pagar">Contas a pagar</option>    
-            <option value="contas_a_receber">Contas a receber</option>    
-          </SelectModificado>
-        </FormGroup>
+        
 
         <Button
           type="submit"
@@ -145,4 +131,4 @@ function ModalEditarProduto({
   );
 }
 
-export default ModalEditarProduto;
+export default ModalEditarRegistro;

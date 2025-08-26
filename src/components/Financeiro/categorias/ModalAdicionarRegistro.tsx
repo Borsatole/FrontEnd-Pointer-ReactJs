@@ -1,11 +1,10 @@
 import { useState, useEffect, useRef } from "react";
-import { Spinner } from "flowbite-react";
+import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 import Modal from "@components/modal/Modal";
 import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
 import { Categoria } from "./tipos";
-import { adicionarProduto } from "./Functions";
 import { SelectModificado } from "@src/components/comum/select";
 
 interface ModalAdicionarContaProps {
@@ -45,14 +44,15 @@ function ModalAdicionarRegistro({
 
     setIsLoading(true);
     try {
-      await adicionarProduto({
-        data,
+      await adicionarRegistro<Categoria>({
         registros,
+        data,
         setRegistros,
         setRelistar,
         setAbrirModalNovoRegistro,
         setLoadingSpiner,
-      });
+        endpoint: "/Financeiro/Categorias/Create.php"
+      })
     } finally {
       setIsLoading(false);
     }

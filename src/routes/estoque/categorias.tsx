@@ -1,4 +1,3 @@
-import {useEffect, useState } from "react";
 
 
 
@@ -6,7 +5,7 @@ import BarraSuperior from "@components/barraSuperior";
 import MenuLateral from "@components/MenuLateral/MenuLateral";
 import Container from "@components/comum/container";
 import { TituloPagina } from "@components/comum/Textos";
-import TabelaCategorias from "@src/components/Estoque/categorias/TabelaCategorias";
+import Tabela from "@src/components/Estoque/categorias/Tabela";
 
 
 export default function Categorias() {
@@ -18,8 +17,7 @@ export default function Categorias() {
     <Container tipo="principal">
       <MenuLateral />
       <TituloPagina>Categorias de Estoque</TituloPagina>
-
-      <TabelaCategorias />
+      <Tabela />
 
     </Container>
 
