@@ -5,8 +5,8 @@ import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
 import { ContaFixa } from "./tipos";
-import { editarProduto } from "./Functions";
-
+// import { editarProduto } from "./Functions";
+import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 interface ModalEditarProdutoProps {
   selectedProduto: ContaFixa | null;
   setSelectedProduto: React.Dispatch<React.SetStateAction<ContaFixa | null>>;
@@ -74,14 +74,15 @@ function ModalEditarProduto({
     setIsLoading(true);
     try {
       const data = coletarDadosFormulario();
-      await editarProduto({
+      await editarRegistro<ContaFixa>({
         data,
         registros,
         setRegistros,
         setRelistar,
-        setSelectedProduto,
+        setSelected: setSelectedProduto,
         setLoadingSpiner,
-      });
+        endpoint: "/Financeiro/contas-a-pagar/Contas-fixas/Update.php"
+      })
       setSelectedProduto(null);
     } finally {
       setIsLoading(false);
@@ -133,7 +134,6 @@ function ModalEditarProduto({
             id="descricao"
             type="text"
             inputRef={refs.descricao}
-            required
             disabled={isLoading}
           />
         </FormGroup>
@@ -182,7 +182,7 @@ function ModalEditarProduto({
             id="data_fim"
             type="date"
             inputRef={refs.data_fim}
-            required
+          
             disabled={isLoading}
           />
         </FormGroup>

@@ -4,8 +4,9 @@ import Modal from "@components/modal/Modal";
 import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { ContaFixa } from "./Tipos";
-import { adicionarProduto } from "./Functions";
+import { ContaFixa } from "./tipos";
+// import { adicionarProduto } from "./Functions";
+import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 
 interface ModalAdicionarContaProps {
   AbrirModalNovoRegistro: boolean;
@@ -53,14 +54,15 @@ function ModalAdicionarRegistro({
 
     setIsLoading(true);
     try {
-      await adicionarProduto({
+      await adicionarRegistro<ContaFixa>({
         data,
         registros,
         setRegistros,
         setRelistar,
         setAbrirModalNovoRegistro,
         setLoadingSpiner,
-      });
+        endpoint: "/Financeiro/contas-a-pagar/Contas-fixas/Create.php"
+      })
     } finally {
       setIsLoading(false);
     }

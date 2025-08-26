@@ -97,7 +97,7 @@ function ModalEditarProduto({
       id: selectedProduto!.id,
       nome: refs.nome.current?.value || "",
       categoria: refs.categoria.current?.value || "",
-      descricao: refs.valor.current?.value || "",
+      descricao: refs.descricao.current?.value || "",
       valor: Number(refs.valor.current?.value) || 0,
       data_pagamento: refs.data_pagamento.current?.value || "",
       data_vencimento: refs.data_vencimento.current?.value || "",
@@ -162,7 +162,6 @@ function ModalEditarProduto({
           <SelectModificado
             id="categoria"
             ref={refs.categoria}
-            required
             disabled={isLoading}
           >
 
@@ -171,12 +170,16 @@ function ModalEditarProduto({
                 {categoria.categoria}
               </option>
             ))}
+
+            <option value="Conta Fixa">
+                Conta Fixa
+              </option>
                
           </SelectModificado>
         </FormGroup>
 
         <FormGroup label="Descrição" id="descricao">
-          <Input id="descricao" type="text" inputRef={refs.descricao} required disabled={isLoading} />
+          <Input id="descricao" type="text" inputRef={refs.descricao} disabled={isLoading} />
         </FormGroup>
 
         <FormGroup label="Valor" id="valor">

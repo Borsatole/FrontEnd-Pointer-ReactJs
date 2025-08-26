@@ -65,6 +65,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
           <SelectModificado id="categoria" name="categoria" value={filtros.categoria} onChange={handleChange}>
             <option value="">Todos</option>
             {categorias.map((cat) => <option key={cat.id} value={cat.categoria}>{cat.categoria}</option>)}
+            <option value="Conta Fixa">Conta Fixa</option>
             <option value="Sem Categoria">Sem Categoria</option>
           </SelectModificado>
         </FormGroup>

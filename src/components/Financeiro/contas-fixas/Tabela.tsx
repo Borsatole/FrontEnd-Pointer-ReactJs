@@ -4,12 +4,9 @@ import { MdAttachMoney } from "react-icons/md";
 import { CgAddR } from "react-icons/cg";
 import { Valores } from "@src/services/funcoes-globais";
 
+import { PrimeraLetraMaiuscula } from "@services/funcoes-globais";
+import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 
-import {
-  PrimeraLetraMaiuscula,
-  gerarPaginas,
-  handleDeletar
-} from "./Functions";
 
 import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
@@ -28,23 +25,21 @@ import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas
 function TabelaContasFixas({}) {
   const { dinheiro } = Valores();
 
-  const [registros, setRegistros] = useState<ContaFixa[]>([]);
-
-  const [selectedProduto, setSelectedProduto] = useState<ContaFixa | null>(null);
-
-  const [pagina, setPagina] = useState(1);
-  const [relistar, setRelistar] = useState(false);
-  const [limitePorPagina, setLimitePorPagina] = useState(7);
-  const [totalPaginas, setTotalPaginas] = useState(1);
-  const [totalResultados, setTotalResultados] = useState(0);
-
-  const [loading, setLoading] = useState(true);
-  const [loadingSpiner, setLoadingSpiner] = useState(true);
-
-  const [removendoIds, setRemovendoIds] = useState<number[]>([]);
-
+    const [registros, setRegistros] = useState<ContaFixa[]>([]);
+    const [selectedProduto, setSelectedProduto] = useState<ContaFixa | null>(null);
+    const [pagina, setPagina] = useState(1);
+    const [relistar, setRelistar] = useState(false);
+    const [queryFiltro, setQueryFiltro] = useState("");
   
-  const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
+    // Parâmetros de paginação
+    const [limitePorPagina, setLimitePorPagina] = useState(7);
+    const [totalPaginas, setTotalPaginas] = useState(1);
+    const [totalResultados, setTotalResultados] = useState(0);
+  
+    const [loading, setLoading] = useState(true);
+    const [loadingSpiner, setLoadingSpiner] = useState(true);
+    const [removendoIds, setRemovendoIds] = useState<number[]>([]);
+    const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
 
   // Configuração das colunas da tabela
     const colunas: ColunaConfig<ContaFixa>[] = [
@@ -82,7 +77,7 @@ function TabelaContasFixas({}) {
         {
           icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
           tooltip: "Deletar", 
-          onClick: (registro) => handleDeletar({ registro, setRelistar }),
+          onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/Contas-a-pagar/Contas-fixas/Delete.php"}),
         },
       ];
     
