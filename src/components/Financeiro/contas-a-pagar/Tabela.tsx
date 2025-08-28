@@ -17,6 +17,7 @@ import ModalAdicionarRegistro from "./ModalAdicionarProduto";
 import { FiltroCadastros } from "./FiltroCadastros";
 import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas";
 import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/TabelaDinamica";
+import Cards from "./Cards";
 
 function TabelaContasFixas() {
   const { dataFormatada, dataDeHoje } = Datas();
@@ -49,7 +50,7 @@ function TabelaContasFixas() {
   }
 
   return { label: "Pendente", color: "bg-blue-400" };
-}
+  }
   
 
   // Configuração das colunas da tabela
@@ -143,8 +144,12 @@ function TabelaContasFixas() {
       </div>
 
       {/* Filtros e contadores */}
+      <Cards queryFiltro={queryFiltro}/>
       <FiltroCadastros onFiltrar={setQueryFiltro} />
       <MostrarNumeroDeResultados totalResultados={totalResultados} />
+
+
+      
 
       {/* Tabela dinâmica */}
       <LoadingSpiner loading={loadingSpiner}>

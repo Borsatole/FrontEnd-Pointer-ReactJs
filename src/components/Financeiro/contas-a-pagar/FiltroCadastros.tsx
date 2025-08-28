@@ -38,7 +38,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
   };
 
   const handleLimpar = () => {
-    setFiltros({ id: "", nome: "", categoria: "", data_minima: primeiroDia, data_maxima: ultimoDia, data_pagamento: "" });
+    setFiltros({ id: "", nome: "", categoria: "", data_minima: "", data_maxima: "", data_pagamento: "" });
     onFiltrar("");
   };
 
