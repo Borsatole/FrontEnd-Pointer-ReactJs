@@ -19,7 +19,7 @@ import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas
 import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/TabelaDinamica";
 
 function TabelaContasFixas() {
-  const { dataFormatada } = Datas();
+  const { dataFormatada, dataDeHoje } = Datas();
   const { dinheiro } = Valores();
   
   const [registros, setRegistros] = useState<ContaAPagar[]>([]);
@@ -37,6 +37,20 @@ function TabelaContasFixas() {
   const [loadingSpiner, setLoadingSpiner] = useState(true);
   const [removendoIds, setRemovendoIds] = useState<number[]>([]);
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
+
+
+  function getStatusInfo(registro: ContaAPagar): { label: string; color: string } {
+  if (registro.data_pagamento) {
+    return { label: "Pago", color: "bg-green-500" };
+  }
+
+  if (registro.data_vencimento && registro.data_vencimento < dataDeHoje) {
+    return { label: "Vencido", color: "bg-red-500" };
+  }
+
+  return { label: "Pendente", color: "bg-blue-400" };
+}
+  
 
   // Configuração das colunas da tabela
   const colunas: ColunaConfig<ContaAPagar>[] = [
@@ -64,16 +78,17 @@ function TabelaContasFixas() {
     {
       key: "status",
       label: "STATUS",
-      render: (registro) => (
-        <span
-          className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-white text-xs font-semibold ${
-            registro.data_pagamento ? "bg-green-500" : "bg-red-500"
-          }`}
-        >
-          {registro.data_pagamento ? "Pago" : "Pendente"}
-        </span>
-      ),
-    },
+      render: (registro) => {
+        const status = getStatusInfo(registro);
+        return (
+          <span
+            className={`inline-flex items-center justify-center px-3 py-1 rounded-full text-white text-xs font-semibold ${status.color}`}
+          >
+            {status.label}
+          </span>
+        );
+      },
+    }
   ];
 
   // Configuração das ações da tabela

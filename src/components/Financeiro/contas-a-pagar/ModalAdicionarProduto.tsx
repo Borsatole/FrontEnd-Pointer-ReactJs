@@ -66,8 +66,10 @@ function ModalAdicionarRegistro({
       valor: Number(refs.valor.current?.value) || 0,
       data_vencimento: refs.data_vencimento.current?.value || "",
     };
+
+
     
-    if (!data.nome || !data.valor) return;
+
 
     setIsLoading(true);
     try {
@@ -124,7 +126,9 @@ function ModalAdicionarRegistro({
         </FormGroup>
 
         <FormGroup label="Descrição" id="descricao">
-          <Input id="descricao" type="text" inputRef={refs.descricao} required disabled={isLoading} />
+          <Input id="descricao" type="text" 
+          inputRef={refs.descricao}
+           disabled={isLoading} />
         </FormGroup>
 
         <FormGroup label="Valor" id="valor">

@@ -110,7 +110,6 @@ function ModalEditarProduto({
     setIsLoading(true);
     try {
       const data = coletarDadosFormulario();
-      console.log(data);
       await editarRegistro<ContaAPagar>({
         data,
         registros,
