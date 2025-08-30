@@ -2,6 +2,11 @@ import {Card} from '@src/components/comum/card'
 import { MdPlayCircleOutline } from 'react-icons/md'
 import { useEffect, useState } from 'react'
 import { requisicaoGet } from '@src/services/requisicoes';
+import { FaRegStar  } from "react-icons/fa";
+import { GiPayMoney } from "react-icons/gi";
+import { GiReceiveMoney } from "react-icons/gi";
+import { MdMoneyOff } from "react-icons/md";
+
 
 interface CardsProps {
     queryFiltro: string;
@@ -16,7 +21,7 @@ interface RegistroItem {
   titulo: string;
   descricao: string;
   valor_formatado: string;
-  variacao_periodo_anterior: VariacaoPeriodo;
+  variacao: VariacaoPeriodo;
 }
 
 interface RegistroProps {
@@ -45,38 +50,45 @@ function Cards({ queryFiltro }: CardsProps) {
         title={registros?.contas_a_pagar.titulo ?? "Carregando..."}
         description={registros?.contas_a_pagar.descricao ?? ""}
         value={registros?.contas_a_pagar.valor_formatado ?? "R$ 0,00"}
-        icon={<MdPlayCircleOutline />}
+        icon={<FaRegStar />}
         change={{
         value: 
         `
-        ${registros?.contas_a_pagar.variacao_periodo_anterior?.percentual ?? ""} 
+        ${registros?.contas_a_pagar.variacao?.percentual ?? ""} 
         em relação ao período anterior`,
-
-        isPositive: registros?.contas_a_pagar.variacao_periodo_anterior?.positivo ?? true,
+        isPositive: registros?.contas_a_pagar.variacao?.positivo ?? true,
         }}
-
         color="orange"
       />
 
       <Card
         title={registros?.contas_pagas.titulo ?? ""}
+        description={registros?.contas_pagas.descricao ?? ""}
         value={registros?.contas_pagas.valor_formatado ?? "R$ 0,00"}
-        icon={<MdPlayCircleOutline />}
+        icon={<GiPayMoney />}
+        change={{
+        value: 
+        `
+        ${registros?.contas_pagas.variacao?.percentual ?? ""}% das contas selecionadas`,
+        isPositive: registros?.contas_pagas.variacao?.positivo ?? true,
+        }}
         color="green"
       />
 
       <Card
         title={registros?.contas_pendentes.titulo ?? ""}
+        description={registros?.contas_pendentes.descricao ?? ""}
         value={registros?.contas_pendentes.valor_formatado ?? "R$ 0,00"}
-        icon={<MdPlayCircleOutline />}
+        icon={<GiReceiveMoney />}
         color="blue"
       />
 
       <Card
         title={registros?.contas_atrasadas.titulo ?? ""}
+        description={registros?.contas_atrasadas.descricao ?? ""}
         value={registros?.contas_atrasadas.valor_formatado ?? "R$ 0,00"}
-        icon={<MdPlayCircleOutline />}
-        color="purple"
+        icon={<MdMoneyOff />}
+        color="red"
       />
     </div>
   );

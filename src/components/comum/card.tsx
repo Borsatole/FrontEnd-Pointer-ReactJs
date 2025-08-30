@@ -15,7 +15,7 @@ interface IndicatorCardProps {
   value?: string;
   description?: string;
   icon?: React.ReactNode;
-  color?: "blue" | "green" | "purple" | "orange";
+  color?: "blue" | "green" | "purple" | "orange" | "red";
   change?: CardChange;
   metric?: CardMetric;
   className?: string;
@@ -51,6 +51,11 @@ export function Card({
       border: "before:bg-amber-500",
       iconBg: "bg-amber-500/10",
       iconColor: "text-amber-500",
+    },
+    red: {
+      border: "before:bg-rose-500",
+      iconBg: "bg-rose-500/10",
+      iconColor: "text-rose-500",
     },
   };
 
