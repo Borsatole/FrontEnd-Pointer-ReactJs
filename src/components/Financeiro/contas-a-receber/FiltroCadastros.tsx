@@ -17,7 +17,6 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     id: "",
     nome: "",
     categoria: "",
-    status: "",
     data_minima: primeiroDia,
     data_maxima: ultimoDia,
     data_pagamento: "",
@@ -39,12 +38,12 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
   };
 
   const handleLimpar = () => {
-    setFiltros({ id: "", nome: "", categoria: "", status: "", data_minima: "", data_maxima: "", data_pagamento: "" });
+    setFiltros({ id: "", nome: "", categoria: "", data_minima: "", data_maxima: "", data_pagamento: "" });
     onFiltrar("");
   };
 
   useEffect(() => {
-    requisicaoGet('/Financeiro/categorias/Read.php?setor=contas_a_pagar').then((res) => {
+    requisicaoGet('/Financeiro/categorias/Read.php?setor=contas_a_receber').then((res) => {
       if (res?.data.success) setCategorias(res.data.Registros);
     });
     handleFiltrar();
@@ -66,16 +65,15 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
           <SelectModificado id="categoria" name="categoria" value={filtros.categoria} onChange={handleChange}>
             <option value="">Todos</option>
             {categorias.map((cat) => <option key={cat.id} value={cat.categoria}>{cat.categoria}</option>)}
-            <option value="Conta Fixa">Conta Fixa</option>
             <option value="Sem Categoria">Sem Categoria</option>
           </SelectModificado>
         </FormGroup>
 
         <FormGroup id="status" label="STATUS">
-          <SelectModificado id="status" name="status" value={filtros.status ?? ""} onChange={handleChange}>
-            <option value="">Todos</option>
-            <option value="pago">Pago</option>
-            <option value="pendente">Pendente</option>
+          <SelectModificado id="status" name="status" onChange={handleChange}>
+            <option>Todos</option>
+            <option key={"recebido"} value="pago">Pago</option>
+            <option key={"pendente"} value="pendente">Pendente</option>
           </SelectModificado>
         </FormGroup>
       </div>

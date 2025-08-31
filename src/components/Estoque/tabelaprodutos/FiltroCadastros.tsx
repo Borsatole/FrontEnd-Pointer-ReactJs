@@ -51,7 +51,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
       <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4 ">
         <FormGroup id="cod" label="COD">
           <Input
-            id="id"
+            id="cod"
             name="id"
             type="text"
             value={filtros.id}

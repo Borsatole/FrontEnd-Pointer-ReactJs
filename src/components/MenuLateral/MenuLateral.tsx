@@ -69,7 +69,7 @@ const MenuLateral = () => {
           <OpcaoMenuComSubmenu nome="Financeiro" svg={<HiChartBar size={25} />}>
             {/* <OpcaoMenu nome="Indicadores" rota="/financeiro"/> */}
             <OpcaoMenu nome="Contas a pagar" rota="/financeiro-contas-a-pagar"/>
-            {/* <OpcaoMenu nome="Contas a receber" rota="/financeiro-contas-a-receber"/> */}
+            <OpcaoMenu nome="Contas a receber" rota="/financeiro-contas-a-receber"/>
             <OpcaoMenu nome="Contas Fixas" rota="/financeiro-contas-fixas"/>
             <OpcaoMenu nome="Categorias" rota="/financeiro-categorias"/>
           </OpcaoMenuComSubmenu>

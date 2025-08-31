@@ -175,6 +175,7 @@ export function Rodape({
 
         <select
           value={limitePorPagina}
+          name="limitePorPagina"
           onChange={(e) => setLimitePorPagina(Number(e.target.value))}
           className=" text-sm p-2 border border-[var(--base-variant)] bg-[var(--base-variant)]  text-[var(--text-color)]"
         >

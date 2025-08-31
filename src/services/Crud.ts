@@ -89,8 +89,9 @@ export async function editarRegistro<T extends BaseRegistro>({
     const msg = response?.data?.message ?? "Erro ao editar a requisição!";
 
     if (response?.data?.success) {
-      setRegistros(registros.map((r) => (r.id === data.id ? data : r)));
-      setSelected(null);
+      // setRegistros(registros.map((r) => (r.id === data.id ? data : r)));
+      // setSelected(null);
+      setRelistar(true);
       Alerta("toast", "success", msg);
     } else {
       Alerta("toast", "error", msg);

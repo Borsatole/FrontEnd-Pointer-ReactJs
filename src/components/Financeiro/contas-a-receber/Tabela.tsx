@@ -9,7 +9,7 @@ import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 import { requisicaoGet } from "@services/requisicoes";
-import { ContaAPagar } from "./tipos";
+import { ContaAReceber } from "./tipos";
 import { Datas, Valores } from "@src/services/funcoes-globais";
 import { Button } from "@components/comum/button";
 import ModalEditarProduto from "./ModalEditarProduto";
@@ -19,12 +19,12 @@ import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas
 import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/TabelaDinamica";
 import Cards from "./Cards";
 
-function TabelaContasFixas() {
+function Tabela() {
   const { dataFormatada, dataDeHoje } = Datas();
   const { dinheiro } = Valores();
   
-  const [registros, setRegistros] = useState<ContaAPagar[]>([]);
-  const [selectedProduto, setSelectedProduto] = useState<ContaAPagar | null>(null);
+  const [registros, setRegistros] = useState<ContaAReceber[]>([]);
+  const [selectedProduto, setSelectedProduto] = useState<ContaAReceber | null>(null);
   const [pagina, setPagina] = useState(1);
   const [relistar, setRelistar] = useState(false);
   const [queryFiltro, setQueryFiltro] = useState("");
@@ -40,13 +40,13 @@ function TabelaContasFixas() {
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
 
 
-  function getStatusInfo(registro: ContaAPagar): { label: string; color: string } {
+  function getStatusInfo(registro: ContaAReceber): { label: string; color: string } {
   if (registro.data_pagamento) {
-    return { label: "Pago", color: "bg-green-500" };
+    return { label: "Recebido", color: "bg-green-500" };
   }
 
   if (registro.data_vencimento && registro.data_vencimento < dataDeHoje) {
-    return { label: "Vencido", color: "bg-red-500" };
+    return { label: "Nao Recebido", color: "bg-red-500" };
   }
 
   return { label: "Pendente", color: "bg-blue-400" };
@@ -54,7 +54,7 @@ function TabelaContasFixas() {
   
 
   // Configuração das colunas da tabela
-  const colunas: ColunaConfig<ContaAPagar>[] = [
+  const colunas: ColunaConfig<ContaAReceber>[] = [
     {
       key: "nome",
       label: "NOME",
@@ -93,7 +93,7 @@ function TabelaContasFixas() {
   ];
 
   // Configuração das ações da tabela
-  const acoes: AcaoConfig<ContaAPagar>[] = [
+  const acoes: AcaoConfig<ContaAReceber>[] = [
     {
       icon: <FaEdit className="w-5 h-5 cursor-pointer" />,
       tooltip: "Editar",
@@ -102,7 +102,7 @@ function TabelaContasFixas() {
     {
       icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
       tooltip: "Deletar", 
-      onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/Contas-a-pagar/Delete.php"}),
+      onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/Contas-a-receber/Delete.php"}),
     },
   ];
 
@@ -116,7 +116,7 @@ function TabelaContasFixas() {
 
   useEffect(() => {
     setLoadingSpiner(true);
-    requisicaoGet(`/Financeiro/contas-a-pagar/Read.php?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
+    requisicaoGet(`/Financeiro/contas-a-receber/Read.php?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
       .then((response) => {
         if (response?.data.success) {
           setRegistros(response.data.Registros);
@@ -153,7 +153,7 @@ function TabelaContasFixas() {
 
       {/* Tabela dinâmica */}
       <LoadingSpiner loading={loadingSpiner}>
-        <TabelaDinamica<ContaAPagar>
+        <TabelaDinamica<ContaAReceber>
           dados={registros}
           colunas={colunas}
           acoes={acoes}
@@ -202,4 +202,4 @@ function TabelaContasFixas() {
   );
 }
 
-export default TabelaContasFixas;
+export default Tabela;

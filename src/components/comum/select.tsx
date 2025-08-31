@@ -13,6 +13,8 @@ export const SelectModificado = React.forwardRef<
   return (
     <Select
       ref={ref}
+      name="select"
+      id="select"
       {...rest}
       className={`${className ?? ""} focus:ring-corPrincipal focus:ring-2 focus:ring-offset-0 focus:outline-none`}
       style={{
