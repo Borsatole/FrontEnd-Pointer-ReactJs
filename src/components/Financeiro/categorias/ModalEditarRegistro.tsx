@@ -73,7 +73,7 @@ function ModalEditarRegistro({
         setLoadingSpiner,
         registros,
         setRegistros,
-        endpoint: "/Financeiro/Categorias/Update.php"
+        endpoint: "/Financeiro/categorias/Update.php"
       })
       setSelectedProduto(null);
     } finally {

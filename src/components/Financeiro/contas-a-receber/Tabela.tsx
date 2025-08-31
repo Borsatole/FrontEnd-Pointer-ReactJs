@@ -102,7 +102,7 @@ function Tabela() {
     {
       icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
       tooltip: "Deletar", 
-      onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/Contas-a-receber/Delete.php"}),
+      onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/contas-a-receber/Delete.php"}),
     },
   ];
 

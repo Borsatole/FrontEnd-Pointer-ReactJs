@@ -77,7 +77,7 @@ function TabelaContasFixas({}) {
         {
           icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
           tooltip: "Deletar", 
-          onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/Contas-a-pagar/Contas-fixas/Delete.php"}),
+          onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/contas-a-pagar/contas-fixas/Delete.php"}),
         },
       ];
     
@@ -90,7 +90,7 @@ function TabelaContasFixas({}) {
 
   useEffect(() => {
     setLoadingSpiner(true);
-    requisicaoGet(`/Financeiro/contas-a-pagar/Contas-fixas/Read.php?pagina=${pagina}&limite=${limitePorPagina}`)
+    requisicaoGet(`/Financeiro/contas-a-pagar/contas-fixas/Read.php?pagina=${pagina}&limite=${limitePorPagina}`)
       .then((response) => {
         if (response?.data.success) {
           setRegistros(response.data.Registros);

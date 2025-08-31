@@ -88,7 +88,7 @@ function ModalAdicionarRegistro({
   };
 
   useEffect(() => {
-      requisicaoGet(`/Financeiro/Categorias/Read.php?setor=contas_a_receber`)
+      requisicaoGet(`/Financeiro/categorias/Read.php?setor=contas_a_receber`)
         .then((response) => {
           if (response?.data.success) {
             setCategorias(response.data.Registros);

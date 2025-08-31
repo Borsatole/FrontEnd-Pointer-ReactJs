@@ -46,18 +46,15 @@ export default function TelaLogin() {
       <div
         className="absolute inset-0 bg-cover bg-center animate-panZoom"
         style={{
-          backgroundImage:
-            "url('https://plus.unsplash.com/premium_photo-1681429766540-f05bd18b4002?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8ZWRpZiVDMyVBMyVDMiVBRGNpbyUyMGRhJTIwY2lkYWRlJTIwNGslMjBwYXBlbCUyMGRlJTIwcGFyZWRlfGVufDB8fDB8fHww')",
-          backgroundColor: "var(--base-variant)",
-          filter: "brightness(0.6)",
+          backgroundColor: "var(--base-color)",
         }}
       />
 
       {/* Overlay escuro sutil */}
-      <div className="absolute inset-0 bg-black/80" />
+      <div className="absolute inset-0" />
 
       {/* Card central */}
-      <div className="relative z-10 w-full max-w-md p-12 rounded-2xl shadow-2xl bg-[var(--base-variant)]/80 backdrop-blur-md">
+      <div className="relative z-10 w-full max-w-md p-12 rounded-2xl shadow-2xl bg-[var(--base-variant)] backdrop-blur-md">
         <h2 className="text-3xl font-bold text-center text-[var(--text-color)] mb-8">
           Acesse sua conta
         </h2>

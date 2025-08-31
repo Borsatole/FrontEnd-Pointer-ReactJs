@@ -80,7 +80,7 @@ function ModalAdicionarRegistro({
         setRelistar,
         setAbrirModalNovoRegistro,
         setLoadingSpiner,
-        endpoint: "/Financeiro/Contas-a-pagar/Create.php"
+        endpoint: "/Financeiro/contas-a-pagar/Create.php"
       })
     } finally {
       setIsLoading(false);
@@ -88,7 +88,7 @@ function ModalAdicionarRegistro({
   };
 
   useEffect(() => {
-      requisicaoGet(`/Financeiro/Categorias/Read.php?setor=contas_a_pagar`)
+      requisicaoGet(`/Financeiro/categorias/Read.php?setor=contas_a_pagar`)
         .then((response) => {
           if (response?.data.success) {
             setCategorias(response.data.Registros);

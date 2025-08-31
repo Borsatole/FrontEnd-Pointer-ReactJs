@@ -51,7 +51,7 @@ function ModalAdicionarRegistro({
         setRelistar,
         setAbrirModalNovoRegistro,
         setLoadingSpiner,
-        endpoint: "/Financeiro/Categorias/Create.php"
+        endpoint: "/Financeiro/categorias/Create.php"
       })
     } finally {
       setIsLoading(false);

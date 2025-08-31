@@ -102,7 +102,7 @@ function TabelaContasFixas() {
     {
       icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
       tooltip: "Deletar", 
-      onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/Contas-a-pagar/Delete.php"}),
+      onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: "/Financeiro/contas-a-pagar/Delete.php"}),
     },
   ];
 

@@ -61,7 +61,7 @@ function ModalAdicionarRegistro({
         setRelistar,
         setAbrirModalNovoRegistro,
         setLoadingSpiner,
-        endpoint: "/Financeiro/contas-a-pagar/Contas-fixas/Create.php"
+        endpoint: "/Financeiro/contas-a-pagar/contas-fixas/Create.php"
       })
     } finally {
       setIsLoading(false);

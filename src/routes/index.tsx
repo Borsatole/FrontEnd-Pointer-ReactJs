@@ -21,6 +21,9 @@ function TelaLoading() {
 
 const TelaLogin = lazy(() => import("./telaLogin"));
 
+// home
+const Home = lazy(() => import("./dashboard/dashboard"));
+
 //estoque
 const EstoqueControle = lazy(() => import("./estoque/controle-estoque"));
 const EstoqueCategorias = lazy(() => import("./estoque/categorias"));
@@ -34,7 +37,7 @@ const FinanceiroCategorias = lazy(() => import("./financeiro/financeiro-categori
 
 
 const routes = [
-  { path: "/", element: <EstoqueControle />, protected: true },
+  { path: "/", element: <Home />, protected: true },
 
   // login não é protegido
   { path: "/login", element: <TelaLogin />, protected: false },

@@ -81,7 +81,7 @@ function ModalEditarProduto({
         setRelistar,
         setSelected: setSelectedProduto,
         setLoadingSpiner,
-        endpoint: "/Financeiro/contas-a-pagar/Contas-fixas/Update.php"
+        endpoint: "/Financeiro/contas-a-pagar/contas-fixas/Update.php"
       })
       setSelectedProduto(null);
     } finally {

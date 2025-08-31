@@ -5,7 +5,7 @@ import { FaEdit, FaTrashAlt } from "react-icons/fa";
 import { ThemeProvider, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import Tooltip from '@components/tooltip/tooltipwrapper';
 import LoadingSpiner from "@components/loader/LoadingSpiner";
-import { PrimeraLetraMaiuscula } from "@components/Estoque/tabelaprodutos/Functions";
+import { PrimeraLetraMaiuscula } from "@services/funcoes-globais";
 import { Categoria } from "@components/tipos";
 
 interface TabelaCategoriasProps {

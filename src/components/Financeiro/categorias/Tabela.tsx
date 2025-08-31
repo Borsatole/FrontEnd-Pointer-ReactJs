@@ -90,7 +90,7 @@ const iconeItem = () => (
       params.append("setor", setorSelecionado);
     }
     
-    requisicaoGet(`/Financeiro/Categorias/Read.php?${params.toString()}`)
+    requisicaoGet(`/Financeiro/categorias/Read.php?${params.toString()}`)
       .then((response) => {
         if (response?.data.success) {
           setRegistros(response.data.Registros);
