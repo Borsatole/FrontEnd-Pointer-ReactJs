@@ -66,6 +66,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = (token: string) => {
     localStorage.setItem("token", token);
     setAuth({ token, loggedIn: true });
+
+    requisicaoPost("/Cron/lancar-contas-fixas.php" , {token} );
     
     
   };
