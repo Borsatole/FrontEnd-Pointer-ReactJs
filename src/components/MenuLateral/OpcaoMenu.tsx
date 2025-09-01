@@ -22,8 +22,13 @@ export function OpcaoMenu({ nome, svg, rota, ...rest }: OpcaoMenuProps) {
 
   return (
     <Link
-      className="group flex items-center px-4 py-3 hover:bg-[var(--corPrincipal)]/10 
-                 hover:text-[var(--corPrincipal)] transition-all duration-200 cursor-pointer 
+      className="group flex items-center px-4 py-3 
+                text-[var(--sidebar-text-color)]
+
+                   hover:bg-[var(--sidebarhover-color)]/10 
+                   hover:text-[var(--sidebarhover-text-color)]
+                 
+                 transition-all duration-200 cursor-pointer 
                  border-l-4 border-transparent hover:border-[var(--corPrincipal)] rounded-r-lg"
       onClick={fecharMenu}
       to={rota || "#"}
@@ -44,7 +49,11 @@ export function OpcaoMenuComSubmenu({ nome, svg, children }: OpcaoMenuComSubmenu
     <div className="mb-1">
       <button
         className="group w-full flex items-center justify-between px-4 py-3  
-                   hover:bg-[var(--corPrincipal)]/10 hover:text-[var(--corPrincipal)] 
+                  text-[var(--sidebar-text-color)]
+
+                   hover:bg-[var(--sidebarhover-color)]/10 
+                   hover:text-[var(--sidebarhover-text-color)] 
+
                    transition-all duration-200 cursor-pointer border-l-4 border-transparent 
                    hover:border-[var(--corPrincipal)] rounded-r-lg"
         onClick={() => setAberto(!aberto)}

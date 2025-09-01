@@ -55,9 +55,25 @@ export default function TelaLogin() {
 
       {/* Card central */}
       <div className="relative z-10 w-full max-w-md p-12 rounded-2xl shadow-2xl bg-[var(--base-variant)] backdrop-blur-md">
+
         <h2 className="text-3xl font-bold text-center text-[var(--text-color)] mb-8">
           Acesse sua conta
         </h2>
+
+        <div className="flex items-center justify-center mb-6 cursor-pointer">
+        <div className="w-full  flex justify-center max-w-[100%] p-3 bg-[var(--base-color)] rounded-lg backdrop-blur-sm">
+          <img 
+            src={`/logo.png`}  
+            className="w-[60%] border-rounded-full h-auto object-contain max-w-[40%]" 
+            alt="Logo" 
+            
+          />
+        </div>
+      </div>
+
+
+        
+        
         <form onSubmit={verificaLogin} className="space-y-6" id="formLogin">
           <FormGroup label="E-mail" id="email">
             <Input id="email" name="email" type="email" required />
