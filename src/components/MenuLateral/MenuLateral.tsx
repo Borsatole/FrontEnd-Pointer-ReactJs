@@ -2,7 +2,11 @@ import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useMenu } from "../../context/MenuContext";
 
-import { HiOutlineCube } from "react-icons/hi";
+import { RiHotelFill } from "react-icons/ri";
+import { IoPersonSharp } from "react-icons/io5";
+import { HiUsers } from "react-icons/hi";
+
+
 import { HiOutlineViewGrid } from "react-icons/hi";
 import { HiChartBar } from "react-icons/hi";
 import { HiLogin } from "react-icons/hi";
@@ -40,6 +44,7 @@ const MenuLateral = () => {
       className={`flex flex-col h-screen px-4 py-6 overflow-y-auto corPrincipalBg menu-lateral ${
         menuAberto ? "menu-aberto" : ""
       }`}
+      
     >
       <BtnFecharMenuLateral funcao={fecharMenu} />
       
@@ -61,7 +66,13 @@ const MenuLateral = () => {
           <OpcaoMenu nome="Dashboard" svg={<HiOutlineViewGrid size={25} />} rota="/" />
 
 
-          <OpcaoMenuComSubmenu nome="Financeiro" svg={<HiChartBar size={25} />}>
+          <OpcaoMenuComSubmenu nome="Condominios" svg={<RiHotelFill size={25} />}>
+            <OpcaoMenu nome="Produtos" rota="/estoque" />
+            <OpcaoMenu nome="Categorias" rota="/estoque-categorias"  />
+          </OpcaoMenuComSubmenu>
+
+
+          <OpcaoMenuComSubmenu nome="Funcionarios" svg={<HiUsers size={25} />}>
             <OpcaoMenu nome="Contas a pagar" rota="/financeiro-contas-a-pagar"/>
             <OpcaoMenu nome="Contas a receber" rota="/financeiro-contas-a-receber"/>
             <OpcaoMenu nome="Contas Fixas" rota="/financeiro-contas-fixas"/>
@@ -69,10 +80,7 @@ const MenuLateral = () => {
           </OpcaoMenuComSubmenu>
 
 
-          <OpcaoMenuComSubmenu nome="Estoque" svg={<HiOutlineCube size={25} />}>
-            <OpcaoMenu nome="Produtos" rota="/estoque" />
-            <OpcaoMenu nome="Categorias" rota="/estoque-categorias"  />
-          </OpcaoMenuComSubmenu>
+          
           
         </nav>
 

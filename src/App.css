@@ -43,19 +43,19 @@
   --corPrincipalHover: #04592e9c;
 
   /* bases */
-  --base-color: #111528;
-  --base-variant: #232738;
+  --base-color: #010725;
+  --base-variant: #050c2d;
 
   
 
   /* menu */
-  --sidebarcolor: #111421;
-  --sidebarsecondarycolor: #343851;
+  --sidebarcolor: #040c31;
+  --sidebarsecondarycolor: #020a3d;
   --sidebartext-color: #878787;
-  
+
   /* menu - hovers */
-  --sidebarhover-color: #05f27c;;
-  --sidebarhover-text-color: #ffffff;
+  --sidebarhover-color: #04592F;
+  --sidebarhover-text-color: #878787;
 
   /* textos */
   --text-color: #e8e9ed;

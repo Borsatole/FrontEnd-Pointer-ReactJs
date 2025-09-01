@@ -37,7 +37,7 @@ export function BtnFecharMenuLateral({ funcao = () => {} }) {
     <button
       id="botao-fechar-menu"
       onClick={() => funcao()}
-      className="absolute right-4 top-4 p-2  rounded-lg transition-all cursor-pointer"
+      className="fixed bg-white right-4 top-5 p-2  rounded-full transition-all cursor-pointer z-2"
     >
       <FecharMenuIcon />
     </button>
