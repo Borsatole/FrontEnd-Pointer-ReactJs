@@ -24,16 +24,9 @@ const TelaLogin = lazy(() => import("./telaLogin"));
 // home
 const Home = lazy(() => import("./dashboard/dashboard"));
 
-//estoque
-const EstoqueControle = lazy(() => import("./estoque/controle-estoque"));
-const EstoqueCategorias = lazy(() => import("./estoque/categorias"));
+//condominios
+const Condominios = lazy(() => import("./condominios/condominios"));
 
-//financeiro
-const Financeiro = lazy(() => import("./financeiro/financeiro"));
-const FinanceiroContasAPagar = lazy(() => import("./financeiro/financeiro-contas-a-pagar"));
-const FinanceiroContasAReceber = lazy(() => import("./financeiro/financeiro-contas-a-receber"));
-const ContasFixas = lazy(() => import("./financeiro/contas-fixas/contas-fixas"));
-const FinanceiroCategorias = lazy(() => import("./financeiro/financeiro-categorias"));
 
 
 const routes = [
@@ -42,16 +35,10 @@ const routes = [
   // login não é protegido
   { path: "/login", element: <TelaLogin />, protected: false },
 
-  // rotas do financeiro
-  { path: "/financeiro", element: <Financeiro />, protected: true },
-  { path: "/financeiro-contas-a-pagar", element: <FinanceiroContasAPagar />, protected: true },
-  { path: "/financeiro-contas-a-receber", element: <FinanceiroContasAReceber />, protected: true },
-  { path: "/financeiro-contas-fixas", element: <ContasFixas />, protected: true },
-  { path: "/financeiro-categorias", element: <FinanceiroCategorias />, protected: true },
+  // Condominios
+  { path: "/condominios", element: <Condominios />, protected: true },
 
-  // rotas de estoque
-  { path: "/estoque", element: <EstoqueControle />, protected: true },
-  { path: "/estoque-categorias", element: <EstoqueCategorias />, protected: true },
+  
 ];
 
 const Rotas = () => {

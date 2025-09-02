@@ -3,12 +3,8 @@ import { AuthContext } from "../../context/AuthContext";
 import { useMenu } from "../../context/MenuContext";
 
 import { RiHotelFill } from "react-icons/ri";
-import { IoPersonSharp } from "react-icons/io5";
 import { HiUsers } from "react-icons/hi";
-
-
 import { HiOutlineViewGrid } from "react-icons/hi";
-import { HiChartBar } from "react-icons/hi";
 import { HiLogin } from "react-icons/hi";
 
 import Swal from "sweetalert2";
@@ -66,18 +62,15 @@ const MenuLateral = () => {
           <OpcaoMenu nome="Dashboard" svg={<HiOutlineViewGrid size={25} />} rota="/" />
 
 
-          <OpcaoMenuComSubmenu nome="Condominios" svg={<RiHotelFill size={25} />}>
-            <OpcaoMenu nome="Produtos" rota="/estoque" />
-            <OpcaoMenu nome="Categorias" rota="/estoque-categorias"  />
-          </OpcaoMenuComSubmenu>
+          <OpcaoMenu nome="Condominios" rota="/condominios" 
+          svg={<RiHotelFill size={25} />}/>
 
-
-          <OpcaoMenuComSubmenu nome="Funcionarios" svg={<HiUsers size={25} />}>
+          {/* <OpcaoMenuComSubmenu nome="Funcionarios" svg={<HiUsers size={25} />}>
             <OpcaoMenu nome="Contas a pagar" rota="/financeiro-contas-a-pagar"/>
             <OpcaoMenu nome="Contas a receber" rota="/financeiro-contas-a-receber"/>
             <OpcaoMenu nome="Contas Fixas" rota="/financeiro-contas-fixas"/>
             <OpcaoMenu nome="Categorias" rota="/financeiro-categorias"/>
-          </OpcaoMenuComSubmenu>
+          </OpcaoMenuComSubmenu> */}
 
 
           

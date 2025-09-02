@@ -15,14 +15,13 @@ export function Button({
   disabled,
   ...rest
 }: ButtonProps) {
-  // ✅ Calcular o estado final de disabled
   const isDisabled = loading || disabled;
 
   return (
     <button
       {...rest}
       type={type}
-      disabled={isDisabled} // ✅ Usar a variável calculada
+      disabled={isDisabled} 
       onClick={onClick || (() => {})}
       className={`${className || ""} text-white px-4 min-h-10 py-2 mt-2 text-sm font-medium rounded-md cursor-pointer transition-all ${
         isDisabled 
