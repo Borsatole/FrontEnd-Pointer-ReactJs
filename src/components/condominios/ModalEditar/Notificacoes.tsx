@@ -1,20 +1,14 @@
 import { useEffect, useState } from "react";
 import { HiCheck, HiEye } from "react-icons/hi";
-import { Registros } from "../tipos";
+import { Notificacao, Registros } from "../tipos";
 import { IoIosNotifications } from "react-icons/io";
+import { Datas } from "@src/services/funcoes-globais";
+import { handleDeletar, editarRegistro } from "@src/services/Crud";
+import { MdDelete, MdMarkChatUnread } from "react-icons/md";
+import Tooltip from "@src/components/tooltip/tooltipwrapper";
 
-import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
+import { AiFillMessage } from "react-icons/ai";
 
-
-// Modelo de cada notificação
-interface Notificacao {
-  id: number;
-  titulo: string;
-  mensagem: string;
-  lida: boolean;
-  avatar?: string;
-  data?: string;
-}
 
 // Props do componente
 interface NotificacoesProps {
@@ -26,7 +20,6 @@ interface NotificacoesProps {
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-
 export function Notificacoes({
   selectedProduto,
   setSelectedProduto,
@@ -35,128 +28,258 @@ export function Notificacoes({
   setRelistar,
   setLoadingSpiner
 }: NotificacoesProps) {
-  
+  const { dataFormatada } = Datas();
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
-
+  const [expandida, setExpandida] = useState<number | null>(null);
 
   // Busca registro atual
   const registro = registros.find((p) => p.id === selectedProduto?.id);
 
-  if (!registro) return null;
+  // Early return se não há registro
+  if (!registro) {
+    return (
+      <div className="flex items-center justify-center p-8 text-gray-500">
+        <span>Nenhum registro selecionado</span>
+      </div>
+    );
+  }
 
+  // Effect para sincronizar notificações
   useEffect(() => {
-    if (registro) {
+    if (registro?.notificacoes) {
       setNotificacoes(registro.notificacoes as Notificacao[]);
+    } else {
+      setNotificacoes([]);
     }
-
   }, [registro]);
 
+  // Função para marcar notificação como lida
+  const marcarLida = async (id: number, event: React.MouseEvent) => {
+    event.stopPropagation(); // Evita expandir o card ao clicar no botão
 
+    // Atualiza estado local imediatamente para UX responsivo
+    setNotificacoes((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
+    );
 
-  
+    const data = { id, lida: true };
 
-  const [expandida, setExpandida] = useState<number | null>(null);
+    try {
+      setLoadingSpiner(true);
+      await editarRegistro<Notificacao>({
+        data,
+        registros: registros as any,
+        setRegistros: setRegistros as any,
+        setSelected: () => {},
+        setRelistar,
+        setLoadingSpiner,
+        endpoint: "/condominios/notificacoes/Update.php",
+      });
+    } catch (error) {
+      // Em caso de erro, reverte o estado local
+      setNotificacoes((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, lida: false } : n))
+      );
+      console.error("Erro ao marcar notificação como lida:", error);
+    }
+  };
 
-  const marcarLida = async (id: number) => {
-  setNotificacoes((prev) =>
-    prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
-  );
+  const marcarNaoLida = async (id: number, event: React.MouseEvent) => {
+    event.stopPropagation(); // Evita expandir o card ao clicar no botão
 
-  const data = {
-    nome: registro?.notificacoes.find((n) => n.id === id)?.titulo,
-    id: id,
-    lida: true
-};
- 
+    // Atualiza estado local imediatamente para UX responsivo
+    setNotificacoes((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
+    );
 
-  await handleDeletar({
-    registro: data,
-    setRelistar,
-    endpoint: "/condominios/notificacoes/Delete.php",
-  });
+    const data = { id, lida: false };
 
-  setRelistar(true);
-};
+    try {
+      setLoadingSpiner(true);
+      await editarRegistro<Notificacao>({
+        data,
+        registros: registros as any,
+        setRegistros: setRegistros as any,
+        setSelected: () => {},
+        setRelistar,
+        setLoadingSpiner,
+        endpoint: "/condominios/notificacoes/Update.php",
+      });
+    } catch (error) {
+      // Em caso de erro, reverte o estado local
+      setNotificacoes((prev) =>
+        prev.map((n) => (n.id === id ? { ...n, lida: false } : n))
+      );
+      console.error("Erro ao marcar notificação como lida:", error);
+    }
+  };
 
+  // Função para deletar notificação
+  const deletarNotificacao = async (id: number, event: React.MouseEvent) => {
+    event.stopPropagation(); // Evita expandir o card ao clicar no botão
 
+    const notificacao = notificacoes.find((n) => n.id === id);
+    if (!notificacao) return;
+
+    const data = {
+      nome: notificacao.titulo || "Notificação",
+      id: id,
+      lida: true
+    };
+
+    try {
+      await handleDeletar({
+        registro: data,
+        setRelistar,
+        endpoint: "/condominios/notificacoes/Delete.php",
+      });
+          } catch (error) {
+      console.error("Erro ao deletar notificação:", error);
+    }
+  };
+
+  // Função para alternar expansão do card
   const toggleExpandir = (id: number) => {
     setExpandida(expandida === id ? null : id);
   };
 
+  // Se não há notificações
+  if (!notificacoes || notificacoes.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 text-gray-500">
+        <IoIosNotifications size={48} className="mb-4 opacity-50" />
+        <span className="text-lg font-medium">Nenhuma notificação</span>
+        <span className="text-sm">Todas as notificações aparecerão aqui</span>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-3">
-      {notificacoes.map((n) => (
-        <div
-          key={n.id}
-          className={`
-            p-4 rounded-lg border transition-all duration-200 hover:shadow-md
-            ${
-              n.lida
-                ? 'bg-[var(--base-color)] border-[var(--base-variant)] opacity-20'
-                : 'bg-[var(--base-color)] border-[var(--corPrincipal)]/30  shadow-sm'
-            }
-          `}
-        >
-          <div className="flex items-start space-x-3">
-            {/* Avatar */}
-            <div className="relative shrink-0 p-1 bg-[var(--base-variant)] rounded-full">
-              <IoIosNotifications  size={30}/>
-              {!n.lida && (
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-[var(--corPrincipal)] rounded-full border-2 border-white dark:border-gray-800" />
-              )}
-            </div>
+      {notificacoes
+        .slice() // Cria uma cópia para não alterar o estado original
+        .sort((a, b) => Number(a.lida) - Number(b.lida)) // Não lidas primeiro
+        .map((notificacao) => (
+          <div
+            key={notificacao.id}
+            className={`
+              p-4 rounded-lg border transition-all duration-200 hover:shadow-md
+              ${
+                notificacao.lida
+                  ? 'bg-[var(--base-color)] border-[var(--base-variant)]'
+                  : 'bg-[var(--corPrincipal)]/10 border-[var(--corPrincipal)]/30 shadow-sm'
+              }
+            `}
+          >
+            <div className="flex items-start space-x-3">
+              {/* Avatar com indicador de não lida */}
+              <div className="relative shrink-0 p-1 bg-[var(--base-variant)] rounded-full">
+                <AiFillMessage size={30} color="var(--corPrincipal)"/>
 
-            {/* Conteúdo */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center justify-between mb-1">
-                <h3 className={`text-sm font-medium ${
-                  n.lida 
-                    ? 'text-[var(--text-color)]' 
-                    : 'text-[var(--text-color)]'
-                }`}>
-                  {n.titulo}
-                </h3>
-                <span className="text-xs  shrink-0 ml-2">{n.data}</span>
+                {!notificacao.lida && (
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-[var(--corPrincipal)] rounded-full border-2 border-white" />
+                )}
               </div>
-              
-              <p className={`text-xs ${
-                expandida === n.id ? '' : 'line-clamp-2'
-              } ${
-                n.lida
-                  ? 'text-gray-500 '
-                  : 'text-gray-500 '
-              }`}>
-                {n.mensagem}
-              </p>
-            </div>
 
-            {/* Botões de ação */}
-            <div className="flex items-center space-x-1 shrink-0">
-              {/* Botão ver mensagem completa */}
-              <button
-                onClick={() => toggleExpandir(n.id)}
-                className="p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
-                title={expandida === n.id ? "Recolher mensagem" : "Ver mensagem completa"}
-              >
-                <HiEye className={`w-4 h-4 transition-transform ${expandida === n.id ? 'rotate-180' : ''}`} />
-              </button>
+              {/* Conteúdo principal */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className={`text-sm font-medium ${
+                    notificacao.lida 
+                      ? 'text-[var(--text-color)]' 
+                      : 'text-[var(--text-color)] font-semibold'
+                  }`}>
+                    {notificacao.titulo || 'Notificação'}
+                  </h3>
+                  <span className="text-xs text-gray-500 shrink-0 ml-2">
+                    {dataFormatada(notificacao.data)}
+                  </span>
+                </div>
+                
+                {/* Mensagem com expansão */}
+                <p className={`text-xs ${
+                  expandida === notificacao.id ? '' : 'line-clamp-2'
+                } ${
+                  notificacao.lida
+                    ? 'text-gray-500' 
+                    : 'text-gray-600'
+                }`}>
+                  {notificacao.mensagem || 'Sem conteúdo'}
+                </p>
 
-              {/* Botão marcar como lida */}
-              {!n.lida && (
+                {/* Botão para expandir se a mensagem for longa */}
+                {notificacao.mensagem && notificacao.mensagem.length > 100 && (
+                  <button
+                    onClick={() => toggleExpandir(notificacao.id)}
+                    className="text-xs text-[var(--corPrincipal)] hover:underline mt-1"
+                  >
+                    {expandida === notificacao.id ? 'Ver menos' : 'Ver mais'}
+                  </button>
+                )}
+              </div>
+
+              {/* Botões de ação */}
+              <div className="flex items-center space-x-1 shrink-0">
+                {/* Botão para expandir/recolher */}
+
+                <Tooltip tooltip="Ver mensagem">
                 <button
-                  onClick={() => marcarLida(n.id)}
-                  className="p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
-                  title="Marcar como lida"
+                  onClick={() => toggleExpandir(notificacao.id)}
+                  className="cursor-pointer p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
+                  
                 >
-                  <HiCheck className="w-4 h-4" />
+                  <HiEye className={`w-4 h-4 transition-transform ${
+                    expandida === notificacao.id ? 'rotate-180' : ''
+                  }`} />
                 </button>
-              )}
+                </Tooltip>
+
+                
+
+                {notificacao.lida? (
+                  <>
+
+                  <Tooltip tooltip="Marcar como nao lida">
+                  <button
+                    onClick={(e) => marcarNaoLida(notificacao.id, e)}
+                    className="cursor-pointer p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
+                    
+                  >
+                    <MdMarkChatUnread className="w-4 h-4" />
+
+                  </button>
+                  </Tooltip>
+                
+                  </>) : (
+                  <>
+
+                  <Tooltip tooltip="Marcar como lida">
+                  <button
+                    onClick={(e) => marcarLida(notificacao.id, e)}
+                    className="cursor-pointer p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
+                   
+                  >
+                    <HiCheck className="w-4 h-4" />
+                  </button>
+                  </Tooltip>
+                
+                  </>
+                )}
+
+                {/* Botão deletar */}
+                <Tooltip tooltip="Deletar notificação">
+                <button
+                  onClick={(e) => deletarNotificacao(notificacao.id, e)}
+                  className="cursor-pointer p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
+                  
+                >
+                  <MdDelete className="w-4 h-4" />
+                </button>
+                </Tooltip>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
-
-    
+        ))}
     </div>
   );
 }

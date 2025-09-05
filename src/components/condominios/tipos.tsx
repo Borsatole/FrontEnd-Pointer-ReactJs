@@ -5,15 +5,16 @@ export interface Registros {
   nome: string;
   telefone?: string | number;
   rua?: string;
-  notificacoes: Notificacao[];
+  notificacoes?: Notificacao[];
 }
 
 export interface Notificacao {
   id: number;
   titulo?: string;
-  mensagem: string;
-  data: string;
-  lida: boolean;
+  mensagem?: string;
+  lida?: boolean;
+  avatar?: string;
+  data?: string;
 }
 
 export interface informacoes {

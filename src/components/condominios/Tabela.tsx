@@ -175,13 +175,21 @@ function Tabela() {
       <MostrarNumeroDeResultados totalResultados={totalResultados} />
 
       <LoadingSpiner loading={loadingSpiner}>
-        <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-2 mt-3">
-          {registros.map((registro) => (
-            <CardCondominio setSelectedProduto={setSelectedProduto} key={registro.id} Registro={registro} />
-          ))}
+  <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-2 mt-3">
+    {registros
+      .slice() // copia para não alterar o state original
+      .sort((a, b) => (b.notificacoes?.length || 0) - (a.notificacoes?.length || 0))
 
-        </div>
-      </LoadingSpiner>
+      .map((registro) => (
+        <CardCondominio
+          setSelectedProduto={setSelectedProduto}
+          key={registro.id}
+          Registro={registro}
+        />
+      ))}
+  </div>
+</LoadingSpiner>
+
 
 
       {selectedProduto && (
@@ -279,7 +287,7 @@ export function CardCondominio({
             text-[var(--text-color)] 
             rounded-full px-1.5
             
-            ">{Registro.notificacoes.length}</Badge>
+            ">{Registro.notificacoes?.length || 0}</Badge>
           </Button>
           
           <a href="#" className="flex 

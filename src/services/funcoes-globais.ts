@@ -13,15 +13,30 @@ export function Datas() {
 
   const dataDeHoje = new Date().toISOString().split("T")[0];
 
-  const dataFormatada = (data: string | Date) => {
-  if (!data) return "";
-  const [ano, mes, dia] = data.toString().split("-").map(Number);
-  return `${dia.toString().padStart(2, "0")}/${mes.toString().padStart(2, "0")}/${ano}`;
-};
+  const dataFormatada = (data?: string | Date | null) => {
+    if (!data) return "";
 
+    // Se já for objeto Date válido
+    if (data instanceof Date && !isNaN(data.getTime())) {
+      return data.toLocaleDateString("pt-BR");
+    }
+
+    if (typeof data === "string") {
+      // Sempre pega só a parte da data (YYYY-MM-DD)
+      const soData = data.split(" ")[0]; 
+
+      if (/^\d{4}-\d{2}-\d{2}$/.test(soData)) {
+        const [ano, mes, dia] = soData.split("-").map(Number);
+        return `${String(dia).padStart(2, "0")}/${String(mes).padStart(2, "0")}/${ano}`;
+      }
+    }
+
+    return ""; // fallback seguro
+  };
 
   return { primeiroDia, ultimoDia, dataFormatada, dataDeHoje };
 }
+
 
 export function Valores() {
   const dinheiro = (valor: number) =>
