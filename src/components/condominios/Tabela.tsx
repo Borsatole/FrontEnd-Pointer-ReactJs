@@ -23,42 +23,72 @@ function Tabela() {
 
   // Estados principais
   const [registros, setRegistros] = useState<Registros[]>([
-    {
-      id: 0, nome: "Belvedere", notificacoes: [
-        {
-          id: 0,
-          mensagem: "Ola, tudo bem?",
-          tipo: "success",
-          data: "2022-12-12",
-          visto: false
-        },
-        {
-          id: 1,
-          mensagem: "Ola, tudo bem?",
-          tipo: "success",
-          data: "2022-12-12",
-          visto: false
-        },
-        {
-          id: 2,
-          mensagem: "Ola, tudo bem?",
-          tipo: "success",
-          data: "2022-12-12",
-          visto: false
-        },
+  {
+    id: 0,
+    nome: "Belvedere",
+    telefone: 14997172257,
+    rua: "Rua Belvedere",
+    notificacoes: [
+      {
+        id: 0,
+        titulo: "Assembleia marcada",
+        mensagem: "A próxima assembleia ocorrerá dia 20/09 às 19h no salão de festas.",
+        data: "2025-09-01 18:30",
+        lida: false,
+      },
+      {
+        id: 1,
+        titulo: "Pagamento em atraso",
+        mensagem: "O morador do apto 203 está com a taxa condominial em atraso há 15 dias.",
+        data: "2025-09-02 10:15",
+        lida: false,
+      },
+      {
+        id: 2,
+        titulo: "Manutenção programada",
+        mensagem: "A limpeza da caixa d’água será realizada no dia 10/09 das 8h às 12h.",
+        data: "2025-09-03 09:00",
+        lida: false,
+      },
+      {
+        id: 3,
+        titulo: "Ocorrência registrada",
+        mensagem: "Foi registrada reclamação de barulho no apto 502 após 23h. Foi registrada reclamação de barulho no apto 502 após 23h. Foi registrada reclamação de barulho no apto 502 após 23h.",
+        data: "2025-09-04 23:45",
+        lida: false,
+      },
+      {
+        id: 4,
+        titulo: "Serviço concluído",
+        mensagem: "A troca das lâmpadas do estacionamento foi concluída com sucesso.",
+        data: "2025-09-05 14:20",
+        lida: true,
+      },
+    ],
+  },
+  { id: 1, nome: "Plaza D' España", notificacoes: [] },
+  { id: 2, nome: "Piazza San Marco", notificacoes: [] },
+  { id: 3, nome: "Park de France", notificacoes: [] },
+  { id: 4, nome: "Infante Dom Henrique", notificacoes: [] },
+  { id: 5, nome: "Edmundo Pellini", notificacoes: [] },
+  { id: 6, nome: "Lumina Home", notificacoes: [] },
+  { id: 7, nome: "Lumina Office", notificacoes: [] },
+  { id: 8, nome: "Enseada", notificacoes: [] },
+  { id: 9, nome: "Enseada", notificacoes: [] },
+  { id: 10, nome: "Caiobá", notificacoes: [] },
+  { id: 11, nome: "Villagio Belvedere", notificacoes: [] },
+  { id: 12, nome: "La Savina", notificacoes: [] },
+  { id: 13, nome: "Pasárgada", notificacoes: [] },
+  { id: 14, nome: "Premiato", notificacoes: [] },
+  { id: 15, nome: "Araucária", notificacoes: [] },
+  { id: 16, nome: "Fontainebleau", notificacoes: [] },
+]);
 
-      ]
-    },
-    { id: 1, nome: "Villagio |", notificacoes: [] },
-    { id: 2, nome: "Al Koneitra", notificacoes: [] },
-    { id: 3, nome: "Villagio ||", notificacoes: [] },
-    { id: 4, nome: "Tamboré", notificacoes: [] },
-  ]);
   const [selectedProduto, setSelectedProduto] = useState<Registros | null>(null);
 
   // Estados de paginação
   const [pagina, setPagina] = useState(1);
-  const [limitePorPagina, setLimitePorPagina] = useState(5);
+  const [limitePorPagina, setLimitePorPagina] = useState(10000);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [totalResultados, setTotalResultados] = useState(0);
 
@@ -116,12 +146,12 @@ function Tabela() {
       limite: limitePorPagina.toString(),
     });
 
-    requisicaoGet(`/Estoque/categoria/Read.php?${params.toString()}`)
+    requisicaoGet(`/condominios/Read.php?${params.toString()}`)
       .then((response) => {
         if (response?.data.success) {
-          // setRegistros(response.data.Registros);
-          // setTotalResultados(response.data.total_registros);
-          // setTotalPaginas(response.data.total_paginas);
+          setRegistros(response.data.Registros);
+          setTotalResultados(response.data.total_registros);
+          setTotalPaginas(response.data.total_paginas);
         }
 
         setLoadingSpiner(false);

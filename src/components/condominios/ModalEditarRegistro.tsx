@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from "react";
-import { Spinner, TabItem, Tabs } from "flowbite-react";
+import { Spinner} from "flowbite-react";
 import Modal from "@components/modal/Modal";
-import { Input } from "@components/comum/input";
-import { FormGroup } from "@components/comum/FormGroup";
-import { Button } from "@components/comum/button";
-import { informacoes, Registros } from "./tipos";
-import { editarRegistro } from "@src/services/Crud";
+import { Registros } from "./tipos";
+
 import { MdDashboard } from "react-icons/md";
 import { RiHotelFill } from "react-icons/ri";
+
 import { IoIosNotifications } from "react-icons/io";
+import { Tabs, TabConfig } from "../comum/tabs";
+import { Notificacoes } from "./ModalEditar/Notificacoes";
+import { Informacoes } from "./ModalEditar/Info";
+
 
 interface ModalEditarProdutoProps {
   selectedProduto: Registros | null;
@@ -31,7 +33,54 @@ function ModalEditarRegistro({
 
   const fecharModal = () => setSelectedProduto(null);
 
+  
+
   if (!selectedProduto) return null;
+
+
+    // Configuração das tabs usando o tipo TabConfig
+  const tabsConfig: TabConfig[] = [
+    {
+      id: 'dashboard',
+      title: "Dashboard",
+      icon: <MdDashboard />, // Substitua por: <BarChart3 />
+      content: <div className="p-4">Conteúdo do Dashboard</div>
+    },
+    {
+      id: 'notifications',
+      title: "Notificações", 
+      icon: <IoIosNotifications />,
+      content: <Notificacoes
+          selectedProduto={selectedProduto}
+          setSelectedProduto={setSelectedProduto}
+          registros={registros}
+          setRegistros={setRegistros}
+          setRelistar={setRelistar}
+          setLoadingSpiner={setLoadingSpiner}
+      />
+    },
+    
+    {
+      id: 'informations',
+      title: "Informações",
+      icon: <RiHotelFill />,
+      content: (
+        <Informacoes
+          selectedProduto={selectedProduto}
+          setSelectedProduto={setSelectedProduto}
+          registros={registros}
+          setRegistros={setRegistros}
+          setRelistar={setRelistar}
+          setLoadingSpiner={setLoadingSpiner}
+        />
+      )
+    }
+  ];
+
+  const handleTabChange = (tabId: string | number) => {
+    // console.log('Tab ativa:', tabId);
+  };
+
 
   if (isLoadingInit) {
     return (
@@ -45,29 +94,14 @@ function ModalEditarRegistro({
 
   return (
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-[80vh]">
-      <div className="overflow-x-auto">
-        <Tabs aria-label="Full width tabs" variant="fullWidth">
+      <div className="p-0">
 
-          <TabItem active title="Dashboard" icon={MdDashboard}>
-            Conteúdo do Dashboard
-          </TabItem>
+         <Tabs 
+          tabs={tabsConfig}
+          defaultActive="dashboard"
+          onTabChange={handleTabChange}
+        />
 
-          <TabItem title="Notificações" icon={IoIosNotifications}>
-            Conteúdo de Contatos
-          </TabItem>
-
-          <TabItem title="Informações" icon={RiHotelFill}>
-            <Informacoes
-              selectedProduto={selectedProduto}
-              setSelectedProduto={setSelectedProduto}
-              registros={registros}
-              setRegistros={setRegistros}
-              setRelistar={setRelistar}
-              setLoadingSpiner={setLoadingSpiner}
-            />
-          </TabItem>
-          
-        </Tabs>
       </div>
     </Modal>
   );
@@ -75,114 +109,5 @@ function ModalEditarRegistro({
 
 export default ModalEditarRegistro;
 
-// =======================
-// Formulário de Edição
-// =======================
 
-interface InformacoesProps {
-  selectedProduto: Registros | null;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<Registros | null>>;
-  registros: Registros[];
-  setRegistros: React.Dispatch<React.SetStateAction<Registros[]>>;
-  setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
-  setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
-}
-
-export function Informacoes({
-  selectedProduto,
-  setSelectedProduto,
-  registros,
-  setRegistros,
-  setRelistar,
-  setLoadingSpiner,
-}: InformacoesProps) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Refs dos campos
-  const refs = {
-    nome: useRef<HTMLInputElement>(null),
-    setor: useRef<HTMLSelectElement>(null),
-    rua: useRef<HTMLInputElement>(null),
-  };
-
-  // Busca registro atual
-  const registro = registros.find((p) => p.id === selectedProduto?.id);
-
-  // Preenche os campos ao abrir
-  useEffect(() => {
-    if (!registro) return;
-    if (refs.nome.current) {
-      refs.nome.current.value = registro.nome || "";
-    }
-    if (refs.rua.current) {
-      // aqui só funciona se "registro" tiver a propriedade "rua"
-      // senão você deve mudar "registro" para ser do tipo "informacoes"
-      (refs.rua.current as HTMLInputElement).value = (registro as any).rua || "";
-    }
-  }, [registro]);
-
-  // Coleta dados do form
-  const coletarDadosFormulario = (): informacoes => ({
-    id: Number(selectedProduto!.id),
-    nome: refs.nome.current?.value || "",
-    rua: refs.rua.current?.value || "",
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    setIsLoading(true);
-    try {
-      const produtoEditado = coletarDadosFormulario();
-      console.log(produtoEditado);
-
-      // await editarRegistro<informacoes>({
-      //   data: produtoEditado,
-      //   setRelistar,
-      //   setSelected: setSelectedProduto,
-      //   setLoadingSpiner,
-      //   registros,
-      //   setRegistros,
-      //   endpoint: "/Estoque/categoria/Update.php",
-      // });
-      // setSelectedProduto(null);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4 p-5">
-      {/* Campo Nome / Condomínio */}
-      <FormGroup label="Condomínio" id="nome">
-        <Input
-          id="nome"
-          type="text"
-          inputRef={refs.nome}
-          required
-          disabled={isLoading}
-        />
-      </FormGroup>
-
-      {/* Campo Rua */}
-      <FormGroup label="Rua" id="rua">
-        <Input
-          id="rua"
-          type="text"
-          inputRef={refs.rua}
-          disabled={isLoading}
-        />
-      </FormGroup>
-
-      <Button
-        type="submit"
-        loading={isLoading}
-        disabled={isLoading}
-        wsize="w-full mt-6"
-      >
-        Salvar Alterações
-      </Button>
-    </form>
-  );
-}
 

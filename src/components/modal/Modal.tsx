@@ -19,12 +19,12 @@ function Modal({ IsOpen, onClose, children, ...rest }: any) {
   return ReactDOM.createPortal(
     <div
       {...rest}
-      className="fixed inset-0 z-[30] bg-[var(--fundo-modal)]/90 flex items-center justify-center"
+      className="fixed inset-0  z-[30] bg-[var(--fundo-modal)]/90 flex items-center justify-center "
       onClick={onClose} // Clique fora fecha o modal
     >
       <div
         {...rest}
-        className={`relative p-8 rounded w-[95%] lg:w-[55%] min-h-[60vh] max-h-[90vh] overflow-y-auto ${rest.className}`}
+        className={`relative p-12  rounded w-[95%] lg:w-[55%] min-h-[60vh] max-h-[90vh] overflow-y-auto ${rest.className}`}
         style={{ backgroundColor: "var(--base-variant)" }}
         onClick={(e) => e.stopPropagation()} // Impede fechar clicando dentro
       >
