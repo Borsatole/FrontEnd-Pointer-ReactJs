@@ -6,6 +6,7 @@ export interface Registros {
   telefone?: string | number;
   rua?: string;
   notificacoes?: Notificacao[];
+  visitas?: Visitas[]
 }
 
 export interface Notificacao {
@@ -15,6 +16,13 @@ export interface Notificacao {
   lida?: boolean;
   avatar?: string;
   data?: string;
+}
+
+export interface Visitas {
+  id: number;
+  id_condominio: number;
+  entrada: string;
+  saida: string;
 }
 
 export interface informacoes {

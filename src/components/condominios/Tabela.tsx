@@ -4,7 +4,6 @@ import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/
 import {  Registros } from "./tipos";
 import { requisicaoGet } from "@services/requisicoes";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
-import { FaEdit, FaTag, FaTrashAlt } from "react-icons/fa";
 import { RiHotelFill } from "react-icons/ri";
 
 
@@ -87,9 +86,6 @@ function Tabela() {
   const [selectedProduto, setSelectedProduto] = useState<Registros | null>(null);
 
   // Estados de paginação
-  const [pagina, setPagina] = useState(1);
-  const [limitePorPagina, setLimitePorPagina] = useState(10000);
-  const [totalPaginas, setTotalPaginas] = useState(1);
   const [totalResultados, setTotalResultados] = useState(0);
 
   // Estados de controle
@@ -100,41 +96,6 @@ function Tabela() {
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
 
 
-  // Configuração das colunas da tabela
-  const colunas: ColunaConfig<Registros>[] = [
-    {
-      key: "nome",
-      label: "NOME",
-      render: (registro) => PrimeraLetraMaiuscula(registro.nome),
-    }
-
-  ];
-
-  // Configuração das ações da tabela
-  const acoes: AcaoConfig<Registros>[] = [
-    {
-      icon: <FaEdit className="w-5 h-5 cursor-pointer" />,
-      tooltip: "Editar",
-      onClick: (registro) => setSelectedProduto(registro),
-    },
-    {
-      icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
-      tooltip: "Deletar",
-      onClick: (registro) =>
-        handleDeletar({
-          registro,
-          setRelistar,
-          endpoint: "/Estoque/categoria/Delete.php"
-        }),
-    },
-  ];
-
-  // Função para renderizar o ícone de cada linha
-  const iconeItem = () => (
-    <div className="bg-[var(--base-color)] rounded-full">
-      <FaTag className="w-12 h-12 p-3" color="var(--corPrincipal)" />
-    </div>
-  );
 
   // Buscar dados da API com filtro
   useEffect(() => {
@@ -142,8 +103,7 @@ function Tabela() {
 
     // Constrói parâmetros da URL com filtro
     const params = new URLSearchParams({
-      pagina: pagina.toString(),
-      limite: limitePorPagina.toString(),
+      
     });
 
     requisicaoGet(`/condominios/Read.php?${params.toString()}`)
@@ -151,14 +111,13 @@ function Tabela() {
         if (response?.data.success) {
           setRegistros(response.data.Registros);
           setTotalResultados(response.data.total_registros);
-          setTotalPaginas(response.data.total_paginas);
         }
 
         setLoadingSpiner(false);
         setRelistar(false);
         setLoading(false);
       });
-  }, [pagina, limitePorPagina, relistar]);
+  }, [relistar]);
 
 
   if (loading) return <LoadingSkeleton />;

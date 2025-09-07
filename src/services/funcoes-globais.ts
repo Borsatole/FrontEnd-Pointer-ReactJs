@@ -34,7 +34,9 @@ export function Datas() {
     return ""; // fallback seguro
   };
 
-  return { primeiroDia, ultimoDia, dataFormatada, dataDeHoje };
+  const dataFormataComHora = (data: string | Date) => new Date(data).toLocaleString();
+
+  return { primeiroDia, ultimoDia, dataFormatada, dataDeHoje, dataFormataComHora };
 }
 
 

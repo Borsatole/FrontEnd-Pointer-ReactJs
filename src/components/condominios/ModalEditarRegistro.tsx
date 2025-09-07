@@ -10,6 +10,7 @@ import { IoIosNotifications } from "react-icons/io";
 import { Tabs, TabConfig } from "../comum/tabs";
 import { Notificacoes } from "./ModalEditar/Notificacoes";
 import { Informacoes } from "./ModalEditar/Info";
+import { Dashboard } from "./ModalEditar/Dashboard";
 
 
 interface ModalEditarProdutoProps {
@@ -33,8 +34,6 @@ function ModalEditarRegistro({
 
   const fecharModal = () => setSelectedProduto(null);
 
-  
-
   if (!selectedProduto) return null;
 
 
@@ -43,8 +42,15 @@ function ModalEditarRegistro({
     {
       id: 'dashboard',
       title: "Dashboard",
-      icon: <MdDashboard />, // Substitua por: <BarChart3 />
-      content: <div className="p-4">Conteúdo do Dashboard</div>
+      icon: <MdDashboard />,
+      content: <Dashboard
+          selectedProduto={selectedProduto}
+          setSelectedProduto={setSelectedProduto}
+          registros={registros}
+          setRegistros={setRegistros}
+          setRelistar={setRelistar}
+          setLoadingSpiner={setLoadingSpiner}
+      />
     },
     {
       id: 'notifications',
