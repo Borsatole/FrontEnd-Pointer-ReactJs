@@ -3,7 +3,7 @@
 export interface Registros {
   id: number;
   nome: string;
-  telefone?: string | number;
+  telefone?: string;
   rua?: string;
   notificacoes?: Notificacao[];
   visitas?: Visitas[]

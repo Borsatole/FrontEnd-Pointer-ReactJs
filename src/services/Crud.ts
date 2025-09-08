@@ -71,7 +71,7 @@ interface Editar<T extends BaseRegistro> {
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
   registros: T[];
   setRegistros: React.Dispatch<React.SetStateAction<T[]>>;
-  endpoint: string; // ex: "/Estoque/categoria/editar-categoria.php"
+  endpoint: string;
 }
 
 export async function editarRegistro<T extends BaseRegistro>({

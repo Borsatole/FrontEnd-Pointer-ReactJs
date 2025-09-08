@@ -8,6 +8,7 @@ import LoadingSpiner from "@src/components/loader/LoadingSpiner";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { MostrarNumeroDeResultados } from "@src/components/comum/tabelas";
 import { Card } from "@src/components/comum/card";
+import { Spinner } from "flowbite-react";
 
 
 
@@ -35,6 +36,7 @@ export function Dashboard({
   const [visitas, setVisitas] = useState<Visitas[]>([]);
   const [relistarVisitas, setRelistarVisitas] = useState(false);
 
+  const [loading, setLoading] = useState(true);
   const [loadingSpiner, setLoadingSpiner] = useState(false);
 
 
@@ -99,11 +101,20 @@ export function Dashboard({
       }
 
       setLoadingSpiner(false);
+      setLoading(false);
       setRelistar(false);
     });
 }, [registro?.id, relistarVisitas]);
 
 
+
+if (loading || !registro) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8">
+        <Spinner size="xl" className=" fill-[var(--corPrincipal)]" />
+      </div>
+    );
+  }
  
 
 
@@ -113,6 +124,7 @@ export function Dashboard({
       <div className="flex flex-col  items-center justify-center p-8 text-gray-500">
         <MdDashboard size={48} className="mb-4 opacity-50" />
         <span className="text-lg font-medium">Nada por aqui</span>
+        <span className="text-sm">Todas as informacoes de dashboards aparecerao aqui</span>
       </div>
     );
   }
@@ -122,12 +134,12 @@ export function Dashboard({
 
 
 
-      <div className="grid grid-cols-1 gap-3 ">
+      <div className="grid grid-cols-1 gap-3">
       <Card
         title="Numero de visitas"
         value={visitas.length.toString()}
         icon={<FaMapMarkerAlt />}
-        color="green"
+        color="padrao"
         className="mt-3 mb-3"
       />
       </div>

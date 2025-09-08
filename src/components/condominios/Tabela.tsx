@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Button } from "@components/comum/button";
-import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 import {  Registros } from "./tipos";
 import { requisicaoGet } from "@services/requisicoes";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
@@ -8,9 +7,7 @@ import { RiHotelFill } from "react-icons/ri";
 
 
 import LoadingSkeleton from "@src/components/loader/LoadingSkeleton";
-import { PrimeraLetraMaiuscula } from "@src/services/funcoes-globais";
 
-import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/TabelaDinamica";
 import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas";
 import ModalEditarRegistro from "./ModalEditarRegistro";
 import ModalAdicionarRegistro from "./ModalAdicionarRegistro";
@@ -21,67 +18,7 @@ import { CgAddR } from "react-icons/cg";
 function Tabela() {
 
   // Estados principais
-  const [registros, setRegistros] = useState<Registros[]>([
-  {
-    id: 0,
-    nome: "Belvedere",
-    telefone: 14997172257,
-    rua: "Rua Belvedere",
-    notificacoes: [
-      {
-        id: 0,
-        titulo: "Assembleia marcada",
-        mensagem: "A próxima assembleia ocorrerá dia 20/09 às 19h no salão de festas.",
-        data: "2025-09-01 18:30",
-        lida: false,
-      },
-      {
-        id: 1,
-        titulo: "Pagamento em atraso",
-        mensagem: "O morador do apto 203 está com a taxa condominial em atraso há 15 dias.",
-        data: "2025-09-02 10:15",
-        lida: false,
-      },
-      {
-        id: 2,
-        titulo: "Manutenção programada",
-        mensagem: "A limpeza da caixa d’água será realizada no dia 10/09 das 8h às 12h.",
-        data: "2025-09-03 09:00",
-        lida: false,
-      },
-      {
-        id: 3,
-        titulo: "Ocorrência registrada",
-        mensagem: "Foi registrada reclamação de barulho no apto 502 após 23h. Foi registrada reclamação de barulho no apto 502 após 23h. Foi registrada reclamação de barulho no apto 502 após 23h.",
-        data: "2025-09-04 23:45",
-        lida: false,
-      },
-      {
-        id: 4,
-        titulo: "Serviço concluído",
-        mensagem: "A troca das lâmpadas do estacionamento foi concluída com sucesso.",
-        data: "2025-09-05 14:20",
-        lida: true,
-      },
-    ],
-  },
-  { id: 1, nome: "Plaza D' España", notificacoes: [] },
-  { id: 2, nome: "Piazza San Marco", notificacoes: [] },
-  { id: 3, nome: "Park de France", notificacoes: [] },
-  { id: 4, nome: "Infante Dom Henrique", notificacoes: [] },
-  { id: 5, nome: "Edmundo Pellini", notificacoes: [] },
-  { id: 6, nome: "Lumina Home", notificacoes: [] },
-  { id: 7, nome: "Lumina Office", notificacoes: [] },
-  { id: 8, nome: "Enseada", notificacoes: [] },
-  { id: 9, nome: "Enseada", notificacoes: [] },
-  { id: 10, nome: "Caiobá", notificacoes: [] },
-  { id: 11, nome: "Villagio Belvedere", notificacoes: [] },
-  { id: 12, nome: "La Savina", notificacoes: [] },
-  { id: 13, nome: "Pasárgada", notificacoes: [] },
-  { id: 14, nome: "Premiato", notificacoes: [] },
-  { id: 15, nome: "Araucária", notificacoes: [] },
-  { id: 16, nome: "Fontainebleau", notificacoes: [] },
-]);
+  const [registros, setRegistros] = useState<Registros[]>([]);
 
   const [selectedProduto, setSelectedProduto] = useState<Registros | null>(null);
 

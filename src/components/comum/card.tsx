@@ -15,7 +15,7 @@ interface IndicatorCardProps {
   value?: string;
   description?: string;
   icon?: React.ReactNode;
-  color?: "blue" | "green" | "purple" | "orange" | "red";
+  color?: "padrao" | "blue" | "green" | "purple" | "orange" | "red";
   change?: CardChange;
   metric?: CardMetric;
   className?: string;
@@ -26,12 +26,17 @@ export function Card({
   value,
   description,
   icon,
-  color = "blue",
+  color = "padrao",
   change,
   metric,
   className = "",
 }: IndicatorCardProps) {
   const colorClasses = {
+    padrao: {
+      border: "before:bg-[var(--corPrincipal)]",
+      iconBg: "bg-[var(--corPrincipal)]/10",
+      iconColor: "text-[var(--corPrincipal)]",
+    },
     blue: {
       border: "before:bg-blue-600",
       iconBg: "bg-blue-600/10",

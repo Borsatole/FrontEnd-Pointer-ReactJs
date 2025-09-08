@@ -8,6 +8,8 @@ import { MdDelete, MdMarkChatUnread } from "react-icons/md";
 import Tooltip from "@src/components/tooltip/tooltipwrapper";
 
 import { AiFillMessage } from "react-icons/ai";
+import { requisicaoGet } from "@src/services/requisicoes";
+import { Spinner } from "flowbite-react";
 
 
 // Props do componente
@@ -28,31 +30,19 @@ export function Notificacoes({
   setRelistar,
   setLoadingSpiner
 }: NotificacoesProps) {
-  const { dataFormatada } = Datas();
+  const { primeiroDia, ultimoDia, dataFormataComHora, dataFormatada } = Datas();
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [expandida, setExpandida] = useState<number | null>(null);
+
+  const [relistarNotificacoes, setRelistarNotificacoes] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  
 
   // Busca registro atual
   const registro = registros.find((p) => p.id === selectedProduto?.id);
 
-  // Early return se não há registro
-  if (!registro) {
-    return (
-      <div className="flex items-center justify-center p-8 text-gray-500">
-        <span>Nenhum registro selecionado</span>
-      </div>
-    );
-  }
-
-  // Effect para sincronizar notificações
-  useEffect(() => {
-    if (registro?.notificacoes) {
-      setNotificacoes(registro.notificacoes as Notificacao[]);
-    } else {
-      setNotificacoes([]);
-    }
-  }, [registro]);
-
+  
   // Função para marcar notificação como lida
   const marcarLida = async (id: number, event: React.MouseEvent) => {
     event.stopPropagation(); // Evita expandir o card ao clicar no botão
@@ -65,23 +55,26 @@ export function Notificacoes({
     const data = { id, lida: true };
 
     try {
-      setLoadingSpiner(true);
       await editarRegistro<Notificacao>({
         data,
         registros: registros as any,
         setRegistros: setRegistros as any,
         setSelected: () => {},
-        setRelistar,
+        setRelistar: () => {},
         setLoadingSpiner,
         endpoint: "/condominios/notificacoes/Update.php",
       });
+
     } catch (error) {
       // Em caso de erro, reverte o estado local
       setNotificacoes((prev) =>
         prev.map((n) => (n.id === id ? { ...n, lida: false } : n))
       );
       console.error("Erro ao marcar notificação como lida:", error);
+    } finally {
+      setRelistarNotificacoes(true);
     }
+
   };
 
   const marcarNaoLida = async (id: number, event: React.MouseEvent) => {
@@ -95,13 +88,12 @@ export function Notificacoes({
     const data = { id, lida: false };
 
     try {
-      setLoadingSpiner(true);
       await editarRegistro<Notificacao>({
         data,
         registros: registros as any,
         setRegistros: setRegistros as any,
         setSelected: () => {},
-        setRelistar,
+        setRelistar: () => {},
         setLoadingSpiner,
         endpoint: "/condominios/notificacoes/Update.php",
       });
@@ -111,6 +103,8 @@ export function Notificacoes({
         prev.map((n) => (n.id === id ? { ...n, lida: false } : n))
       );
       console.error("Erro ao marcar notificação como lida:", error);
+    }finally {
+      setRelistarNotificacoes(true);
     }
   };
 
@@ -130,11 +124,13 @@ export function Notificacoes({
     try {
       await handleDeletar({
         registro: data,
-        setRelistar,
+        setRelistar: () => {},
         endpoint: "/condominios/notificacoes/Delete.php",
       });
           } catch (error) {
       console.error("Erro ao deletar notificação:", error);
+    } finally {
+      setRelistarNotificacoes(true);
     }
   };
 
@@ -142,6 +138,40 @@ export function Notificacoes({
   const toggleExpandir = (id: number) => {
     setExpandida(expandida === id ? null : id);
   };
+
+
+    // Buscar dados da API com filtro
+    useEffect(() => {
+    if (!registro) return; 
+  
+    setLoadingSpiner(true);
+  
+    const params = new URLSearchParams({
+      id_condominio: registro.id.toString(),
+    });
+  
+    requisicaoGet(`/condominios/notificacoes/Read.php?${params.toString()}`)
+      .then((response) => {
+        if (response?.data.success) {
+          setNotificacoes(response.data.Registros);
+        }
+        setRelistarNotificacoes(false);
+        setLoadingSpiner(false);
+        setLoading(false);
+
+      });
+  }, [registro?.id, relistarNotificacoes]);
+
+
+  // Early return se não há registro
+  if (loading || !registro) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8">
+        <Spinner size="xl" className=" fill-[var(--corPrincipal)]" />
+      </div>
+    );
+  }
+
 
   // Se não há notificações
   if (!notificacoes || notificacoes.length === 0) {

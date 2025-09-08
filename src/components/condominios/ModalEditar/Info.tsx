@@ -61,18 +61,17 @@ useEffect(() => {
     setIsLoading(true);
     try {
       const produtoEditado = coletarDadosFormulario();
-      console.log(produtoEditado);
 
-      // await editarRegistro<informacoes>({
-      //   data: produtoEditado,
-      //   setRelistar,
-      //   setSelected: setSelectedProduto,
-      //   setLoadingSpiner,
-      //   registros,
-      //   setRegistros,
-      //   endpoint: "/Estoque/categoria/Update.php",
-      // });
-      // setSelectedProduto(null);
+      await editarRegistro<Registros>({
+        data: produtoEditado,
+        setRelistar,
+        setSelected: setSelectedProduto,
+        setLoadingSpiner : () => {},
+        registros,
+        setRegistros,
+        endpoint: "/Condominios/Update.php",
+      });
+
     } finally {
       setIsLoading(false);
     }
