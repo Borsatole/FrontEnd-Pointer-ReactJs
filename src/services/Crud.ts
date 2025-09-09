@@ -135,10 +135,12 @@ export function adicionarRegistro<T extends BaseRegistro>({
         setRelistar(true);
         setAbrirModalNovoRegistro(false);
       } else {
+        
         Alerta("toast", "error", msg);
       }
     })
     .catch(() => {
+      
       Alerta("toast", "error", "Erro inesperado ao criar a requisição!");
     })
     .finally(() => {

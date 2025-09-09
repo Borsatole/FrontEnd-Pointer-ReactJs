@@ -27,6 +27,10 @@ const Home = lazy(() => import("./dashboard/dashboard"));
 //condominios
 const Condominios = lazy(() => import("./condominios/condominios"));
 
+// visitas
+const Visitas = lazy(() => import("./visitas/visita"));
+
+
 
 
 const routes = [
@@ -37,6 +41,9 @@ const routes = [
 
   // Condominios
   { path: "/condominios", element: <Condominios />, protected: true },
+
+  // Visitas
+  { path: "/visitas", element: <Visitas />, protected: true },
 
   
 ];

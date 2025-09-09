@@ -28,6 +28,7 @@ export default function TelaLogin() {
       if (response?.data.success && response.data.JWT) {
         Alerta("swal", "success", `${response.data.message}`);
         fecharMenu();
+        
         login(response.data.JWT);
         navigate("/");
       } else {
