@@ -60,7 +60,7 @@ export function Notificacoes({
         registros: registros as any,
         setRegistros: setRegistros as any,
         setSelected: () => {},
-        setRelistar: () => {},
+        setRelistar,
         setLoadingSpiner,
         endpoint: "/condominios/notificacoes/Update.php",
       });
@@ -93,7 +93,7 @@ export function Notificacoes({
         registros: registros as any,
         setRegistros: setRegistros as any,
         setSelected: () => {},
-        setRelistar: () => {},
+        setRelistar,
         setLoadingSpiner,
         endpoint: "/condominios/notificacoes/Update.php",
       });
@@ -124,7 +124,7 @@ export function Notificacoes({
     try {
       await handleDeletar({
         registro: data,
-        setRelistar: () => {},
+        setRelistar,
         endpoint: "/condominios/notificacoes/Delete.php",
       });
           } catch (error) {

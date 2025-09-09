@@ -74,7 +74,8 @@ function Tabela() {
   <div className="grid w-full grid-cols-1 md:grid-cols-3 gap-2 mt-3">
     {registros
       .slice() // copia para não alterar o state original
-      .sort((a, b) => (b.notificacoes?.length || 0) - (a.notificacoes?.length || 0))
+      .sort((a, b) => Number(b.notificacoes ?? 0) - Number(a.notificacoes ?? 0))
+
 
       .map((registro) => (
         <CardCondominio
@@ -134,6 +135,7 @@ export function CardCondominio({
   Registro,
   setSelectedProduto
 }: CardCondominio) {
+
   return (
       <Card className="min-w-[180px] bg-[var(--base-variant)] 
     border-2 border-[var(--base-color)]">
@@ -174,22 +176,28 @@ export function CardCondominio({
         <span className="text-sm text-[var(--text-color)]/50">Visual Designer</span>
 
         <div className="mt-4 flex flex-col justify-center items-center gap-2 ">
-          <Button
-            className="flex items-center"
-            onClick={() => setSelectedProduto(Registro)}>
-            Notificacoes
-            <Badge className="ms-2 
-            bg-[var(--base-variant)] hover:bg-[var(--base-variant)]
-            text-[var(--text-color)] 
-            rounded-full px-1.5
-            
-            ">{Registro.notificacoes?.length || 0}</Badge>
-          </Button>
+          {Number(Registro.notificacoes ?? 0) > 0 && (
+  <Button
+    className="flex items-center"
+    onClick={() => setSelectedProduto(Registro)}
+  >
+    Notificações
+    <Badge
+      className="ms-2 
+        bg-[var(--base-variant)] hover:bg-[var(--base-variant)]
+        text-[var(--text-color)] 
+        rounded-full px-1.5"
+    >
+      {Number(Registro.notificacoes)}
+    </Badge>
+  </Button>
+)}
+          
           
           <a href="#" className="flex 
           items-center 
           text-[var(--text-color)]/50
-          ">Ver Informaçoes</a>
+          " onClick={() => setSelectedProduto(Registro)}>Ver Informaçoes</a>
 
         </div>
       </div>

@@ -5,7 +5,7 @@ export interface Registros {
   nome: string;
   telefone?: string;
   rua?: string;
-  notificacoes?: Notificacao[];
+  notificacoes?: Number | string;
   visitas?: Visitas[]
 }
 
