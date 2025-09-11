@@ -69,7 +69,7 @@ useEffect(() => {
         setLoadingSpiner : () => {},
         registros,
         setRegistros,
-        endpoint: "/Condominios/Update.php",
+        endpoint: "/condominios/Update.php",
       });
 
     } finally {
@@ -95,7 +95,6 @@ useEffect(() => {
           id="telefone"
           type="phone"
           inputRef={refs.telefone}
-          required
           disabled={isLoading}
         />
       </FormGroup>

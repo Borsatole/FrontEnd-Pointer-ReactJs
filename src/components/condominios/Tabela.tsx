@@ -61,12 +61,12 @@ function Tabela() {
   return (
     <>
 
-      <div className="flex justify-between">
+      {/* <div className="flex justify-between">
         <Button onClick={() => setAbrirModalNovoRegistro(true)}>
           <p className="flex items-center gap-2">
             <CgAddR size={20} />
             <span>Criar Novo</span></p></Button>
-      </div>
+      </div> */}
 
       <MostrarNumeroDeResultados totalResultados={totalResultados} />
 
@@ -130,6 +130,7 @@ interface CardCondominio {
 }
 
 import { Badge, Card, Dropdown, DropdownItem } from "flowbite-react";
+import { MaxCaracteres } from "@src/services/funcoes-globais";
 
 export function CardCondominio({
   Registro,
@@ -140,7 +141,7 @@ export function CardCondominio({
       <Card className="min-w-[180px] bg-[var(--base-variant)] 
     border-2 border-[var(--base-color)]">
       <div >
-      <div className="flex px-4 pt-4">
+      {/* <div className="flex px-4 pt-4">
         <Dropdown inline label="">
           <DropdownItem>
             <a
@@ -167,13 +168,15 @@ export function CardCondominio({
             </a>
           </DropdownItem>
         </Dropdown>
-      </div>
+      </div> */}
       <div className="flex flex-col items-center">
         <RiHotelFill fill="var(--corPrincipal)" size={50} />
 
         <h5 className="mb-1 text-xl font-medium ">{Registro.nome}</h5>
 
-        <span className="text-sm text-[var(--text-color)]/50">Visual Designer</span>
+        <span className="text-sm text-[var(--text-color)]/50">{
+        MaxCaracteres(String(Registro.rua), 25)
+        }</span>
 
         <div className="mt-4 flex flex-col justify-center items-center gap-2 ">
           {Number(Registro.notificacoes ?? 0) > 0 && (

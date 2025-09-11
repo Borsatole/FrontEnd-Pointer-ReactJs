@@ -5,6 +5,7 @@ import { Button } from "@src/components/comum/button";
 import { adicionarRegistro } from "@src/services/Crud";
 import { QrReader } from "@blackbox-vision/react-qr-reader";
 import DefaultLayout from "@src/layouts/DefaultLayout";
+import { Alert } from "flowbite-react";
 
 export default function Dashboard() {
   const { logout } = useContext(AuthContext);
@@ -24,7 +25,7 @@ export default function Dashboard() {
     try {
       const id_condominio = parseInt(result, 10);
       if (isNaN(id_condominio)) {
-        console.error("QR Code inválido");
+        alert("QR Code inválido");
         return;
       }
 
@@ -35,17 +36,21 @@ export default function Dashboard() {
         setAbrirModalNovoRegistro: () => {},
         setLoadingSpiner: () => {},
       });
+
+      setTimeout(() => {
+        setResult(null);
+      }, 2000);
     } catch (err) {
       console.error(err);
     } finally {
       setIsLoading(false);
-      setResult(null);
       setEnviando(false);
     }
   };
 
   enviarRegistro();
 }, [result, enviando]);
+
 
   return (
     <>
@@ -62,16 +67,16 @@ export default function Dashboard() {
           <div className="relative w-full">
             <QrReader
               onResult={(res, error) => {
-                if (!!res) {
+                if (!!res && !enviando && !result) {
                   setResult(res.getText());
                 }
                 if (!!error) {
-                //   console.error(error);
-                console.clear();
+                  console.clear();
                 }
               }}
-              constraints={{ facingMode: "environment" }} // câmera traseira
+              constraints={{ facingMode: "environment" }}
             />
+
 
             
           </div>
