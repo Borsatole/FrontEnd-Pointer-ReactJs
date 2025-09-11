@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useMemo } from "react";
 import { AuthContext } from "@src/context/AuthContext";
 import { useMenu } from "@src/context/MenuContext";
 
@@ -11,7 +11,6 @@ import { OpcaoMenu, OpcaoMenuComSubmenu } from "@components/MenuLateral/OpcaoMen
 import { BtnFecharMenuLateral } from "@components/MenuLateral/botoesMenu";
 
 import "./MenuLateral.css";
-import { requisicaoGet } from "@src/services/requisicoes";
 
 // Tipagem para menus
 interface SubMenuItem {
@@ -29,38 +28,8 @@ interface MenuItem {
 }
 
 const MenuLateral = () => {
-  const { logout } = useContext(AuthContext);
+  const { logout, auth } = useContext(AuthContext);
   const { menuAberto, fecharMenu } = useMenu();
-
-  const [dadosUsuario, setDadosUsuario] = useState({
-    avatar: "",
-    nome: "",
-    email: "",
-    tipoDeUsuario: "",
-  });
-
-  useEffect(() => {
-    const carregarDados = async () => {
-      try {
-        const RotaApi = import.meta.env.VITE_API;
-        const response = await requisicaoGet("/usuarios/Dashboard.php");
-
-        if (response?.data?.InformacoesBasicas) {
-          const info = response.data.InformacoesBasicas;
-          setDadosUsuario({
-            avatar: `${RotaApi}/Backend/usuarios/avatar/${info.Avatar}`,
-            nome: info.NomeDoUsuario,
-            email: info.email,
-            tipoDeUsuario: info.TipoDeUsuario,
-          });
-        }
-      } catch (error) {
-        console.error("Erro ao carregar dados do Dashboard:", error);
-      }
-    };
-
-    carregarDados();
-  }, []);
 
   const ConfirmSair = () => {
     Swal.fire({
@@ -76,8 +45,8 @@ const MenuLateral = () => {
     });
   };
 
-  // Estrutura de menus
-  const menus: MenuItem[] = [
+  // Estrutura de menus - memoizada para melhor performance
+  const menus: MenuItem[] = useMemo(() => [
     {
       nome: "Dashboard",
       rota: "/",
@@ -106,7 +75,19 @@ const MenuLateral = () => {
     //     { nome: "Categorias", rota: "/financeiro-categorias" },
     //   ],
     // },
-  ];
+  ], []);
+
+
+  const menusPermitidos = useMemo(() => {
+    if (!auth.user) return menus.filter(menu => !menu.tipo);
+    
+    return menus.filter(menu => {
+      if (menu.tipo === "admin") {
+        return auth.user?.tipoDeUsuario === "admin";
+      }
+      return true;
+    });
+  }, [menus, auth.user]);
 
   return (
     <aside
@@ -130,10 +111,7 @@ const MenuLateral = () => {
       {/* Menus */}
       <div className="flex flex-col justify-between flex-1">
         <nav className="flex flex-col gap-3">
-          {menus.map((menu: MenuItem, index: number) => {
-            // Verifica permissão (ex: só admin)
-            if (menu.tipo === "admin" && dadosUsuario.tipoDeUsuario !== "admin") return null;
-
+          {menusPermitidos.map((menu: MenuItem, index: number) => {
             // Submenu
             if (menu.submenu) {
               return (
@@ -152,7 +130,7 @@ const MenuLateral = () => {
 
         {/* Logout */}
         <div className="mt-auto">
-          <hr className="my-6 border-white/10" />
+          <hr className=" border-white/10" />
           <OpcaoMenu nome="Sair" svg={<HiLogin size={25} />} onClick={ConfirmSair} />
         </div>
       </div>
