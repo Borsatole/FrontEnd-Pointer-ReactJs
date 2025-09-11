@@ -1,9 +1,7 @@
 
-import BarraSuperior from "@components/barraSuperior";
-import MenuLateral from "@components/MenuLateral/MenuLateral";
-import Container from "@components/comum/container";
 import { TituloPagina } from "@components/comum/Textos";
 import Tabela from "@components/condominios/Tabela"
+import DefaultLayout from "@src/layouts/DefaultLayout";
 
 
 export default function Dashboard() {
@@ -11,13 +9,10 @@ export default function Dashboard() {
 
   return (
     <>
-    <BarraSuperior />
-    <Container tipo="principal">
-      <MenuLateral />
+      <DefaultLayout>
       <TituloPagina>Condominios</TituloPagina>
       <Tabela />
-
-    </Container>
+      </DefaultLayout>
 
     </>
   );

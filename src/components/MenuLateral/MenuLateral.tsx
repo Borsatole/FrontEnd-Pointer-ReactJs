@@ -3,7 +3,7 @@ import { AuthContext } from "@src/context/AuthContext";
 import { useMenu } from "@src/context/MenuContext";
 
 import { RiHotelFill } from "react-icons/ri";
-import { HiOutlineViewGrid, HiUsers, HiLogin } from "react-icons/hi";
+import { HiOutlineViewGrid, HiLogin } from "react-icons/hi";
 import { BiQrScan } from "react-icons/bi";
 
 import Swal from "sweetalert2";

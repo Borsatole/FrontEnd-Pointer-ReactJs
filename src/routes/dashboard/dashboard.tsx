@@ -5,6 +5,7 @@ import MenuLateral from "@components/MenuLateral/MenuLateral";
 import Container from "@components/comum/container";
 import { TituloPagina } from "@components/comum/Textos";
 import { Alert } from "flowbite-react";
+import DefaultLayout from "@src/layouts/DefaultLayout";
 
 
 export default function Dashboard() {
@@ -12,9 +13,7 @@ export default function Dashboard() {
 
   return (
     <>
-    <BarraSuperior />
-    <Container tipo="principal">
-      <MenuLateral />
+    <DefaultLayout>
       <TituloPagina>Dashboard</TituloPagina>
 
       <Alert color="warning" withBorderAccent>
@@ -24,7 +23,7 @@ export default function Dashboard() {
     </Alert>
 
 
-    </Container>
+    </DefaultLayout>
 
     </>
   );

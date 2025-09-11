@@ -1,58 +1,56 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@src/context/AuthContext";
-import BarraSuperior from "@components/barraSuperior";
-import MenuLateral from "@components/MenuLateral/MenuLateral";
-import Container from "@components/comum/container";
 import { TituloPagina } from "@components/comum/Textos";
 import { Button } from "@src/components/comum/button";
 import { adicionarRegistro } from "@src/services/Crud";
 import { QrReader } from "@blackbox-vision/react-qr-reader";
+import DefaultLayout from "@src/layouts/DefaultLayout";
 
 export default function Dashboard() {
   const { logout } = useContext(AuthContext);
   const [result, setResult] = useState<string | null>(null);
   const [leitorAberto, setLeitorAberto] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [enviando, setEnviando] = useState(false);
+
 
   useEffect(() => {
-    if (!result) return;
+  if (!result || enviando) return;
 
-    const enviarRegistro = async () => {
+  const enviarRegistro = async () => {
+    setEnviando(true);
+    setIsLoading(true);
 
-      setIsLoading(true);
-      try {
-        // Supõe que o QR code contenha apenas o id_condominio
-        const id_condominio = parseInt(result, 10);
-        // const id_condominio = 160;
-        if (isNaN(id_condominio)) {
-          console.error("QR Code inválido");
-          return;
-        }
+    try {
+      const id_condominio = parseInt(result, 10);
+      if (isNaN(id_condominio)) {
+        console.error("QR Code inválido");
+        return;
+      }
 
-        await adicionarRegistro({
-        endpoint: "/condominios/visitas/Create",
+      await adicionarRegistro({
+        endpoint: "/condominios/visitas/Create.php",
         data: { id_condominio },
         setRelistar: () => setLeitorAberto(false),
         setAbrirModalNovoRegistro: () => {},
-        setLoadingSpiner: () => {}
-        });
+        setLoadingSpiner: () => {},
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+      setResult(null);
+      setEnviando(false);
+    }
+  };
 
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setIsLoading(false);
-        setResult(null); // reseta para poder ler outro QR Code
-      }
-    };
-
-    enviarRegistro();
-  }, [result]);
+  enviarRegistro();
+}, [result, enviando]);
 
   return (
     <>
-      <BarraSuperior />
-      <Container tipo="principal">
-        <MenuLateral />
+      <DefaultLayout>
+      
         <TituloPagina>Visita</TituloPagina>
 
         <Button onClick={() => setLeitorAberto((prev) => !prev)}>
@@ -75,14 +73,12 @@ export default function Dashboard() {
               constraints={{ facingMode: "environment" }} // câmera traseira
             />
 
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      <div className="w-[40vw] h-[50vh] border-9 border-[var(--corPrincipal)] rounded-lg"></div>
-    </div>
+            
           </div>
         )}
 
     
-      </Container>
+      </DefaultLayout>
     </>
   );
 }
