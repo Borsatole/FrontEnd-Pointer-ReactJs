@@ -130,17 +130,24 @@ export function adicionarRegistro<T extends BaseRegistro>({
   requisicaoPost(endpoint, data)
     .then((response) => {
       const msg = response?.data?.message ?? "Erro ao criar a requisição!";
+      
       if (response?.data?.success) {
+        // Verifica se foi uma requisição ignorada pelo backend
+        if (response?.data?.ignored) {
+          console.log("Requisição ignorada pelo backend:", msg);
+          // Não mostra toast de erro, apenas ignora silenciosamente
+          return;
+        }
+        
         Alerta("toast", "success", msg);
         setRelistar(true);
         setAbrirModalNovoRegistro(false);
       } else {
-        
         Alerta("toast", "error", msg);
       }
     })
-    .catch(() => {
-      
+    .catch((error) => {
+      console.error("Erro na requisição:", error);
       Alerta("toast", "error", "Erro inesperado ao criar a requisição!");
     })
     .finally(() => {
