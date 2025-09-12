@@ -129,7 +129,7 @@ const MenuLateral = () => {
         </nav>
 
         {/* Logout */}
-        <div className="mt-auto">
+        <div className="mt-auto mb-15">
           <hr className=" border-white/10" />
           <OpcaoMenu nome="Sair" svg={<HiLogin size={25} />} onClick={ConfirmSair} />
         </div>
