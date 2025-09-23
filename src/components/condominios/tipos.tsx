@@ -25,6 +25,12 @@ export interface Visitas {
   saida: string;
 }
 
+export interface UltimaVisita {
+  id: number;
+  entrada: string;
+  nome_condominio: string;
+}
+
 export interface informacoes {
   id: number;
   nome: string;
