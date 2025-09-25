@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from "react";
-import { informacoes, Registros } from "../tipos";
+// import { informacoes, Registros } from "../tipos";
 import { FormGroup } from "@src/components/comum/FormGroup";
 import { Input } from "@src/components/comum/input";
 import { Button } from "@src/components/comum/button";
 import { editarRegistro } from "@src/services/Crud";
+import { Condominio, Visitas } from "@src/components/tipos";
 
 interface InformacoesProps {
-  selectedProduto: Registros | null;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<Registros | null>>;
-  registros: Registros[];
-  setRegistros: React.Dispatch<React.SetStateAction<Registros[]>>;
+  selectedProduto: Condominio | null;
+  setSelectedProduto: React.Dispatch<React.SetStateAction<Condominio | null>>;
+  registros: Condominio[];
+  setRegistros: React.Dispatch<React.SetStateAction<Condominio[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -48,7 +49,7 @@ useEffect(() => {
 
 
   // Coleta dados do form
-  const coletarDadosFormulario = (): informacoes => ({
+  const coletarDadosFormulario = (): Condominio => ({
     id: Number(selectedProduto!.id),
     nome: refs.nome.current?.value || "",
     telefone: refs.telefone.current?.value || "",
@@ -62,7 +63,7 @@ useEffect(() => {
     try {
       const produtoEditado = coletarDadosFormulario();
 
-      await editarRegistro<Registros>({
+      await editarRegistro<Condominio>({
         data: produtoEditado,
         setRelistar,
         setSelected: setSelectedProduto,

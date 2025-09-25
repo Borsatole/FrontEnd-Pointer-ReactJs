@@ -1,23 +1,23 @@
 import { useState, useEffect, useRef } from "react";
+import { Condominio, Notificacao } from "@src/components/tipos";
+
 import { Spinner} from "flowbite-react";
 import Modal from "@components/modal/Modal";
-import { Registros } from "./tipos";
-
 import { MdDashboard } from "react-icons/md";
 import { RiHotelFill } from "react-icons/ri";
 
-import { IoIosNotifications } from "react-icons/io";
 import { Tabs, TabConfig } from "../comum/tabs";
 import { Notificacoes } from "./ModalEditar/Notificacoes";
 import { Informacoes } from "./ModalEditar/Info";
 import { Dashboard } from "./ModalEditar/Dashboard";
+import { TbMessageCheck } from "react-icons/tb";
 
 
 interface ModalEditarProdutoProps {
-  selectedProduto: Registros | null;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<Registros | null>>;
-  registros: Registros[];
-  setRegistros: React.Dispatch<React.SetStateAction<Registros[]>>;
+  selectedProduto: Condominio | null;
+  setSelectedProduto: React.Dispatch<React.SetStateAction<Condominio | null>>;
+  registros: Condominio[];
+  setRegistros: React.Dispatch<React.SetStateAction<Condominio[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -54,8 +54,8 @@ function ModalEditarRegistro({
     },
     {
       id: 'notifications',
-      title: "Notificações", 
-      icon: <IoIosNotifications />,
+      title: "Chamados", 
+      icon: <TbMessageCheck />,
       content: <Notificacoes
           selectedProduto={selectedProduto}
           setSelectedProduto={setSelectedProduto}

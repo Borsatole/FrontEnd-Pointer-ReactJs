@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import {  Registros, Visitas } from "../tipos";
 import { MdDashboard } from "react-icons/md";
 import { requisicaoGet } from "@src/services/requisicoes";
 import { Datas } from "@src/services/funcoes-globais";
@@ -9,16 +8,17 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { MostrarNumeroDeResultados } from "@src/components/comum/tabelas";
 import { Card } from "@src/components/comum/card";
 import { Spinner } from "flowbite-react";
+import { Condominio, Visitas } from "@src/components/tipos";
 
 
 
 
 // Props do componente
 interface DashboardProps {
-  selectedProduto: Registros | null;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<Registros | null>>;
-  registros: Registros[];
-  setRegistros: React.Dispatch<React.SetStateAction<Registros[]>>;
+  selectedProduto: Condominio;
+  setSelectedProduto: React.Dispatch<React.SetStateAction<Condominio | null>>;
+  registros: Condominio[];
+  setRegistros: React.Dispatch<React.SetStateAction<Condominio[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -31,7 +31,6 @@ export function Dashboard({
   setRelistar,
 }: DashboardProps) {
   const { primeiroDia, ultimoDia, dataFormataComHora } = Datas();
-
 
   const [visitas, setVisitas] = useState<Visitas[]>([]);
   const [relistarVisitas, setRelistarVisitas] = useState(false);

@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react";
 import { MdAttachMoney } from "react-icons/md";
 import { CgAddR } from "react-icons/cg";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
+import { FaEdit, FaReadme, FaSafari, FaTrashAlt } from "react-icons/fa";
 
 import { PrimeraLetraMaiuscula } from "@services/funcoes-globais";
 
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 import { requisicaoGet } from "@services/requisicoes";
-import { Registros } from "./tipos";
 import { Button } from "@components/comum/button";
 import ModalEditarProduto from "./ModalEditarProduto";
 import ModalAdicionarRegistro from "./ModalAdicionarProduto";
 import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas";
 import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/TabelaDinamica";
+import { Condominio, Notificacao } from "../tipos";
 
 
 import { handleDeletar } from "@src/services/Crud";
-import { BsBoxSeamFill } from "react-icons/bs";
 import { TbMessageCheck } from "react-icons/tb";
+import ModalVisualizarProduto from "./ModalVisualizar";
 
 function TabelaRegistros() {
   
-  const [registros, setRegistros] = useState<Registros[]>([]);
-  const [selectedProduto, setSelectedProduto] = useState<Registros | null>(null);
+  const [registros, setRegistros] = useState<Notificacao[]>([]);
+  const [selectedProduto, setSelectedProduto] = useState<Notificacao | null>(null);
+  const [selectedProdutoVisualizar, setSelectedProdutoVisualizar] = useState<Notificacao | null>(null);
   const [pagina, setPagina] = useState(1);
   const [relistar, setRelistar] = useState(false);
   const [queryFiltro, setQueryFiltro] = useState("");
@@ -39,23 +40,47 @@ function TabelaRegistros() {
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
 
   // Configuração das colunas da tabela
-  const colunas: ColunaConfig<Registros>[] = [
+  const colunas: ColunaConfig<Notificacao>[] = [
     {
-      key: "codigo",
-      label: "COD",
-      render: (registro) => registro.id,
+      key: "residencial",
+      label: "RESIDENCIAL",
+      render: (registro) => registro.nome_condominio,
     },
     {
       key: "chamado", 
       label: "TITULO",
       render: (registro) => PrimeraLetraMaiuscula(registro.titulo),
     },
+    {
+  key: "situacao",
+  label: "SITUAÇÃO",
+  render: (registro) => {
+    const isAberto = registro.lida === 0;
+    const texto = isAberto ? "Aberto" : "Finalizado";
+    const corFundo = isAberto ? "bg-red-100" : "bg-green-100";
+    const corTexto = isAberto ? "text-red-800" : "text-green-800";
+
+    return (
+      <span
+        className={`px-2 py-1 rounded-full font-semibold text-sm ${corFundo} ${corTexto}`}
+      >
+        {PrimeraLetraMaiuscula(texto)}
+      </span>
+    );
+  },
+}
+
     
     
   ];
 
   // Configuração das ações da tabela
-  const acoes: AcaoConfig<Registros>[] = [
+  const acoes: AcaoConfig<Notificacao>[] = [
+    {
+      icon: <FaReadme className="w-5 h-5 cursor-pointer" />,
+      tooltip: "Visualizar",
+      onClick: (registro) => setSelectedProdutoVisualizar(registro),
+    },
     {
       icon: <FaEdit className="w-5 h-5 cursor-pointer" />,
       tooltip: "Editar",
@@ -64,7 +89,7 @@ function TabelaRegistros() {
     {
       icon: <FaTrashAlt className="w-5 h-5 cursor-pointer" />,
       tooltip: "Deletar", 
-      onClick: (registro) => handleDeletar({ registro, setRelistar, endpoint: "/Estoque/Delete.php" }),
+      onClick: (registro) => handleDeletar({ registro, setRelistar, endpoint: "/condominios/notificacoes/Delete.php" }),
     },
   ];
 
@@ -112,7 +137,7 @@ function TabelaRegistros() {
 
       {/* Tabela dinâmica */}
       <LoadingSpiner loading={loadingSpiner}>
-        <TabelaDinamica<Registros>
+        <TabelaDinamica<Notificacao>
           dados={registros}
           colunas={colunas}
           acoes={acoes}
@@ -140,6 +165,17 @@ function TabelaRegistros() {
         <ModalEditarProduto
           selectedProduto={selectedProduto}
           setSelectedProduto={setSelectedProduto}
+          registros={registros}
+          setRegistros={setRegistros}
+          setRelistar={setRelistar}
+          setLoadingSpiner={setLoadingSpiner}
+        />
+      )}
+
+      {selectedProdutoVisualizar !== null && (
+        <ModalVisualizarProduto
+          selectedProduto={selectedProdutoVisualizar}
+          setSelectedProduto={setSelectedProdutoVisualizar}
           registros={registros}
           setRegistros={setRegistros}
           setRelistar={setRelistar}

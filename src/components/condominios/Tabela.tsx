@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button } from "@components/comum/button";
-import {  Registros } from "./tipos";
+// import {  Registros } from "./tipos";
+import { Condominio, Notificacao } from "@src/components/tipos";
+
 import { requisicaoGet } from "@services/requisicoes";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 import { RiHotelFill } from "react-icons/ri";
@@ -10,7 +12,7 @@ import LoadingSkeleton from "@src/components/loader/LoadingSkeleton";
 
 import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas";
 import ModalEditarRegistro from "./ModalEditarRegistro";
-import ModalAdicionarRegistro from "./ModalAdicionarRegistro";
+// import ModalAdicionarRegistro from "./ModalAdicionarRegistro";
 import { CgAddR } from "react-icons/cg";
 
 
@@ -18,12 +20,13 @@ import { CgAddR } from "react-icons/cg";
 function Tabela() {
 
   // Estados principais
-  const [registros, setRegistros] = useState<Registros[]>([]);
+  const [registros, setRegistros] = useState<Condominio[]>([]);
 
-  const [selectedProduto, setSelectedProduto] = useState<Registros | null>(null);
+  const [selectedProduto, setSelectedProduto] = useState<Condominio | null>(null);
 
   // Estados de paginação
   const [totalResultados, setTotalResultados] = useState(0);
+
 
   // Estados de controle
   const [relistar, setRelistar] = useState(false);
@@ -125,8 +128,8 @@ export default Tabela
 
 
 interface CardCondominio {
-  Registro: Registros;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<Registros | null>>;
+  Registro: Condominio;
+  setSelectedProduto: React.Dispatch<React.SetStateAction<Condominio | null>>;
 }
 
 import { Badge, Card, Dropdown, DropdownItem } from "flowbite-react";
@@ -141,34 +144,6 @@ export function CardCondominio({
       <Card className="min-w-[180px] bg-[var(--base-variant)] 
     border-2 border-[var(--base-color)]">
       <div >
-      {/* <div className="flex px-4 pt-4">
-        <Dropdown inline label="">
-          <DropdownItem>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm "
-            >
-              Edit
-            </a>
-          </DropdownItem>
-          <DropdownItem>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm "
-            >
-              Export Data
-            </a>
-          </DropdownItem>
-          <DropdownItem>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
-            >
-              Delete
-            </a>
-          </DropdownItem>
-        </Dropdown>
-      </div> */}
       <div className="flex flex-col items-center">
         <RiHotelFill fill="var(--corPrincipal)" size={50} />
 
@@ -184,7 +159,7 @@ export function CardCondominio({
     className="flex items-center"
     onClick={() => setSelectedProduto(Registro)}
   >
-    Notificações
+    Chamados
     <Badge
       className="ms-2 
         bg-[var(--base-variant)] hover:bg-[var(--base-variant)]

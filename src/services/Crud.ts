@@ -65,7 +65,7 @@ export function handleDeletar<T extends BaseRegistro>({
 
 // ----------- EDIT -----------
 interface Editar<T extends BaseRegistro> {
-  data: T;
+  data: T | FormData;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setSelected: React.Dispatch<React.SetStateAction<T | null>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
@@ -105,9 +105,42 @@ export async function editarRegistro<T extends BaseRegistro>({
   }
 }
 
+
+export async function editarRegistroComImagens<T extends BaseRegistro>({
+  data,
+  setRelistar,
+  setSelected,
+  setLoadingSpiner,
+  registros,
+  setRegistros,
+  endpoint,
+}: Editar<T>) {
+  setLoadingSpiner(true);
+  try {
+    const response = await requisicaoPost(endpoint, data);
+    const msg = response?.data?.message ?? "Erro ao editar a requisição!";
+
+    if (response?.data?.success) {
+      // setRegistros(registros.map((r) => (r.id === data.id ? data : r)));
+      // setSelected(null);
+      setRelistar(true);
+      Alerta("toast", "success", msg);
+    } else {
+      Alerta("toast", "error", msg);
+      setRelistar(true);
+    }
+  } catch {
+    Alerta("toast", "error", "Erro inesperado ao editar a requisição!");
+    setRelistar(true);
+  } finally {
+    setLoadingSpiner(false);
+  }
+}
+
+
 // ----------- CREATE -----------
 interface Novo<T extends BaseRegistro> {
-  data: T;
+  data: T | FormData;
   registros?: T[];
   setRegistros?: React.Dispatch<React.SetStateAction<T[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;

@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
-import { HiCheck, HiEye } from "react-icons/hi";
-import { Notificacao, Registros } from "../tipos";
+import { Condominio, Notificacao } from "@src/components/tipos";
+
 import { IoIosNotifications } from "react-icons/io";
 import { Datas } from "@src/services/funcoes-globais";
 import { handleDeletar, editarRegistro } from "@src/services/Crud";
-import { MdDelete, MdMarkChatUnread } from "react-icons/md";
-import Tooltip from "@src/components/tooltip/tooltipwrapper";
 
 import { AiFillMessage } from "react-icons/ai";
 import { requisicaoGet } from "@src/services/requisicoes";
 import { Spinner } from "flowbite-react";
+import ModalVisualizarProduto from "@src/components/chamados/ModalVisualizar";
+import { Button } from "@src/components/comum/button";
 
 
 // Props do componente
 interface NotificacoesProps {
-  selectedProduto: Registros | null;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<Registros | null>>;
-  registros: Registros[];
-  setRegistros: React.Dispatch<React.SetStateAction<Registros[]>>;
+  selectedProduto: Condominio | null;
+  setSelectedProduto: React.Dispatch<React.SetStateAction<Condominio | null>>;
+  registros: Condominio[];
+  setRegistros: React.Dispatch<React.SetStateAction<Condominio[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -34,8 +34,11 @@ export function Notificacoes({
   const [notificacoes, setNotificacoes] = useState<Notificacao[]>([]);
   const [expandida, setExpandida] = useState<number | null>(null);
 
+  const [selectedProdutoVisualizar, setSelectedProdutoVisualizar] = useState<Notificacao | null>(null);
+
   const [relistarNotificacoes, setRelistarNotificacoes] = useState(false);
   const [loading, setLoading] = useState(true);
+
 
   
 
@@ -43,101 +46,17 @@ export function Notificacoes({
   const registro = registros.find((p) => p.id === selectedProduto?.id);
 
   
-  // Função para marcar notificação como lida
-  const marcarLida = async (id: number, event: React.MouseEvent) => {
-    event.stopPropagation(); // Evita expandir o card ao clicar no botão
 
-    // Atualiza estado local imediatamente para UX responsivo
-    setNotificacoes((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
-    );
 
-    const data = { id, lida: true };
 
-    try {
-      await editarRegistro<Notificacao>({
-        data,
-        registros: registros as any,
-        setRegistros: setRegistros as any,
-        setSelected: () => {},
-        setRelistar,
-        setLoadingSpiner,
-        endpoint: "/condominios/notificacoes/Update.php",
-      });
 
-    } catch (error) {
-      // Em caso de erro, reverte o estado local
-      setNotificacoes((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, lida: false } : n))
-      );
-      console.error("Erro ao marcar notificação como lida:", error);
-    } finally {
-      setRelistarNotificacoes(true);
-    }
 
-  };
 
-  const marcarNaoLida = async (id: number, event: React.MouseEvent) => {
-    event.stopPropagation(); // Evita expandir o card ao clicar no botão
 
-    // Atualiza estado local imediatamente para UX responsivo
-    setNotificacoes((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, lida: true } : n))
-    );
 
-    const data = { id, lida: false };
+  
 
-    try {
-      await editarRegistro<Notificacao>({
-        data,
-        registros: registros as any,
-        setRegistros: setRegistros as any,
-        setSelected: () => {},
-        setRelistar,
-        setLoadingSpiner,
-        endpoint: "/condominios/notificacoes/Update.php",
-      });
-    } catch (error) {
-      // Em caso de erro, reverte o estado local
-      setNotificacoes((prev) =>
-        prev.map((n) => (n.id === id ? { ...n, lida: false } : n))
-      );
-      console.error("Erro ao marcar notificação como lida:", error);
-    }finally {
-      setRelistarNotificacoes(true);
-    }
-  };
 
-  // Função para deletar notificação
-  const deletarNotificacao = async (id: number, event: React.MouseEvent) => {
-    event.stopPropagation(); // Evita expandir o card ao clicar no botão
-
-    const notificacao = notificacoes.find((n) => n.id === id);
-    if (!notificacao) return;
-
-    const data = {
-      nome: notificacao.titulo || "Notificação",
-      id: id,
-      lida: true
-    };
-
-    try {
-      await handleDeletar({
-        registro: data,
-        setRelistar,
-        endpoint: "/condominios/notificacoes/Delete.php",
-      });
-          } catch (error) {
-      console.error("Erro ao deletar notificação:", error);
-    } finally {
-      setRelistarNotificacoes(true);
-    }
-  };
-
-  // Função para alternar expansão do card
-  const toggleExpandir = (id: number) => {
-    setExpandida(expandida === id ? null : id);
-  };
 
 
     // Buscar dados da API com filtro
@@ -193,12 +112,11 @@ export function Notificacoes({
           <div
             key={notificacao.id}
             className={`
-              p-4 rounded-lg border transition-all duration-200 hover:shadow-md
-              ${
-                notificacao.lida
-                  ? 'bg-[var(--base-color)] border-[var(--base-variant)]'
-                  : 'bg-[var(--corPrincipal)]/10 border-[var(--corPrincipal)]/30 shadow-sm'
-              }
+              
+              p-4 rounded-lg border transition-all duration-200 hover:shadow-md bg-[var(--corPrincipal)]/10 border-[var(--corPrincipal)]/30 shadow-sm 
+              
+              
+
             `}
           >
             <div className="flex items-start space-x-3">
@@ -213,103 +131,42 @@ export function Notificacoes({
 
               {/* Conteúdo principal */}
               <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className={`text-sm font-medium ${
-                    notificacao.lida 
-                      ? 'text-[var(--text-color)]' 
-                      : 'text-[var(--text-color)] font-semibold'
-                  }`}>
+                <div className="flex flex-col items-start mb-1">
+                  <h3 className={`text-sm font-medium  text-[var(--text-color)]`}>
                     {notificacao.titulo || 'Notificação'}
                   </h3>
-                  <span className="text-xs text-gray-500 shrink-0 ml-2">
-                    {dataFormatada(notificacao.data)}
+                  <span className="text-xs text-gray-500 shrink-0 ">
+                    {dataFormatada(notificacao.data_criacao)}
                   </span>
                 </div>
-                
-                {/* Mensagem com expansão */}
-                <p className={`text-xs ${
-                  expandida === notificacao.id ? '' : 'line-clamp-2'
-                } ${
-                  notificacao.lida
-                    ? 'text-gray-500' 
-                    : 'text-gray-600'
-                }`}>
-                  {notificacao.mensagem || 'Sem conteúdo'}
-                </p>
 
-                {/* Botão para expandir se a mensagem for longa */}
-                {notificacao.mensagem && notificacao.mensagem.length > 100 && (
-                  <button
-                    onClick={() => toggleExpandir(notificacao.id)}
-                    className="text-xs text-[var(--corPrincipal)] hover:underline mt-1"
-                  >
-                    {expandida === notificacao.id ? 'Ver menos' : 'Ver mais'}
-                  </button>
-                )}
               </div>
 
               {/* Botões de ação */}
-              <div className="flex items-center space-x-1 shrink-0">
+              <div className="flex items-center">
                 {/* Botão para expandir/recolher */}
 
-                <Tooltip tooltip="Ver mensagem">
-                <button
-                  onClick={() => toggleExpandir(notificacao.id)}
-                  className="cursor-pointer p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
-                  
-                >
-                  <HiEye className={`w-4 h-4 transition-transform ${
-                    expandida === notificacao.id ? 'rotate-180' : ''
-                  }`} />
-                </button>
-                </Tooltip>
-
+                <Button onClick={() => setSelectedProdutoVisualizar(notificacao)}>Visualizar</Button>
                 
-
-                {notificacao.lida? (
-                  <>
-
-                  <Tooltip tooltip="Marcar como nao lida">
-                  <button
-                    onClick={(e) => marcarNaoLida(notificacao.id, e)}
-                    className="cursor-pointer p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
-                    
-                  >
-                    <MdMarkChatUnread className="w-4 h-4" />
-
-                  </button>
-                  </Tooltip>
                 
-                  </>) : (
-                  <>
-
-                  <Tooltip tooltip="Marcar como lida">
-                  <button
-                    onClick={(e) => marcarLida(notificacao.id, e)}
-                    className="cursor-pointer p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
-                   
-                  >
-                    <HiCheck className="w-4 h-4" />
-                  </button>
-                  </Tooltip>
-                
-                  </>
-                )}
-
-                {/* Botão deletar */}
-                <Tooltip tooltip="Deletar notificação">
-                <button
-                  onClick={(e) => deletarNotificacao(notificacao.id, e)}
-                  className="cursor-pointer p-1.5 hover:text-[var(--corPrincipal)] hover:bg-[var(--corPrincipal)]/10 rounded-full transition-colors"
-                  
-                >
-                  <MdDelete className="w-4 h-4" />
-                </button>
-                </Tooltip>
               </div>
             </div>
           </div>
         ))}
+
+
+        {selectedProdutoVisualizar !== null && (
+        <ModalVisualizarProduto
+          selectedProduto={selectedProdutoVisualizar}
+          setSelectedProduto={setSelectedProdutoVisualizar}
+          registros={notificacoes}
+          setRegistros={setNotificacoes}
+          setRelistar={setRelistar}
+          setLoadingSpiner={setLoadingSpiner}
+        />
+      )}
+
     </div>
+
   );
-}
+};

@@ -1,20 +1,23 @@
 import { useState, useEffect, useRef } from "react";
 import { Spinner } from "flowbite-react";
 import Modal from "@components/modal/Modal";
-import { Input } from "@components/comum/input";
+import { Input, TextArea } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { Categoria, Produto } from "./tipos";
-import { SelectModificado } from "@src/components/comum/select";
-import { requisicaoGet } from "@src/services/requisicoes";
-import { editarRegistro } from "@src/services/Crud";
-import { FiMinus, FiPlus } from "react-icons/fi";
+import { editarRegistroComImagens } from "@src/services/Crud";
+import { FiX } from "react-icons/fi";
+import Upload from "./imagesUpload";
+import { ImageListType } from "react-images-uploading";
+import { Condominio, Notificacao } from "@src/components/tipos";
+
+
+const rotaApi = import.meta.env.VITE_API;
 
 interface ModalEditarProdutoProps {
-  selectedProduto: Produto | null;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<Produto | null>>;
-  registros: Produto[];
-  setRegistros: React.Dispatch<React.SetStateAction<Produto[]>>;
+  selectedProduto: Notificacao;
+  setSelectedProduto: React.Dispatch<React.SetStateAction<Notificacao | null>>;
+  registros: Notificacao[];
+  setRegistros: React.Dispatch<React.SetStateAction<Notificacao[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -28,60 +31,43 @@ function ModalEditarProduto({
   setRelistar,
 }: ModalEditarProdutoProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingInit, setIsLoadingInit] = useState(true);
-  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [isLoadingInit, setIsLoadingInit] = useState(false);
+  const [imagemAberta, setImagemAberta] = useState<string | null>(null);
+  const [images, setImages] = useState<ImageListType>([]);
 
-  // refs de todos os campos
   const refs = {
-    nome: useRef<HTMLInputElement>(null),
-    quantidade: useRef<HTMLInputElement>(null),
-    categoria: useRef<HTMLSelectElement>(null),
+    titulo: useRef<HTMLInputElement>(null),
+    mensagem: useRef<HTMLTextAreaElement>(null),
   };
 
   const registro = registros.find((p) => p.id === selectedProduto?.id);
 
-  // Preenche os campos dinamicamente
-  const preencherCampos = () => {
-    if (!registro || isLoadingInit) return;
-
-    // Para input normal
-    if (refs.nome.current) {
-      refs.nome.current.value = registro.nome || "";
-    }
-
-    // Para input normal
-    if (refs.quantidade.current) {
-      refs.quantidade.current.value = String(registro.quantidade || 0);
-    }
-
-    // Para select - usando value diretamente
-    if (refs.categoria.current) {
-      refs.categoria.current.value = registro.categoria || "";
-    }
-  };
-
-  useEffect(preencherCampos, [registro, isLoadingInit]);
-
+  // Preenche campos automaticamente
   useEffect(() => {
-    requisicaoGet(`/Estoque/categoria/Read.php`)
-      .then((response) => {
-        if (response?.data.success) {
-          setCategorias(response.data.Registros);
-        }
-        setIsLoadingInit(false);
-      });
+    if (!registro || isLoadingInit) return;
+    refs.titulo.current!.value = registro.titulo || "";
+    refs.mensagem.current!.value = registro.mensagem || "";
+  }, [registro, isLoadingInit]);
 
-  }, []);
+  const coletarDadosFormulario = (): FormData => {
+    const formData = new FormData();
+    formData.append("id", selectedProduto!.id.toString());
+    formData.append("titulo", refs.titulo.current?.value || "");
+    formData.append("mensagem", refs.mensagem.current?.value || "");
 
-
-
-  // Coleta dados do formulário dinamicamente
-  const coletarDadosFormulario = (): Produto => ({
-      id: selectedProduto!.id,
-      nome: refs.nome.current?.value || "",
-      categoria: refs.categoria.current?.value || "",
-      quantidade: Number(refs.quantidade.current?.value) || 0,
+    images.forEach((img) => {
+      if (img.file) {
+        formData.append("imagens[]", img.file);
+      }
     });
+
+    // Também envia imagens já existentes que não foram excluídas
+    selectedProduto?.imagens?.forEach((img) => {
+      formData.append("imagens_existentes[]", img.nome_imagem);
+    });
+
+    return formData;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,17 +75,16 @@ function ModalEditarProduto({
 
     setIsLoading(true);
     try {
-      const data = coletarDadosFormulario();
-      console.log(data);
-      await editarRegistro<Produto>({
-        data,
+      const formData = coletarDadosFormulario();
+      await editarRegistroComImagens<Notificacao>({
+        data: formData,
         registros,
         setRegistros,
         setRelistar,
         setSelected: setSelectedProduto,
         setLoadingSpiner,
-        endpoint: "/Estoque/Update.php"
-      })
+        endpoint: "/condominios/notificacoes/Update.php",
+      });
       setSelectedProduto(null);
     } finally {
       setIsLoading(false);
@@ -108,9 +93,7 @@ function ModalEditarProduto({
 
   const fecharModal = () => setSelectedProduto(null);
 
-  // não renderiza se não houver produto
   if (!selectedProduto) return null;
-
   if (isLoadingInit) {
     return (
       <Modal IsOpen={true} onClose={fecharModal}>
@@ -124,7 +107,6 @@ function ModalEditarProduto({
   return (
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-auto">
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Código */}
         <FormGroup label="Código" id="codigo">
           <Input
             id="codigo"
@@ -134,72 +116,67 @@ function ModalEditarProduto({
           />
         </FormGroup>
 
-        <FormGroup label="Nome do Produto" id="nome">
-          <Input id="nome" type="text" inputRef={refs.nome} required disabled={isLoading} />
+        <FormGroup label="Chamado" id="nome">
+          <Input id="nome" type="text" inputRef={refs.titulo} required disabled={isLoading} />
         </FormGroup>
 
-        <FormGroup label="Quantidade" id="quantidade">
-                  <Input
-                    inputRef={refs.quantidade}
-                    id="quantidade"
-                    type="number"
-                    min="0"
-                    required
-                    disabled={isLoading}
-                  
-                  />
-        
-                  {/* botao para aumentar ou diminuir a quantidade */}
-                  <div className="flex gap-1 mt-1">
-          <button
-            type="button"
-            onClick={() => {
-              if (refs.quantidade.current) {
-                refs.quantidade.current.value = String(
-                  Number(refs.quantidade.current.value) + 1
-                );
-              }
-            }}
-            disabled={isLoading}
-            className="p-2 rounded-[30%] bg-[var(--corPrincipal)] text-white shadow-md hover:bg-[var(--corPrincipalHover)]/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FiPlus size={15} />
-          </button>
-        
-          <button
-            type="button"
-            onClick={() => {
-              if (refs.quantidade.current) {
-                refs.quantidade.current.value = String(
-                  Number(refs.quantidade.current.value) - 1
-                );
-              }
-            }}
-            disabled={isLoading}
-            className="p-2 rounded-[30%] bg-[var(--corPrincipal)] text-white shadow-md hover:bg-[var(--corPrincipalHover)]/80 transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <FiMinus size={15} />
-          </button>
-        </div>
-                
+        <FormGroup label="Mensagem" id="mensagem">
+          <TextArea id="mensagem" inputRef={refs.mensagem} required disabled={isLoading} />
         </FormGroup>
 
-        <FormGroup label="Categoria" id="categoria">
-          <SelectModificado
-            id="categoria"
-            ref={refs.categoria}
-            required
-            disabled={isLoading}
-          >
+        {/* Preview das imagens existentes */}
+        {selectedProduto.imagens && selectedProduto.imagens.length > 0 && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+            {selectedProduto.imagens.map((imagem) => (
+              <div key={imagem.id} className="relative group bg-white rounded-lg border-2 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedProduto((prev) =>
+                      prev
+                        ? { ...prev, imagens: prev.imagens?.filter((i) => i.id !== imagem.id) }
+                        : null
+                    );
+                  }}
+                  className="absolute top-1 right-1 z-10 text-white bg-red-600 p-1 rounded-full opacity-80 hover:opacity-100"
+                >
+                  <FiX size={18} />
+                </button>
 
-            {categorias.map((categoria) => (
-              <option key={categoria.id} value={categoria.nome}>
-                {categoria.nome}
-              </option>
+                <img
+                  src={`${rotaApi}/condominios/notificacoes/uploads/${imagem.nome_imagem}`}
+                  alt={imagem.nome_imagem}
+                  className="rounded-lg cursor-pointer"
+                  onClick={() => setImagemAberta(imagem.nome_imagem)}
+                />
+              </div>
             ))}
-               
-          </SelectModificado>
-        </FormGroup>
+          </div>
+        )}
+
+        {/* Modal da imagem em tela cheia */}
+        {imagemAberta && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4"
+            onClick={() => setImagemAberta(null)}
+          >
+            <img
+              src={`${rotaApi}/condominios/notificacoes/uploads/${imagemAberta}`}
+              alt="Imagem ampliada"
+              className="max-h-full max-w-full object-contain rounded-lg shadow-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setImagemAberta(null)}
+              className="absolute top-5 right-5 text-white text-3xl font-bold"
+            >
+              &times;
+            </button>
+          </div>
+        )}
+
+        {/* Upload de novas imagens */}
+        <Upload images={images} setImages={setImages} />
 
         <Button type="submit" loading={isLoading} disabled={isLoading} wsize="w-full mt-6">
           Salvar Alterações

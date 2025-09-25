@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@src/context/AuthContext";
 import { TituloPagina } from "@components/comum/Textos";
 import DefaultLayout from "@src/layouts/DefaultLayout";
-import { UltimaVisita } from "@src/components/condominios/tipos";
+import { Visitas } from "@src/components/tipos";
 import { requisicaoGet } from "@src/services/requisicoes";
 import { Datas } from "@src/services/funcoes-globais";
 import dayjs from 'dayjs';
@@ -19,7 +19,7 @@ export default function Dashboard() {
   
 
   // Estados principais
-  const [registros, setRegistros] = useState<UltimaVisita[]>([]);
+  const [registros, setRegistros] = useState<Visitas[]>([]);
   const [totalResultados, setTotalResultados] = useState(0);
 
   // Estados de controle

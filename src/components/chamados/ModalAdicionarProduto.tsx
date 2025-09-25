@@ -3,27 +3,23 @@ import Modal from "@components/modal/Modal";
 import { Input, TextArea } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { Registros } from "./tipos";
 import { SelectModificado } from "@src/components/comum/select";
-
+import ImageUploading, { ImageListType } from "react-images-uploading";
 import { adicionarRegistro } from "@src/services/Crud";
 import { requisicaoGet } from "@src/services/requisicoes";
-import { Link } from "react-router-dom";
 import { Spinner } from "flowbite-react";
+import Upload from "./imagesUpload";
+import { Condominio, Notificacao } from "@src/components/tipos";
 
 interface ModalAdicionarNotificacaoProps {
   AbrirModalNovoRegistro: boolean;
   setAbrirModalNovoRegistro: React.Dispatch<React.SetStateAction<boolean>>;
-  registros: Registros[];
-  setRegistros: React.Dispatch<React.SetStateAction<Registros[]>>;
+  registros: Notificacao[];
+  setRegistros: React.Dispatch<React.SetStateAction<Notificacao[]>>;
   setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
   setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface Condominio {
-  id: number;
-  nome: string;
-}
 
 function ModalAdicionarNotificacao({
   AbrirModalNovoRegistro,
@@ -36,6 +32,9 @@ function ModalAdicionarNotificacao({
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(true);
   const [condominios, setCondominios] = useState<Condominio[]>([]);
+  const [images, setImages] = useState<ImageListType>([]);
+
+
 
   const formRefs = {
     condominio: useRef<HTMLSelectElement>(null),
@@ -45,22 +44,28 @@ function ModalAdicionarNotificacao({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("id_condominio", formRefs.condominio.current?.value || "");
+    formData.append("titulo", formRefs.titulo.current?.value || "");
+    formData.append("mensagem", formRefs.mensagem.current?.value || "");
     
-    const data: Registros = {
-      id_condominio: Number(formRefs.condominio.current?.value) || 0,
-      titulo: formRefs.titulo.current?.value || "",
-      mensagem: formRefs.mensagem.current?.value || "",
-    };
+
+    images.forEach((img, index) => {
+      if (img.file) {
+        formData.append(`imagens[]`, img.file);
+      }
+    });
     
-    if (!data.titulo || !data.mensagem) {
+    if (!formData.get("id_condominio") || !formData.get("titulo") || !formData.get("mensagem")) {
       alert("Por favor, preencha todos os campos obrigatórios.");
       return;
     }
 
     setIsLoading(true);
     try {
-      await adicionarRegistro<Registros>({
-        data,
+      await adicionarRegistro<Notificacao>({
+        data: formData,
         registros,
         setRegistros,
         setRelistar,
@@ -68,7 +73,7 @@ function ModalAdicionarNotificacao({
         setLoadingSpiner,
         endpoint: "/condominios/notificacoes/Create.php"
       });
-      console.log(data);
+      // console.log(data);
     } finally {
       setIsLoading(false);
     }
@@ -81,7 +86,6 @@ function ModalAdicionarNotificacao({
     requisicaoGet("/condominios/Read.php")
       .then((response) => {
         if (response?.data.success) {
-          console.log(response.data.Registros);
           setCondominios(response.data.Registros);
         }
       })
@@ -151,7 +155,8 @@ function ModalAdicionarNotificacao({
           />
         </FormGroup>
 
-        
+
+        <Upload images={images} setImages={setImages}/>
 
        
 
