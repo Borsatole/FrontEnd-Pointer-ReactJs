@@ -30,6 +30,9 @@ const Condominios = lazy(() => import("./condominios/condominios"));
 // visitas
 const Visitas = lazy(() => import("./visitas/visita"));
 
+// chamados
+const Chamados = lazy(() => import("./chamados/chamados"));
+
 
 
 
@@ -44,6 +47,9 @@ const routes = [
 
   // Visitas
   { path: "/visitas", element: <Visitas />, protected: true },
+
+  // Chamados
+  { path: "/chamados", element: <Chamados />, protected: true },
 
   
 ];

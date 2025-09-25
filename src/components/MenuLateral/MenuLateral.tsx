@@ -5,6 +5,8 @@ import { useMenu } from "@src/context/MenuContext";
 import { RiHotelFill } from "react-icons/ri";
 import { HiOutlineViewGrid, HiLogin } from "react-icons/hi";
 import { BiQrScan } from "react-icons/bi";
+import { TbMessageCheck } from "react-icons/tb";
+
 
 import Swal from "sweetalert2";
 import { OpcaoMenu, OpcaoMenuComSubmenu } from "@components/MenuLateral/OpcaoMenu";
@@ -64,6 +66,11 @@ const MenuLateral = () => {
       rota: "/visitas",
       svg: <BiQrScan size={25} />,
     },
+    {
+      nome: "Chamados",
+      rota: "/chamados",
+      svg: <TbMessageCheck size={25} />,
+    },
     // Exemplo de submenu (descomentado se precisar)
     // {
     //   nome: "Funcionários",
@@ -91,7 +98,7 @@ const MenuLateral = () => {
 
   return (
     <aside
-      className={`flex flex-col h-screen px-4 py-6 overflow-y-auto corPrincipalBg menu-lateral ${
+      className={`flex  flex-col h-screen px-4 py-6 overflow-y-auto corPrincipalBg menu-lateral ${
         menuAberto ? "menu-aberto" : ""
       }`}
     >

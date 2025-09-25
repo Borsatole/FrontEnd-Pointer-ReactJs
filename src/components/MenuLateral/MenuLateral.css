@@ -21,7 +21,7 @@
   position: fixed; /* Fixa o menu na tela */
   left: 0;
   top: 0;
-  z-index: 3; /* Garante que o menu fique acima de outros elementos */
+  z-index: 6; /* Garante que o menu fique acima de outros elementos */
   transform: translateX(-100%); /* Inicialmente escondido fora da tela */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* Animação suave para abrir/fechar */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1); /* Sombra sutil */

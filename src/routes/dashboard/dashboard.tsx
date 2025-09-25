@@ -72,7 +72,7 @@ export default function Dashboard() {
             {registros.map((registro, index) => (
               <div key={registro.id} className="cursor-pointer relative flex items-start gap-6 group">
                 {/* Ponto da timeline */}
-                <div className="relative z-10 flex items-center justify-center">
+                <div className="relative z-3 flex items-center justify-center">
                   <div className="w-12 h-12 bg-gradient-to-br from-[var(--corPrincipal)] to-[var(--corPrincipal)]/80 rounded-full shadow-[0_10px_15px_-3px_rgb(0_0_0_/_0.1),_0_4px_6px_-4px_rgb(0_0_0_/_0.1),_0_0_0_1px_var(--corPrincipal)/20] flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
                     <div className="w-4 h-4 bg-white rounded-full"></div>
                   </div>
