@@ -55,7 +55,7 @@ function TabelaRegistros() {
   key: "situacao",
   label: "SITUAÇÃO",
   render: (registro) => {
-    const isAberto = registro.lida === 0;
+    const isAberto = Number(registro.lida) === 0;
     const texto = isAberto ? "Aberto" : "Finalizado";
     const corFundo = isAberto ? "bg-red-100" : "bg-green-100";
     const corTexto = isAberto ? "text-red-800" : "text-green-800";

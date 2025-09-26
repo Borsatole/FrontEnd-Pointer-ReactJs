@@ -43,41 +43,41 @@ function ModalAdicionarNotificacao({
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  e.preventDefault();
+  setIsLoading(true);
 
-    const formData = new FormData();
-    formData.append("id_condominio", formRefs.condominio.current?.value || "");
-    formData.append("titulo", formRefs.titulo.current?.value || "");
-    formData.append("mensagem", formRefs.mensagem.current?.value || "");
-    
+  
+  const formData = new FormData();
+  formData.append("id_condominio", formRefs.condominio.current?.value || "");
+  formData.append("titulo", formRefs.titulo.current?.value || "");
+  formData.append("mensagem", formRefs.mensagem.current?.value || "");
 
-    images.forEach((img, index) => {
-      if (img.file) {
-        formData.append(`imagens[]`, img.file);
-      }
+  images.forEach((img) => {
+    if (img.file) formData.append("imagens[]", img.file);
+  });
+
+  if (!formData.get("id_condominio") || !formData.get("titulo") || !formData.get("mensagem")) {
+    alert("Por favor, preencha todos os campos obrigatórios.");
+    return;
+  }
+
+  try {
+    await adicionarRegistro<Notificacao>({
+      data: formData,
+      registros,
+      setRegistros,
+      setRelistar,
+      setAbrirModalNovoRegistro,
+      setLoadingSpiner,
+      endpoint: "/condominios/notificacoes/Create.php"
     });
-    
-    if (!formData.get("id_condominio") || !formData.get("titulo") || !formData.get("mensagem")) {
-      alert("Por favor, preencha todos os campos obrigatórios.");
-      return;
-    }
+  } catch (err) {
+    console.error("Erro no envio:", err);
+  } finally {
+    // setIsLoading(false);
+  }
+};
 
-    setIsLoading(true);
-    try {
-      await adicionarRegistro<Notificacao>({
-        data: formData,
-        registros,
-        setRegistros,
-        setRelistar,
-        setAbrirModalNovoRegistro,
-        setLoadingSpiner,
-        endpoint: "/condominios/notificacoes/Create.php"
-      });
-      // console.log(data);
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   // Busca condominios
   useEffect(() => {
@@ -162,7 +162,7 @@ function ModalAdicionarNotificacao({
 
         <div className="flex gap-2">
           <Button 
-            loading={isLoading} 
+            loading={isLoading}
             wsize="w-full mt-4" 
             type="submit" 
             disabled={isLoading}
