@@ -11,9 +11,11 @@
 
 :root {
   /* cores principais */
-  --corPrincipal: #04592F;
-  --corPrincipalHover: #04592e9c;
-  
+  --corPrincipal: #0050DC;
+  --corPrincipalHover: #0051dc9a;
+
+  /* Fundo Logo */
+  --fundo-logo: #ffffff1a;
 
   /* bases */
   --base-color: #f2f1f3;
@@ -22,11 +24,15 @@
   /* menu */
   --sidebarcolor: #040c31;
   --sidebarsecondarycolor: #020a3d;
-  --sidebartext-color: #878787;
+  --sidebartext-color: #f9f9f9;
 
   /* menu - hovers */
-  --sidebarhover-color: #04592F;
-  --sidebarhover-text-color: #878787;
+  --sidebarhover-color: #0050DC;
+  --sidebarhover-text-color: #ffffff;
+  /* menu - bordinha esquerda do hover */
+  --sidebarhover-border: #f9f9f9;
+  /* menu - icones hover */
+  --sidebarhover-icon: #ffffff;
 
   /* textos */
   --text-color: #2a2f47f2;
@@ -39,22 +45,20 @@
 
 .darkmode {
   /* cores principais */
-  --corPrincipal: #04592F;
-  --corPrincipalHover: #04592e9c;
+  --corPrincipal: #040c31;
+  --corPrincipalHover: #040b599c;
 
   /* bases */
   --base-color: #010725;
   --base-variant: #050c2d;
 
-  
-
   /* menu */
   --sidebarcolor: #040c31;
   --sidebarsecondarycolor: #020a3d;
-  --sidebartext-color: #878787;
+  --sidebartext-color: #f9f9f9;
 
   /* menu - hovers */
-  --sidebarhover-color: #04592F;
+  --sidebarhover-color: #04592f;
   --sidebarhover-text-color: #878787;
 
   /* textos */
@@ -64,7 +68,6 @@
 
   /* Fundo Modal */
   --fundo-modal: var(--base-color);
-  
 }
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -84,7 +87,6 @@ body {
   color: var(--text-color);
 }
 
-
 #theme-switch {
   height: 50px;
   width: 50px;
@@ -101,8 +103,14 @@ body {
   fill: var(--text-color);
 }
 
- @keyframes panBackground {
-        0% { background-position: center bottom; }
-        50% { background-position: center center; }
-        100% { background-position: center top; }
-    }
+@keyframes panBackground {
+  0% {
+    background-position: center bottom;
+  }
+  50% {
+    background-position: center center;
+  }
+  100% {
+    background-position: center top;
+  }
+}

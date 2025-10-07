@@ -35,10 +35,9 @@ export function Datas() {
   };
 
   const dataFormataComHora = (data: string | Date) => new Date(data).toLocaleString();
-
+  
   return { primeiroDia, ultimoDia, dataFormatada, dataDeHoje, dataFormataComHora };
 }
-
 
 export function Valores() {
   const dinheiro = (valor: number) =>

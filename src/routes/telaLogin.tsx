@@ -23,19 +23,18 @@ export default function TelaLogin() {
 
     try {
       setLoading(true);
-      const response = await requisicaoPost("/Auth/login.php", dadosFormularioLogin);
+      const response = await requisicaoPost("/login", dadosFormularioLogin);
 
-      if (response?.data.success && response.data.JWT) {
-        Alerta("swal", "success", `${response.data.message}`);
+      if (response?.data.success && response.data.token) {
         fecharMenu();
-        
-        login(response.data.JWT);
+        login(response.data);
         navigate("/");
+        Alerta("swal", "success", `${response.data.message}`);
       } else {
         Alerta("swal", "error", `${response?.data?.message || "Ops! Algo deu errado."}`);
       }
-    } catch (error) {
-      Alerta("swal", "error", `Ops! Algo deu errado.`);
+    } catch (error: any) {
+      Alerta("swal", "error", `${error?.response?.data?.message || "Ops! Algo deu errado."}`);
     } finally {
       setLoading(false);
     }

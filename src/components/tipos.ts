@@ -1,53 +1,43 @@
-// export interface Produto {
-//   id?: number;
-//   nome: string;
-//   quantidade: number;
-//   categoria: string;
-//   created_at?: string;
-//   updated_at?: string;
-// }
-
-// export interface Categoria {
-//   id?: number;
-//   nome: string;
-// }
-
-
-export interface Imagem {
-  id: number;
-  nome_imagem: string;
+export interface SubMenuItem {
+    id: number;
+    icone?: string;
+    nome: string;
+    rota: string;
 }
 
-export interface Notificacao {
-
-  id: number;
-  id_condominio: number;
-  nome_condominio: string;
-  titulo: string;
-  mensagem: string;
-  imagens?: Imagem[];
-  lida: number;
-  data_criacao: string;
-  data_atualizacao: string;
-
-};
-
-export interface Condominio {
+export interface MenuItem {
   id: number;
   nome: string;
-  telefone: string;
-  rua: string;
-  notificacoes?: Notificacao[] | number;
-  data_criacao?: string;
-  data_atualizacao?: string;
+  rota: string;
+  icone: string;
+  submenu?: SubMenuItem[];
 }
 
-export interface Visitas {
+export interface UserData {
   id: number;
-  id_condominio: number;
-  nome_condominio: string;
-  entrada: string;
-  saida: string;
-  data_criacao: string;
-  data_atualizacao: string;
+  nome: string;
+  email: string;
+  nivel: string;
+  nivel_nome: string;
+  ativo: Boolean;
+}
+
+
+
+export interface Permissao {
+  id: number;
+  slug?: string;
+  descricao: string;
+  allow: Boolean;
+  created_at?: string;
+  updated_at?: string;
+  
+}
+
+export interface Permissoes {
+  id?: number;
+  nome: string;
+  permissoes?: Permissao[];
+  created_at?: string;
+  updated_at?: string;
 }

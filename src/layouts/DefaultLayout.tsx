@@ -1,4 +1,4 @@
-import BarraSuperior from "@components/barraSuperior";
+import BarraSuperior from "@src/components/barraSuperior/barraSuperior";
 import MenuLateral from "@components/MenuLateral/MenuLateral";
 import Container from "@components/comum/container";
 

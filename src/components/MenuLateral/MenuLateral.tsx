@@ -1,104 +1,27 @@
 import { useContext, useMemo } from "react";
 import { AuthContext } from "@src/context/AuthContext";
 import { useMenu } from "@src/context/MenuContext";
-
-import { RiHotelFill } from "react-icons/ri";
-import { HiOutlineViewGrid, HiLogin } from "react-icons/hi";
-import { BiQrScan } from "react-icons/bi";
-import { TbMessageCheck } from "react-icons/tb";
+import { Confirm } from "@components/comum/alertas";
 
 
-import Swal from "sweetalert2";
+
 import { OpcaoMenu, OpcaoMenuComSubmenu } from "@components/MenuLateral/OpcaoMenu";
 import { BtnFecharMenuLateral } from "@components/MenuLateral/botoesMenu";
 
 import "./MenuLateral.css";
 
-// Tipagem para menus
-interface SubMenuItem {
-  nome: string;
-  rota: string;
-  svg?: React.ReactNode;
-}
+import { MenuItem, SubMenuItem } from "@src/components/tipos";
 
-interface MenuItem {
-  nome: string;
-  rota?: string;
-  svg?: React.ReactNode;
-  tipo?: "admin";
-  submenu?: SubMenuItem[];
-}
+
 
 const MenuLateral = () => {
   const { logout, auth } = useContext(AuthContext);
   const { menuAberto, fecharMenu } = useMenu();
 
-  const ConfirmSair = () => {
-    Swal.fire({
-      title: "Deseja realmente sair?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "var(--corPrincipal)",
-      cancelButtonColor: "#929292",
-      confirmButtonText: "Sim",
-      cancelButtonText: "Não",
-    }).then((result) => {
-      if (result.isConfirmed) logout();
-    });
-  };
-
-  // Estrutura de menus - memoizada para melhor performance
-  const menus: MenuItem[] = useMemo(() => [
-    {
-      nome: "Dashboard",
-      rota: "/",
-      svg: <HiOutlineViewGrid size={25} />,
-      tipo: "admin",
-    },
-    {
-      nome: "Condomínios",
-      rota: "/condominios",
-      svg: <RiHotelFill size={25} />,
-      tipo: "admin",
-    },
-    {
-      nome: "Registrar Visita",
-      rota: "/visitas",
-      svg: <BiQrScan size={25} />,
-    },
-    {
-      nome: "Chamados",
-      rota: "/chamados",
-      svg: <TbMessageCheck size={25} />,
-    },
-    // Exemplo de submenu (descomentado se precisar)
-    // {
-    //   nome: "Funcionários",
-    //   svg: <HiUsers size={25} />,
-    //   submenu: [
-    //     { nome: "Contas a pagar", rota: "/financeiro-contas-a-pagar" },
-    //     { nome: "Contas a receber", rota: "/financeiro-contas-a-receber" },
-    //     { nome: "Contas Fixas", rota: "/financeiro-contas-fixas" },
-    //     { nome: "Categorias", rota: "/financeiro-categorias" },
-    //   ],
-    // },
-  ], []);
-
-
-  const menusPermitidos = useMemo(() => {
-    if (!auth.user) return menus.filter(menu => !menu.tipo);
-    
-    return menus.filter(menu => {
-      if (menu.tipo === "admin") {
-        return auth.user?.tipoDeUsuario === "admin";
-      }
-      return true;
-    });
-  }, [menus, auth.user]);
 
   return (
     <aside
-      className={`flex  flex-col h-screen px-4 py-6 overflow-y-auto corPrincipalBg menu-lateral ${
+      className={`flex flex-col h-screen px-4 py-6 overflow-y-auto corPrincipalBg menu-lateral ${
         menuAberto ? "menu-aberto" : ""
       }`}
     >
@@ -106,7 +29,8 @@ const MenuLateral = () => {
 
       {/* Logo */}
       <div className="flex items-center justify-center mb-6 cursor-pointer">
-        <div className="w-full flex justify-center max-w-[100%] p-3 bg-white/10 rounded-lg backdrop-blur-sm">
+        <div className="w-full flex justify-center max-w-[100%] p-3 
+        bg-[var(--fundo-logo)] rounded-lg backdrop-blur-sm">
           <img
             src={`/logo.png`}
             className="w-[60%] h-auto object-contain max-w-[40%]"
@@ -118,27 +42,37 @@ const MenuLateral = () => {
       {/* Menus */}
       <div className="flex flex-col justify-between flex-1">
         <nav className="flex flex-col gap-3">
-          {menusPermitidos.map((menu: MenuItem, index: number) => {
+          {auth.menu?.map((menu: MenuItem, index: number) => {
             // Submenu
             if (menu.submenu) {
               return (
-                <OpcaoMenuComSubmenu key={index} nome={menu.nome} svg={menu.svg}>
+                <OpcaoMenuComSubmenu key={index} nome={menu.nome} svg={menu.icone} >
                   {menu.submenu.map((sub: SubMenuItem, i: number) => (
-                    <OpcaoMenu key={i} nome={sub.nome} rota={sub.rota} svg={sub.svg} />
+                    <OpcaoMenu key={i} nome={sub.nome} rota={sub.rota} svg={sub.icone}/>
                   ))}
                 </OpcaoMenuComSubmenu>
               );
             }
 
             // Menu normal
-            return <OpcaoMenu key={index} nome={menu.nome} rota={menu.rota} svg={menu.svg} />;
+            return <OpcaoMenu key={index} nome={menu.nome} rota={menu.rota} svg={menu.icone} />;
           })}
         </nav>
 
         {/* Logout */}
         <div className="mt-auto mb-15">
           <hr className=" border-white/10" />
-          <OpcaoMenu nome="Sair" svg={<HiLogin size={25} />} onClick={ConfirmSair} />
+          <OpcaoMenu nome="Sair" 
+          svg={'logout'} 
+          
+          
+          onClick={
+            () => Confirm({
+                onConfirm: logout, 
+                onCancel: () => {},
+                text: "Deseja realmente sair?"
+            })
+          } />
         </div>
       </div>
     </aside>

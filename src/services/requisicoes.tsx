@@ -1,65 +1,41 @@
+import Alerta from "@src/components/comum/alertas";
 import axios from "axios";
-
-
+import { Alert } from "flowbite-react";
 const rotaApi = import.meta.env.VITE_API;
+import { useNavigate } from "react-router-dom";
+
+
 
 export async function requisicaoGet(rota: string) {
+
   const token = localStorage.getItem("token");
 
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
   try {
-    const response = await axios.get(
-      `${rotaApi}${rota}`,
-      // { token },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
 
-    if (response.status === 200 && response.data.success === true) {
-      return response;
-    } else {
-      if (response.data.error === "Token inválido" || response.data.error === "Token expirado") {
-        window.location.href = "/login";
-      }
+    const response = await axios.get(`${rotaApi}${rota}`, config);
+    return response;
 
-      return response;
+  } catch (error: any) {
+
+    if (error.response.status === 401) {
+      window.location.href = "/";
     }
-  } catch (error) {
-    return null;
+
+    if (error.response.status === 403) {
+      Alerta("toast", "error", `${error.response.data.message}`);
+    }
+
+    return error.response;
   }
 }
 
-export async function requisicaoPostSimples(rota: string, dados: Record<string, any>) {
-  const token = localStorage.getItem("token");
-
-  try {
-    const response = await axios.post(
-      `${rotaApi}${rota}`,
-      { token, ...dados },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (response.status === 200 && response.data.success === true) {
-      return response;
-    } else {
-      if (response.data.error === "Token inválido") {
-        window.location.href = "/login";
-      }
-
-      return response;
-    }
-  } catch (error) {
-    return null;
-  }
-}
 
 export async function requisicaoPost(rota: string, dados: Record<string, any> | FormData) {
   const token = localStorage.getItem("token");
@@ -79,76 +55,43 @@ export async function requisicaoPost(rota: string, dados: Record<string, any> | 
     payload = JSON.stringify(dados);
   }
 
-  try {
-    const response = await axios.post(`${rotaApi}${rota}`, payload, config);
-
-    if (response.status === 200 && response.data.success === true) {
-      return response;
-    } else {
-      if (response.data.error === "Token inválido") {
-        window.location.href = "/login";
-      }
-
-      return response;
-    }
-  } catch (error) {
-    return null;
-  }
+  const response = await axios.post(`${rotaApi}${rota}`, payload, config);
+  return response;
 }
 
 
-
-export async function requisicaoPut(rota: string, dados: Record<string, any>) {
+export async function requisicaoPut(rota: string, dados: Record<string, any> | FormData) {
   const token = localStorage.getItem("token");
 
-  try {
-    const response = await axios.put(
-      `${rotaApi}${rota}`,
-      { ...dados },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+  let config = {
+    headers: {
+      Authorization: `Bearer ${token}`
+    } as Record<string, string>
+  };
 
-    if (response.status === 200 && response.data.success === true) {
-      return response;
-    } else {
-      if (response.data.error === "Token inválido") {
-        window.location.href = "/login";
-      }
+  let payload: any;
 
-      return response;
-    }
-  } catch (error) {
-    return null;
+  if (dados instanceof FormData) {
+    payload = dados;
+  } else {
+    config.headers["Content-Type"] = "application/json";
+    payload = JSON.stringify(dados);
   }
+
+  const response = await axios.put(`${rotaApi}${rota}`, payload, config);
+  return response;
 }
 
-export async function requisicaoDelete(rota: string,) {
+
+export async function requisicaoDelete(rota: string) {
   const token = localStorage.getItem("token");
 
-  try {
-    const response = await axios.delete(`${rotaApi}${rota}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-
-    });
-
-    if (response.status === 200 && response.data.success === true) {
-      return response;
-    } else {
-      if (response.data.error === "Token inválido") {
-        window.location.href = "/login";
-      }
-
-      return response;
-    }
-  } catch (error) {
-    return null;
-  }
+  const config = {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(`${rotaApi}${rota}`, config);
+  return response;
 }

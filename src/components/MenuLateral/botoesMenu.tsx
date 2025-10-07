@@ -1,7 +1,8 @@
-import { useMenu } from "../../context/MenuContext";
+import { useMenu } from "@src/context/MenuContext";
 import "./MenuLateral.css";
-import AbrirMenuIcon from "./Icones/AbrirMenu";
-import FecharMenuIcon from "./Icones/FecharMenu";
+import AbrirMenuIcon from "@components/MenuLateral/Icones/AbrirMenu";
+import FecharMenuIcon from "@components/MenuLateral/Icones/FecharMenu";
+import { RiContractLeftFill } from "react-icons/ri";
 
 
 interface BtnAbrirMenuLateralProps {
@@ -28,18 +29,19 @@ export function BtnAbrirMenuLateral(props: BtnAbrirMenuLateralProps) {
   );
 }
 
-interface BtnFecharMenuLateralProps {
-  funcao: () => void;
-}
 
 export function BtnFecharMenuLateral({ funcao = () => {} }) {
   return (
     <button
       id="botao-fechar-menu"
       onClick={() => funcao()}
-      className="fixed bg-white right-4 top-5 p-2  rounded-full transition-all cursor-pointer z-2"
+      className="absolute bg-[var(--base-variant)] opacity-70 text-[var(--text-color)] right-4 top-15 p-2 rounded-full 
+                 shadow-lg hover:shadow-xl 
+                 transition-all duration-300 
+                 cursor-pointer z-300
+                 hover:scale-110 hover:-translate-y-0.5"
     >
-      <FecharMenuIcon />
+      <RiContractLeftFill />
     </button>
   );
 }

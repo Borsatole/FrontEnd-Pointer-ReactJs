@@ -55,3 +55,27 @@ function Alerta(alerta = "toast", tipo = "success", mensagem = "") {
 }
 
 export default Alerta;
+
+
+interface ConfirmProps {
+  onConfirm: () => void;
+  onCancel: () => void;
+  text: string;
+}
+
+export function Confirm({onConfirm, onCancel, text}:ConfirmProps) {
+
+  Swal.fire({
+    icon: "warning",
+    title: text,
+    showCancelButton: true,
+    confirmButtonColor: "var(--corPrincipal)",
+    cancelButtonColor: "var(--corPrincipal)",
+    confirmButtonText: "Sim",
+    cancelButtonText: "Não",
+  }).then((result) => {
+    if (result.isConfirmed) onConfirm();
+    else onCancel();
+  });
+
+}

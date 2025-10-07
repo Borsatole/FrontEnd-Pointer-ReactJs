@@ -168,7 +168,7 @@ function TabelaDinamica<T = any>({
                           return (
                             <Tooltip key={acaoIndex} tooltip={acao.tooltip}>
                               <button
-                                className={`bg-[var(--corPrincipal)] p-2 rounded-lg text-[var(--text-white)] ${acao.className || ""}`}
+                                className={`bg-[var(--base-color)] p-2 rounded-lg text-[var(--text-color)] ${acao.className || ""}`}
                                 onClick={() => acao.onClick(item)}
                               >
                                 {acao.icon}

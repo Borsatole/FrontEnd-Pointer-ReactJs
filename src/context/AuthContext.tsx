@@ -9,24 +9,22 @@ import { useNavigate } from "react-router-dom";
 import Alerta from "@components/comum/alertas";
 import { requisicaoGet, requisicaoPost } from "@services/requisicoes";
 import { useMenu } from "../context/MenuContext";
+import { MenuItem, UserData } from "@src/components/tipos";
 
-interface UserData {
-  avatar: string;
-  nome: string;
-  email: string;
-  tipoDeUsuario: string;
-}
+
 
 interface AuthData {
   token: string | null;
   loggedIn: boolean;
   user: UserData | null;
+  menu: MenuItem[] | null;
 }
 
 interface AuthContextType {
   auth: AuthData;
-  login: (token: string) => void;
+  login: (data: any) => void;
   logout: () => void;
+  
 }
 
 interface AuthProviderProps {
@@ -42,69 +40,66 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [auth, setAuth] = useState<AuthData>({
     token: localStorage.getItem("token"),
     loggedIn: !!localStorage.getItem("token"),
-    user: null,
+
+    user: localStorage.getItem("usuario") ? 
+    JSON.parse(localStorage.getItem("usuario") || "") : null,
+
+    menu: localStorage.getItem("menu") ? 
+    JSON.parse(localStorage.getItem("menu") || "") : null,
   });
 
-  const carregarDadosUsuario = useCallback(async () => {
-    try {
-      const RotaApi = import.meta.env.VITE_API;
-      const response = await requisicaoGet("/usuarios/Dashboard.php");
-      
-      if (response?.data?.InformacoesBasicas) {
-        const info = response.data.InformacoesBasicas;
-        const userData: UserData = {
-          avatar: `${RotaApi}/Backend/usuarios/avatar/${info.Avatar}`,
-          nome: info.NomeDoUsuario,
-          email: info.email,
-          tipoDeUsuario: info.TipoDeUsuario,
-        };
-        
-        setAuth(prevAuth => ({
-          ...prevAuth,
-          user: userData
-        }));
-      }
-    } catch (error) {
-      console.error("Erro ao carregar dados do usuário:", error);
-    }
-  }, []);
-
   const verificaToken = useCallback(async (token: string) => {
-    try {
-      const response = await requisicaoPost(`/Auth/Token/valida-jwt.php`, { token });
-  
-      if (!response || !response.data.success) {
-        Alerta("swal", "error", `${response?.data?.error || "Erro desconhecido"}`);
+  try {
+    const response = await requisicaoPost(`/login/validar`, { token });
+  } catch (error: any) {
+    
+    if (error.response) {
+      const msg = error.response.data?.message || "Erro desconhecido";
+      
+      Alerta("swal", "error", msg);
+      
+      if (error.response.status === 401) {
         logout();
-      } else {
-        // ← ADICIONE ESTAS LINHAS
-        if (!auth.user) {
-          await carregarDadosUsuario();
-        }
+        Alerta("swal", "error", `Faça login novamente para continuar.`);
       }
-    } catch (error) {
-      Alerta("swal", "error", `${error}`);
-      logout();
+    } else if (error.request) {
+      Alerta("swal", "error", "Sem resposta do servidor");
+    } else {
+      Alerta("swal", "error", `Erro: ${error.message}`);
     }
-  }, [auth.user, carregarDadosUsuario]); // ← ADICIONE auth.user e carregarDadosUsuario
+    
+    logout();
+  }
+}, [auth.user]);
 
-  // Efeito que roda quando o token muda
+
   useEffect(() => {
     if (auth.token) {
       verificaToken(auth.token);
     }
   }, [auth.token, verificaToken]);
 
-  // Função de login
-  const login = (token: string) => {
+
+  const login = (data : any) => {
+    const token = data.token;
+    const usuario = data.usuario;
+    const menu = data.menu;
+
     localStorage.setItem("token", token);
-    setAuth({ token, loggedIn: true, user: null }); // ← ADICIONE user: null
+    localStorage.setItem("menu", JSON.stringify(menu));
+    localStorage.setItem("usuario", JSON.stringify(usuario));
+      setAuth({ token, loggedIn: true, user: usuario, menu: menu });
+    
+    
+    
   };
 
   // Função de logout
   const logout = () => {
     localStorage.removeItem("token");
-    setAuth({ token: null, loggedIn: false, user: null }); // ← ADICIONE user: null
+    localStorage.removeItem("menu");
+    localStorage.removeItem("usuario");
+    setAuth({ token: null, loggedIn: false, user: null, menu: null });
     navigate("/login", { replace: true });
   };
 
