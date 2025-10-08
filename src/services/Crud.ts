@@ -1,6 +1,7 @@
 import { requisicaoDelete, requisicaoPost, requisicaoPut } from "@services/requisicoes";
-import Swal from "sweetalert2";
 import Alerta from "@components/comum/alertas";
+import { Confirm } from "@components/comum/alertas";
+
 
 // 🔹 Tipo base para registros (cada tabela pode estender)
 export interface BaseRegistro {
@@ -21,46 +22,25 @@ export function handleDeletar<T extends BaseRegistro>({
   setRelistar,
   endpoint,
 }: Deletar<T>) {
-  Swal.fire({
-    title: `Tem certeza que deseja deletar ${registro.nome || "esse registro"}?`,
-    text: "Você não poderá reverter isso!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "var(--corPrincipal)",
-    cancelButtonColor: "var(--corPrincipalHover)",
-    confirmButtonText: "Sim, deletar!",
-    cancelButtonText: "Cancelar",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      requisicaoDelete(`${endpoint}?id=${registro.id}`)
-        .then((response) => {
-          if (response?.data.success) {
-            setRelistar(true);
-            Swal.fire({
-              title: "Deletado!",
-              text: "Registro deletado com sucesso.",
-              icon: "success",
-              confirmButtonColor: "var(--corPrincipal)",
-            });
-          } else {
-            Swal.fire({
-              title: "Ops!",
-              text: response?.data?.message || "Ops! Algo deu errado.",
-              icon: "error",
-              confirmButtonColor: "var(--corPrincipal)",
-            });
-          }
-        })
-        .catch(() => {
-          Swal.fire({
-            title: "Erro!",
-            text: "Não foi possível deletar o registro.",
-            icon: "error",
-            confirmButtonColor: "var(--corPrincipal)",
-          });
-        });
+
+  const executarDelete = async () => {
+    try {
+      const response = await requisicaoDelete(`${endpoint}?id=${registro.id}`);
+      if (response?.data?.success) {
+        Alerta("toast", "success", "Registro deletado com sucesso!");
+        setRelistar(true); // atualiza tabela só se deletar com sucesso
+      } else {
+        Alerta("toast", "error", response?.data?.message || "Erro ao deletar registro");
+      }
+    } catch (error) {
+      Alerta("toast", "error", "Não foi possível deletar o registro.");
     }
-  });
+  };
+
+  Confirm({
+    onConfirm: () => executarDelete(), 
+    onCancel: () => {},
+    text: `Tem certeza que deseja deletar: ${registro.nome}?`});
 }
 
 // ----------- EDIT -----------
@@ -90,16 +70,16 @@ export async function editarRegistro<T extends BaseRegistro>({
 
     if (response?.data?.success) {
       // setRegistros(registros.map((r) => (r.id === data.id ? data : r)));
-      // setSelected(null);
+      setSelected(null);
       setRelistar(true);
+      
       Alerta("toast", "success", msg);
     } else {
       Alerta("toast", "error", msg);
-      setRelistar(true);
     }
   } catch {
     Alerta("toast", "error", "Erro inesperado ao editar a requisição!");
-    setRelistar(true);
+    
   } finally {
     setLoadingSpiner(false);
   }
@@ -180,8 +160,7 @@ export function adicionarRegistro<T extends BaseRegistro>({
       }
     })
     .catch((error) => {
-      console.error("Erro na requisição:", error);
-      Alerta("toast", "error", "Erro inesperado ao criar a requisição!");
+      Alerta("toast", "error", `${error.response.data.message}`);
     })
     .finally(() => {
       setLoadingSpiner(false);

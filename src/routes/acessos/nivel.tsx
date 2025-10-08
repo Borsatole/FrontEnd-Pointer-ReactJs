@@ -1,5 +1,5 @@
 import { TituloPagina } from '@src/components/comum/Textos'
-import Tabela from '@src/components/permissoesacesso/niveldeacesso/niveis-acesso/Tabela';
+import Tabela from '@src/components/permissoesacesso/niveis-acesso/Tabela';
 import DefaultLayout from '@src/layouts/DefaultLayout'
 
 

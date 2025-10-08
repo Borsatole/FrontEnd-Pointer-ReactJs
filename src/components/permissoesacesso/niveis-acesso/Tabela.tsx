@@ -1,27 +1,31 @@
 import { useEffect, useState } from "react";
-import { MdAttachMoney } from "react-icons/md";
-import { CgAddR } from "react-icons/cg";
-import { FaEdit, FaTrashAlt } from "react-icons/fa";
-import { MdWorkOutline } from "react-icons/md";
-import { MdWorkspacePremium } from "react-icons/md";
 
-import { PrimeraLetraMaiuscula } from "@services/funcoes-globais";
+
+// REQUISICOES E CRUD
+import { requisicaoGet } from "@services/requisicoes";
 import { handleDeletar, editarRegistro, adicionarRegistro } from "@src/services/Crud";
 
+// LOADERS
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
-import { requisicaoGet } from "@services/requisicoes";
-import { ContaAReceber } from "./tipos";
+
+// TIPOS
 import { Permissoes } from "@src/components/tipos";
+
+// FUNCOES
 import { Datas, Valores } from "@src/services/funcoes-globais";
+import { PrimeraLetraMaiuscula } from "@services/funcoes-globais";
 import { Button } from "@components/comum/button";
-import ModalEditarProduto from "./ModalEditarProduto";
-import ModalAdicionarRegistro from "./ModalAdicionarProduto";
-import { FiltroCadastros } from "./FiltroCadastros";
+import { getIcon } from "@src/components/icons";
+
+// TABELA
 import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas";
 import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/TabelaDinamica";
 
-import { getIcon } from "@src/components/icons";
+// MODAIS E FILTROS
+import ModalEditarProduto from "./EditarRegistro";
+import ModalAdicionarRegistro from "./NovoRegistro";
+import { FiltroCadastros } from "./FiltroRegistro";
 
 
 function Tabela() {
@@ -31,7 +35,7 @@ function Tabela() {
   const [registros, setRegistros] = useState<Permissoes[]>([]);
   const [selectedProduto, setSelectedProduto] = useState<Permissoes | null>(null);
   const [pagina, setPagina] = useState(1);
-  const [relistar, setRelistar] = useState(false);
+  const [relistar, setRelistar] = useState(true);
   const [queryFiltro, setQueryFiltro] = useState("");
 
   // Parâmetros de paginação
@@ -66,7 +70,7 @@ function Tabela() {
     },
     {
       icon: <div className="cursor-pointer">{getIcon("deletar", 20)}</div>,
-      tooltip: "Deletar", 
+      tooltip: "Excluir",
       onClick: (registro) => handleDeletar({registro, setRelistar, endpoint: `/papeis/${registro.id}`}),
     },
   ];
@@ -102,8 +106,6 @@ function Tabela() {
       <div className="flex justify-between">
         <Button onClick={() => setAbrirModalNovoRegistro(true)}>
           <p className="flex items-center gap-2">
-
-            
             {getIcon("adicionar", 20)}
             <span>Criar Nivel</span>
           </p>

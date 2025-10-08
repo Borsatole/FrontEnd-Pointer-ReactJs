@@ -70,7 +70,7 @@ export function Confirm({onConfirm, onCancel, text}:ConfirmProps) {
     title: text,
     showCancelButton: true,
     confirmButtonColor: "var(--corPrincipal)",
-    cancelButtonColor: "var(--corPrincipal)",
+    cancelButtonColor: "var(--corPrincipalHover)",
     confirmButtonText: "Sim",
     cancelButtonText: "Não",
   }).then((result) => {

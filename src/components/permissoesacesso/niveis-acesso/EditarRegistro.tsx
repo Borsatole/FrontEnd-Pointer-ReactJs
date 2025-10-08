@@ -74,7 +74,7 @@ function ModalEditarProduto({
         data: payload,
         registros,
         setRegistros,
-        setRelistar,
+        setRelistar ,
         setSelected: setSelectedProduto,
         setLoadingSpiner,
         endpoint: `/permissoes/${selectedProduto.id}`,

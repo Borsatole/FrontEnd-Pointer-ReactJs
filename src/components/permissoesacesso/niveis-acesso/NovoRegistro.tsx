@@ -55,10 +55,11 @@ function ModalAdicionarRegistro({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
 
-    const data = new FormData();
-    data.append("nome", nome);
+
+    const payload = {
+      "nome": nome,
+    };
   
     
 
@@ -66,7 +67,7 @@ function ModalAdicionarRegistro({
     setIsLoading(true);
     try {
       await adicionarRegistro<Permissoes>({
-        data,
+        data : payload,
         registros,
         setRegistros,
         setRelistar,
@@ -74,7 +75,7 @@ function ModalAdicionarRegistro({
         setLoadingSpiner,
         endpoint: "/papeis"
       })
-    } finally {
+    }finally {
       setIsLoading(false);
     }
   };

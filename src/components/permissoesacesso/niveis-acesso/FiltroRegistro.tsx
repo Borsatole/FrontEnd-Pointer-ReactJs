@@ -19,7 +19,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     categoria: "",
     data_minima: primeiroDia,
     data_maxima: ultimoDia,
-    data_pagamento: "",
+    data_pagamento: "10",
   });
 
   const [categorias, setCategorias] = useState<Categoria[]>([]);
