@@ -38,8 +38,9 @@ function Timer() {
   }, []);
 
   return (
-    <div className="text-center text-sm text-gray-700">
-      {tempoRestante ? `Expiração: ${tempoRestante}` : "Expiração: 00:00"}
+    <div className="p-2 h-10 text-sm bg-[var(--base-variant)] cursor-pointer
+      flex items-center justify-center rounded-full text-[var(--text-color)]">
+      {tempoRestante ? `Sessão : ${tempoRestante}` : "Sessão : 00:00"}
     </div>
   );
 }

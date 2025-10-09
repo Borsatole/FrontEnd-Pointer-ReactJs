@@ -3,6 +3,8 @@ import Tooltip from '@components/tooltip/tooltipwrapper'
 import DarkmodeButton from './darkmodeButton'
 import AvatarOptions from './avatarOptions'
 import Timer from './timer'
+import { RiFullscreenExitFill } from "react-icons/ri";
+import FullScreenButton from './fullscreen'
 
 
 
@@ -16,9 +18,19 @@ function BarraSuperior() {
           </div>
 
 
-        <div className="flex items-center gap-4 justify-center ">
+        <div className="flex items-center gap-3 justify-center ">
+
+          
           <Timer />
-          <Tooltip tooltip="Alterne entre tema claro e escuro" position="left">
+
+
+          
+          <Tooltip tooltip="Alternar tela cheia" position="bottom">
+            <FullScreenButton />
+          </Tooltip>
+
+
+          <Tooltip tooltip="Alternar tema" position="bottom">
             <DarkmodeButton />
           </Tooltip>
 

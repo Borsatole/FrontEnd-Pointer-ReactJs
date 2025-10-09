@@ -114,7 +114,7 @@ function Tabela() {
       </div>
 
       {/* Filtros e contadores */}
-      <FiltroCadastros onFiltrar={setQueryFiltro}/>
+      {/* <FiltroCadastros onFiltrar={setQueryFiltro}/> */}
       <MostrarNumeroDeResultados totalResultados={totalResultados} />
 
 

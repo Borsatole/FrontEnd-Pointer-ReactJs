@@ -29,8 +29,10 @@
   /* menu - hovers */
   --sidebarhover-color: #0050DC;
   --sidebarhover-text-color: #ffffff;
+
   /* menu - bordinha esquerda do hover */
   --sidebarhover-border: #f9f9f9;
+
   /* menu - icones hover */
   --sidebarhover-icon: #ffffff;
 
@@ -45,11 +47,11 @@
 
 .darkmode {
   /* cores principais */
-  --corPrincipal: #040c31;
-  --corPrincipalHover: #040b599c;
+  --corPrincipal: #0050DC;
+  --corPrincipalHover: #0051dc9a;
 
   /* bases */
-  --base-color: #010725;
+  --base-color: #030925;
   --base-variant: #050c2d;
 
   /* menu */
@@ -57,9 +59,7 @@
   --sidebarsecondarycolor: #020a3d;
   --sidebartext-color: #f9f9f9;
 
-  /* menu - hovers */
-  --sidebarhover-color: #04592f;
-  --sidebarhover-text-color: #878787;
+  
 
   /* textos */
   --text-color: #e8e9ed;

@@ -54,7 +54,8 @@ export default function Dashboard() {
 
 
   return (
-    <DefaultLayout>
+    <>
+
       <TituloPagina>Dashboard</TituloPagina>
 
       <Button
@@ -71,7 +72,6 @@ export default function Dashboard() {
         ))}
       </ul>
 
-
-    </DefaultLayout>
+  </>
   );
 }
