@@ -77,8 +77,8 @@ export async function editarRegistro<T extends BaseRegistro>({
     } else {
       Alerta("toast", "error", msg);
     }
-  } catch {
-    Alerta("toast", "error", "Erro inesperado ao editar a requisição!");
+  } catch(error : any) {
+    Alerta("toast", "error", `${error?.response?.data?.message}`);
     
   } finally {
     setLoadingSpiner(false);

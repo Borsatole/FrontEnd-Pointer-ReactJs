@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import Alerta from "@components/comum/alertas";
-import { requisicaoGet, requisicaoPost } from "@services/requisicoes";
+import { requisicaoGet, requisicaoPost, requisicaoPostSemRedirect } from "@services/requisicoes";
 import { useMenu } from "../context/MenuContext";
 import { MenuItem, UserData } from "@src/components/tipos";
 
@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const verificaToken = useCallback(async (token: string) => {
   try {
-    const response = await requisicaoPost(`/login/validar`, { token });
+    const response = await requisicaoPostSemRedirect(`/login/validar`, { token });
   } catch (error: any) {
     
     if (error.response) {

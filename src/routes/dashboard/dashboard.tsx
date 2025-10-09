@@ -31,7 +31,8 @@ export default function Dashboard() {
     setLoadingSpiner(true);
 
     const params = new URLSearchParams({
-      data_minima: lastMonth,
+      data_minima:"",
+      data_maxima: "",
     });
 
     requisicaoGet(`/usuarios?${params.toString()}`)

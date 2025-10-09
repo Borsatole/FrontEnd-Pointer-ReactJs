@@ -3,7 +3,6 @@ import { FormGroup } from "@components/comum/FormGroup";
 import { Input } from "@components/comum/input";
 import { SelectModificado } from "@components/comum/select";
 import { requisicaoGet } from "@services/requisicoes";
-import { Categoria } from "./tipos";
 import { Datas } from "@src/services/funcoes-globais";
 
 interface FiltroProps {
@@ -21,8 +20,6 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     data_maxima: ultimoDia,
     data_pagamento: "10",
   });
-
-  const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -42,12 +39,6 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     onFiltrar("");
   };
 
-  useEffect(() => {
-    requisicaoGet('/Financeiro/categorias/Read.php?setor=contas_a_receber').then((res) => {
-      if (res?.data.success) setCategorias(res.data.Registros);
-    });
-    handleFiltrar();
-  }, []);
 
   return (
     <form className="flex flex-col bg-[var(--base-variant)] rounded-lg p-3.5 mt-3.5 mb-5.5" onSubmit={(e) => e.preventDefault()}>
@@ -61,13 +52,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
           <Input type="date" id="data_maxima" name="data_maxima" value={filtros.data_maxima} onChange={handleChange} />
         </FormGroup>
 
-        <FormGroup id="categoria" label="CATEGORIA">
-          <SelectModificado id="categoria" name="categoria" value={filtros.categoria} onChange={handleChange}>
-            <option value="">Todos</option>
-            {categorias.map((cat) => <option key={cat.id} value={cat.categoria}>{cat.categoria}</option>)}
-            <option value="Sem Categoria">Sem Categoria</option>
-          </SelectModificado>
-        </FormGroup>
+        
 
         <FormGroup id="status" label="STATUS">
           <SelectModificado id="status" name="status" onChange={handleChange}>

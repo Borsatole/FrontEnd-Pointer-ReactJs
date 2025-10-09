@@ -90,7 +90,8 @@ function Tabela() {
         if (response?.data.success) {
           setRegistros(response.data.Registros);
           setTotalResultados(response.data.paginacao.total);
-          setTotalPaginas(response.data.ultimaPagina);
+          setTotalResultados(response.data.paginacao.total);
+          setTotalPaginas(response.data.paginacao.ultimaPagina);
         }
         setLoadingSpiner(false);
         setRelistar(false);
@@ -113,7 +114,7 @@ function Tabela() {
       </div>
 
       {/* Filtros e contadores */}
-
+      <FiltroCadastros onFiltrar={setQueryFiltro}/>
       <MostrarNumeroDeResultados totalResultados={totalResultados} />
 
 
