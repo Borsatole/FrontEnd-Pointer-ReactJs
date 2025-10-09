@@ -2,6 +2,7 @@ import { BtnAbrirMenuLateral } from '@components/MenuLateral/botoesMenu'
 import Tooltip from '@components/tooltip/tooltipwrapper'
 import DarkmodeButton from './darkmodeButton'
 import AvatarOptions from './avatarOptions'
+import Timer from './timer'
 
 
 
@@ -16,6 +17,7 @@ function BarraSuperior() {
 
 
         <div className="flex items-center gap-4 justify-center ">
+          <Timer />
           <Tooltip tooltip="Alterne entre tema claro e escuro" position="left">
             <DarkmodeButton />
           </Tooltip>

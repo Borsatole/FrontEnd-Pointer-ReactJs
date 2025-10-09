@@ -20,6 +20,7 @@ export interface UserData {
   nivel: string;
   nivel_nome: string;
   ativo: Boolean;
+  expirationTime?: EpochTimeStamp | null;
 }
 
 

@@ -7,24 +7,26 @@ import React, {
 } from "react";
 import { useNavigate } from "react-router-dom";
 import Alerta from "@components/comum/alertas";
-import { requisicaoGet, requisicaoPost, requisicaoPostSemRedirect } from "@services/requisicoes";
+import {
+  requisicaoGet,
+  requisicaoPost,
+  requisicaoPostSemRedirect,
+} from "@services/requisicoes";
 import { useMenu } from "../context/MenuContext";
 import { MenuItem, UserData } from "@src/components/tipos";
-
-
 
 interface AuthData {
   token: string | null;
   loggedIn: boolean;
   user: UserData | null;
   menu: MenuItem[] | null;
+  expirationTime: EpochTimeStamp | null;
 }
 
 interface AuthContextType {
   auth: AuthData;
   login: (data: any) => void;
   logout: () => void;
-  
 }
 
 interface AuthProviderProps {
@@ -39,39 +41,42 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const [auth, setAuth] = useState<AuthData>({
     token: localStorage.getItem("token"),
+    expirationTime: localStorage.getItem("expirationTime")
+      ? Number(localStorage.getItem("expirationTime"))
+      : null,
     loggedIn: !!localStorage.getItem("token"),
-
-    user: localStorage.getItem("usuario") ? 
-    JSON.parse(localStorage.getItem("usuario") || "") : null,
-
-    menu: localStorage.getItem("menu") ? 
-    JSON.parse(localStorage.getItem("menu") || "") : null,
+    user: localStorage.getItem("usuario")
+      ? JSON.parse(localStorage.getItem("usuario") || "")
+      : null,
+    menu: localStorage.getItem("menu")
+      ? JSON.parse(localStorage.getItem("menu") || "")
+      : null,
   });
 
-  const verificaToken = useCallback(async (token: string) => {
-  try {
-    const response = await requisicaoPostSemRedirect(`/login/validar`, { token });
-  } catch (error: any) {
-    
-    if (error.response) {
-      const msg = error.response.data?.message || "Erro desconhecido";
-      
-      Alerta("swal", "error", msg);
-      
-      if (error.response.status === 401) {
-        logout();
-        Alerta("swal", "error", `Faça login novamente para continuar.`);
-      }
-    } else if (error.request) {
-      Alerta("swal", "error", "Sem resposta do servidor");
-    } else {
-      Alerta("swal", "error", `Erro: ${error.message}`);
-    }
-    
-    logout();
-  }
-}, [auth.user]);
+  const verificaToken = useCallback(
+    async (token: string) => {
+      try {
+        await requisicaoPostSemRedirect(`/login/validar`, { token });
+      } catch (error: any) {
+        if (error.response) {
+          const msg = error.response.data?.message || "Erro desconhecido";
+          Alerta("swal", "error", msg);
 
+          if (error.response.status === 401) {
+            logout();
+            Alerta("swal", "error", "Faça login novamente para continuar.");
+          }
+        } else if (error.request) {
+          Alerta("swal", "error", "Sem resposta do servidor");
+        } else {
+          Alerta("swal", "error", `Erro: ${error.message}`);
+        }
+
+        logout();
+      }
+    },
+    [auth.user]
+  );
 
   useEffect(() => {
     if (auth.token) {
@@ -79,27 +84,35 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [auth.token, verificaToken]);
 
-
-  const login = (data : any) => {
+  const login = (data: any) => {
     const token = data.token;
     const usuario = data.usuario;
     const menu = data.menu;
+    const exp_time = data.expirationTime;
 
     localStorage.setItem("token", token);
+    localStorage.setItem("expirationTime", String(exp_time));
     localStorage.setItem("menu", JSON.stringify(menu));
     localStorage.setItem("usuario", JSON.stringify(usuario));
-      setAuth({ token, loggedIn: true, user: usuario, menu: menu });
-    
-    
-    
+
+    setAuth({
+      token,
+      expirationTime: exp_time,
+      loggedIn: true,
+      user: usuario,
+      menu,
+    });
   };
 
-  // Função de logout
   const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("menu");
-    localStorage.removeItem("usuario");
-    setAuth({ token: null, loggedIn: false, user: null, menu: null });
+    localStorage.clear();
+    setAuth({
+      token: null,
+      expirationTime: null,
+      loggedIn: false,
+      user: null,
+      menu: null,
+    });
     navigate("/login", { replace: true });
   };
 
