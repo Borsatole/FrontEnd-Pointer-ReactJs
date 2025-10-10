@@ -58,7 +58,6 @@ export async function requisicaoPost(rota: string, dados: Record<string, any> | 
 
   try {
     const response = await axios.post(`${rotaApi}${rota}`, payload, config);
-    console.log(response);
     return response;
 
   } catch (error: any) {

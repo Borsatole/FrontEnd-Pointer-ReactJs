@@ -9,7 +9,6 @@ function NivelAcesso() {
       <TituloPagina>Niveis de Acesso</TituloPagina>
       <Tabela/>
     </>
-
   )
 }
 

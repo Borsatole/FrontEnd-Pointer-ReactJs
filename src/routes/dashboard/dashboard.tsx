@@ -31,8 +31,7 @@ export default function Dashboard() {
     setLoadingSpiner(true);
 
     const params = new URLSearchParams({
-      data_minima:"",
-      data_maxima: "",
+      // nome: "Le",
     });
 
     requisicaoGet(`/usuarios?${params.toString()}`)
@@ -66,9 +65,9 @@ export default function Dashboard() {
         Atualizar
       </Button>
 
-      <ul>
+      <ul className="">
         {registros.map((item: any) => (
-          <li key={item.id}>{item.email}</li>
+          <li className="text-blue-500 pb-2" key={item.id}>{item.email}</li>
         ))}
       </ul>
 

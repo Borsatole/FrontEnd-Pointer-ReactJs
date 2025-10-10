@@ -29,8 +29,6 @@ export function handleDeletar<T extends BaseRegistro>({
       if (response?.data?.success) {
         Alerta("toast", "success", "Registro deletado com sucesso!");
         setRelistar(true); // atualiza tabela só se deletar com sucesso
-      } else {
-        Alerta("toast", "error", response?.data?.message || "Erro ao deletar registro");
       }
     } catch (error) {
       Alerta("toast", "error", "Não foi possível deletar o registro.");
@@ -74,9 +72,7 @@ export async function editarRegistro<T extends BaseRegistro>({
       setRelistar(true);
       
       Alerta("toast", "success", msg);
-    } else {
-      Alerta("toast", "error", msg);
-    }
+    } 
   } catch(error : any) {
     Alerta("toast", "error", `${error?.response?.data?.message}`);
     
@@ -155,9 +151,7 @@ export function adicionarRegistro<T extends BaseRegistro>({
         Alerta("toast", "success", msg);
         setRelistar(true);
         setAbrirModalNovoRegistro(false);
-      } else {
-        Alerta("toast", "error", msg);
-      }
+      } 
     })
     .catch((error) => {
       Alerta("toast", "error", `${error.response.data.message}`);
