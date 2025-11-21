@@ -1,16 +1,13 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@src/context/AuthContext";
 import { TituloPagina } from "@components/comum/Textos";
-import DefaultLayout from "@src/layouts/DefaultLayout";
 import { requisicaoGet } from "@src/services/requisicoes";
 import { Datas } from "@src/services/funcoes-globais";
 import dayjs from 'dayjs';
-import { Button } from "@src/components/comum/button";
+import CardOpcoes from "@src/components/comum/cardOpcoes";
 
 
 
 export default function Dashboard() {
-  const { dataFormataComHora } = Datas();
 
   const now = dayjs();
   const lastMonth = now.subtract(1, "week").format("YYYY-MM-DD");
@@ -37,7 +34,7 @@ export default function Dashboard() {
     requisicaoGet(`/usuarios?${params.toString()}`)
       .then((response) => {
         if (response?.data.success) {
-          setRegistros(response.data.Registros);
+          setRegistros(response.data.registros);
           setTotalResultados(response.data.total_registros);
         }
 
@@ -57,7 +54,69 @@ export default function Dashboard() {
 
       <TituloPagina>Dashboard</TituloPagina>
 
-      <Button
+      <div className="
+      grid 
+      grid-cols-1 
+      md:grid-cols-2 
+      lg:grid-cols-3
+      gap-2
+      justify-left">
+
+
+        <CardOpcoes 
+        icone="demandas"
+        descricao="Demandas Diarias como entregas e retiradas de equipamentos."
+        titulo="Demandas"
+        rota="/"
+        />
+        <CardOpcoes 
+        icone="ordemdeservico"
+        descricao="Demandas Diarias como entregas e retiradas de equipamentos."
+        titulo="Ordem de Serviço"
+        rota="/"
+        />
+
+        
+
+        <CardOpcoes 
+        icone="clientes"
+        descricao="Gerencie o cadastro de clientes da sua empresa"
+        titulo="Clientes"
+        rota="/"
+        />
+
+        <CardOpcoes 
+        icone="orcamento"
+        descricao="Gerencie o cadastro de clientes da sua empresa"
+        titulo="Orçamentos"
+        rota="/"
+        />
+
+        <CardOpcoes 
+        icone="permissoes"
+        descricao="Gerencie as permissoes de acesso e pelo nivel de usuario controle os modulos do sistema"
+        titulo="Permissoes de Acesso"
+        rota="/acesso-niveis"
+        />
+
+
+        <CardOpcoes 
+        icone="estoque"
+        descricao="Gerencie suas caçambas em estoque."
+        titulo="Estoque"
+        rota="/estoque"
+        />
+
+        <CardOpcoes 
+        icone="rotasetaxas"
+        descricao="Gerencie taxas de entregas e ruas especiais."
+        titulo="Rotas e Taxas"
+        rota="/"
+        />
+
+      </div>
+
+      {/* <Button
         onClick={() => setRelistar(true)}
         loading={loadingSpiner}
         disabled={loading}
@@ -69,7 +128,7 @@ export default function Dashboard() {
         {registros.map((item: any) => (
           <li className="text-blue-500 pb-2" key={item.id}>{item.email}</li>
         ))}
-      </ul>
+      </ul> */}
 
   </>
   );

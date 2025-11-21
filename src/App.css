@@ -11,23 +11,26 @@
 
 :root {
   /* cores principais */
-  --corPrincipal: #0050DC;
-  --corPrincipalHover: #0051dc9a;
+  /* --corPrincipal: #FF7B00;
+  --corPrincipalHover: #fbbd04e9; */
+
+  --corPrincipal: #020100;
+  --corPrincipalHover: #020100b1;
 
   /* Fundo Logo */
-  --fundo-logo: #ffffff1a;
+  --fundo-logo: #ffffff50;
 
   /* bases */
   --base-color: #f2f1f3;
   --base-variant: #fff;
 
   /* menu */
-  --sidebarcolor: #040c31;
-  --sidebarsecondarycolor: #020a3d;
+  --sidebarcolor: #020100;
+  --sidebarsecondarycolor: #020100;
   --sidebartext-color: #f9f9f9;
 
   /* menu - hovers */
-  --sidebarhover-color: #0050DC;
+  --sidebarhover-color: #ffffff50;
   --sidebarhover-text-color: #ffffff;
 
   /* menu - bordinha esquerda do hover */
@@ -42,13 +45,14 @@
   --text-white: #fcfdff;
 
   /* Fundo Modal */
-  --fundo-modal: var(--base-color);
+  /* --fundo-modal: var(--base-color); */
+  --fundo-modal: #232738;
 }
 
 .darkmode {
   /* cores principais */
-  --corPrincipal: #0050DC;
-  --corPrincipalHover: #0051dc9a;
+  --corPrincipal: #FBBC04;
+  --corPrincipalHover: #fbbd04e9;
 
   /* bases */
   --base-color: #030925;

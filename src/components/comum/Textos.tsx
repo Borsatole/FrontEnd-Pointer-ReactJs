@@ -2,6 +2,7 @@ import * as React from "react";
 
 interface TextosProps {
   children: React.ReactNode;
+  className?: string;
 }
 
 export function TituloPagina({ children } : TextosProps) {
@@ -19,9 +20,9 @@ export function Paragrafo({ children } : TextosProps) {
 }
 
 
-export function H2({ children } : TextosProps) {
+export function H2({ children, className, ...rest } : TextosProps) {
   return (
-    <h2 className="text-2xl font-bold text-left ">
+    <h2 className={`${className} text-2xl font-bold text-left`} {...rest}>
       {children}
     </h2>
   );

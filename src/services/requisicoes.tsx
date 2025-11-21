@@ -62,6 +62,8 @@ export async function requisicaoPost(rota: string, dados: Record<string, any> | 
 
   } catch (error: any) {
 
+    Alerta("toast", "error", `${error.response.data.message}`);
+
     if (error.response.status === 401) {
       window.location.href = "/";
     }

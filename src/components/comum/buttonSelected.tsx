@@ -21,8 +21,18 @@ const BotaoSeletor: React.FC<BotaoSeletorProps> = ({
 
   return (
     <button
-      onClick={() => onClick(value)}
-      className={`cursor-pointer px-4 py-1.5 rounded-lg border-2 transition-all duration-200 flex items-center gap-2 ${
+      type="button"
+      onClick={(e) => {
+        e.preventDefault();
+        onClick(value);
+      }}
+      className={`
+        cursor-pointer px-4 
+        py-2 md:py-5
+        rounded-lg border-2 
+        transition-all 
+        duration-200 
+        flex items-center gap-2 ${
         isSelected
           ? "bg-[var(--corPrincipal)] border-[var(--corPrincipal)] text-[var(--text-white)] shadow-md"
           : "bg-[var(--base-variant)] border-[var(--base-color)] text-[var(--text-color)] hover:border-[var(--corPrincipal)] hover:bg-opacity-80"

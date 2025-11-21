@@ -1,19 +1,24 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Alerta from "@components/comum/alertas";
 import { requisicaoPost } from "@services/requisicoes";
-import { FormGroup } from "@components/comum/FormGroup";
-import { Input } from "@components/comum/input";
-import { Button } from "@components/comum/button";
 import { useMenu } from "@src/context/MenuContext";
+import { Button } from "@components/comum/button";
+import { Input } from "@components/comum/input";
+import { FormGroup } from "@components/comum/FormGroup";
 
+// Alert
+import { Alert } from "flowbite-react";
+import { HiInformationCircle } from "react-icons/hi";
 
 export default function TelaLogin() {
   const { fecharMenu } = useMenu();
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
 
   async function verificaLogin(event: any) {
     event.preventDefault();
@@ -23,17 +28,31 @@ export default function TelaLogin() {
 
     try {
       setLoading(true);
+      setErrorMessage('');
       const response = await requisicaoPost("/login", dadosFormularioLogin);
 
       if (response?.data.success && response.data.token) {
         fecharMenu();
-        login(response.data);
-        navigate("/");
-        Alerta("swal", "success", `${response.data.message}`);
+        if (response.data.usuario.ativo === false) {
+          console.log("Usuário inativo");
+          navigate("/renove");
+
+          login(response.data);
+          return;
+        } 
+        
+          login(response.data);
+          navigate("/");
+          Alerta("swal", "success", `${response.data.message}`);
+        
+        
+        
       } else {
-        Alerta("swal", "error", `${response?.data?.message || "Ops! Algo deu errado."}`);
+        setErrorMessage(response.data.message);
+        // Alerta("swal", "error", `${response?.data?.message || "Ops! Algo deu errado."}`);
       }
     } catch (error: any) {
+      setErrorMessage(error.response.data.message);
       Alerta("swal", "error", `${error?.response?.data?.message || "Ops! Algo deu errado."}`);
     } finally {
       setLoading(false);
@@ -41,53 +60,94 @@ export default function TelaLogin() {
   }
 
   return (
-    <div className="w-screen h-screen relative flex items-center justify-center overflow-hidden">
-      {/* Fundo animado */}
-      <div
-        className="absolute inset-0 bg-cover bg-center animate-panZoom"
-        style={{
-          backgroundColor: "var(--base-color)",
-        }}
-      />
-
-      {/* Overlay escuro sutil */}
-      <div className="absolute inset-0" />
-
-      {/* Card central */}
-      <div className="relative z-10 w-full max-w-md p-12 rounded-2xl shadow-2xl bg-[var(--base-variant)] backdrop-blur-md">
-
-        <h2 className="text-3xl font-bold text-center text-[var(--text-color)] mb-8">
-          Acesse sua conta
-        </h2>
-
-        <div className="flex items-center justify-center mb-6 cursor-pointer">
-        <div className="w-full  flex justify-center max-w-[100%] p-3 bg-[var(--base-color)] rounded-lg backdrop-blur-sm">
-          <img 
-            src={`/logo.png`}  
-            className="w-[60%] border-rounded-full h-auto object-contain max-w-[40%]" 
-            alt="Logo" 
-            
+    <div className="flex items-center justify-center min-h-screen bg-[#f0f2f5] px-4">
+      <div className="flex w-full max-w-6xl h-[600px] bg-white rounded-lg shadow-2xl overflow-hidden relative">
+        {/* Coluna da imagem */}
+        <div
+          className="relative flex-1 hidden md:flex bg-cover bg-center"
+          style={{
+            backgroundImage:
+              "url('https://www.modelaco.com.br/wp-content/uploads/2023/02/estoque-de-cacambas-estacionarias-modelaco.jpg')",
+          }}
+        >
+          {/* Recorte curvo */}
+          <div
+            className="absolute top-0 right-[-120px] w-[240px] h-full bg-white"
+            style={{
+              borderRadius: "50% 0 0 50% / 50% 0 0 50%",
+            }}
           />
         </div>
+
+        {/* Coluna do formulário */}
+        <div className="flex flex-1 flex-col justify-center items-start p-10 relative bg-white z-10">
+          {/* Ícone */}
+          <div className="absolute top-10 right-10 w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center font-bold">
+            💡
+          </div>
+
+          <div className="max-w-sm w-full mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-2 leading-snug">
+              Descarte seus resíduos com <span className="text-[var(--corPrincipal)]">Segurança.</span>
+            </h2>
+            <p className="text-sm text-gray-500 mb-10">
+              Faça o controle de resíduos e ajude a diminuir o impacto ambiental.
+            </p>
+
+            {/* Alerta de erro */}
+
+            {errorMessage && (
+              <div className="flex items-center w-full mb-4">
+                <Alert color="failure" className="text-left" icon={HiInformationCircle}>
+                  <span className="font-medium ">Ops!</span> {errorMessage}
+                </Alert>
+              </div>
+            )}
+
+            <form onSubmit={verificaLogin} id="formLogin" className="w-full space-y-6">
+              <FormGroup label="E-mail" id="email">
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  
+                />
+              </FormGroup>
+
+              <FormGroup label="Senha" id="password">
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  
+                />
+                <div className="text-right mt-1">
+                  <a href="#" className="text-xs text-gray-400 hover:text-[var(--corPrincipal)]">
+                    Esqueceu a senha?
+                  </a>
+                </div>
+              </FormGroup>
+
+              <Button
+                type="submit"
+                loading={loading}
+                className="w-full "
+              >
+                Entrar
+              </Button>
+            </form>
+
+            <p className="text-center text-sm text-gray-500 mt-8">
+              Não tem uma conta?{" "}
+              <a href="#" className="text-[var(--corPrincipal)] font-semibold hover:underline">
+                Cadastre-se
+              </a>
+            </p>
+          </div>
+        </div>
       </div>
-
-
-        
-        
-        <form onSubmit={verificaLogin} className="space-y-6" id="formLogin">
-          <FormGroup label="E-mail" id="email">
-            <Input id="email" name="email" type="email" required />
-          </FormGroup>
-          <FormGroup label="Senha" id="password">
-            <Input id="password" name="password" type="password" required />
-          </FormGroup>
-          <Button type="submit" loading={loading} className="w-full">
-            Entrar
-          </Button>
-        </form>
-      </div>
-
-      
     </div>
   );
 }

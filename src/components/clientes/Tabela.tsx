@@ -9,11 +9,11 @@ import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 
 // TIPOS
-import { Permissoes } from "@src/components/tipos";
+import { Cliente, Permissoes } from "@src/components/tipos";
 
 // FUNCOES
-import { Datas, Valores } from "@src/services/funcoes-globais";
-import { PrimeraLetraMaiuscula } from "@services/funcoes-globais";
+import { Datas, MaxCaracteres, Valores } from "@src/services/funcoes-globais";
+import { LetraMaiuscula } from "@services/funcoes-globais";
 import { Button } from "@components/comum/button";
 import { getIcon } from "@src/components/icons";
 
@@ -23,6 +23,7 @@ import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/
 
 // MODAIS E FILTROS
 import ModalEditarProduto from "./EditarRegistro";
+import ModalAdicionarRegistro from "./NovoRegistro";
 import { FiltroCadastros } from "./FiltroRegistro";
 import { Delete } from "@src/services/crud2";
 
@@ -31,8 +32,8 @@ function Tabela() {
   const { dataFormatada, dataDeHoje } = Datas();
   const { dinheiro } = Valores();
   
-  const [registros, setRegistros] = useState<Permissoes[]>([]);
-  const [selectedProduto, setSelectedProduto] = useState<Permissoes | null>(null);
+  const [registros, setRegistros] = useState<Cliente[]>([]);
+  const [selectedProduto, setSelectedProduto] = useState<Cliente | null>(null);
   const [pagina, setPagina] = useState(1);
   const [relistar, setRelistar] = useState(true);
   const [queryFiltro, setQueryFiltro] = useState("");
@@ -48,20 +49,44 @@ function Tabela() {
   const [AbrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
 
 
-  
-  
-
   // Configuração das colunas da tabela
-  const colunas: ColunaConfig<Permissoes>[] = [
+  const colunas: ColunaConfig<Cliente>[] = [
     {
       key: "nome",
       label: "NOME",
-      render: (registro) => PrimeraLetraMaiuscula(registro.nome),
+      render: (registro) => LetraMaiuscula(MaxCaracteres(registro.nome || registro.razao_social, 30)),
+    },
+    {
+      key: "celular",
+      label: "CELULAR",
+      render: (registro) => registro.celular || "-",
+    },
+    {
+      key: "endereco",
+      label: "BAIRRO",
+      render: (registro) => {
+        if (!registro.enderecos || registro.enderecos.length === 0) return "-";
+
+        return (
+          <div className="text-left">
+            {registro.enderecos.map((e, i) => (
+              <div key={i}>
+                {LetraMaiuscula(MaxCaracteres(`${e.bairro}`, 20))}
+              </div>
+            ))}
+          </div>
+        );
+      },
+    },
+    {
+      key: "email",
+      label: "E-MAIL",
+      render: (registro) => registro.email || "-",
     },
   ];
 
   // Configuração das ações da tabela
-  const acoes: AcaoConfig<Permissoes>[] = [
+  const acoes: AcaoConfig<Cliente>[] = [
     {
       icon: <div className="cursor-pointer">{getIcon("editar", 20)}</div>,
       tooltip: "Editar",
@@ -70,24 +95,37 @@ function Tabela() {
     {
       icon: <div className="cursor-pointer">{getIcon("deletar", 20)}</div>,
       tooltip: "Excluir",
-
-      onClick: (registro) => Delete({ registro, depoisDeExecutar () { setRelistar(true) }, setRegistros, endpoint: `/papeis/${registro.id}` }),
+      onClick: (registro) => {
+        Delete({registro,registros, setRegistros, endpoint: `/clientes/${registro.id}`,
+                antesDeExecutar : () => {
+                  setLoadingSpiner(true);
+                },
+                depoisDeExecutar : () => {
+                  setLoadingSpiner(false);
+                  // setRelistar(true);
+                },
+        });
+        setSelectedProduto(null);
+      }
+        
+        
     },
   ];
 
   // Função para renderizar o ícone de cada linha
   const iconeItem = () => (
     <div className="bg-[var(--base-color)] rounded-lg p-2">
-      {getIcon("permissoes", 25)}
+      {getIcon("clientes", 25)}
     </div>
   );
 
 
   useEffect(() => {
     setLoadingSpiner(true);
-    requisicaoGet(`/papeis`)
+    requisicaoGet(`/clientes?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
       .then((response) => {
         if (response?.data.success) {
+          // console.log(response.data);
           setRegistros(response.data.registros);
           setTotalResultados(response.data.paginacao.total);
           setTotalPaginas(response.data.paginacao.ultimaPagina);
@@ -106,21 +144,25 @@ function Tabela() {
       <div className="flex justify-between">
         <Button onClick={() => setAbrirModalNovoRegistro(true)} className="mb-3">
           <p className="flex items-center gap-2">
-            {getIcon("permissoes", 20)}
-            <span>Criar Nivel</span>
+            {getIcon("clientes", 20)}
+            <span>Criar Cliente</span>
           </p>
         </Button>
       </div>
 
       {/* Filtros e contadores */}
-      {/* <FiltroCadastros onFiltrar={setQueryFiltro}/> */}
+      <FiltroCadastros onFiltrar={setQueryFiltro}/>
+
+      <div className="flex justify-between items-center m-3">
+      <MostrarNumeroDeResultados totalResultados={totalResultados} />
+      </div>
 
 
       
 
       {/* Tabela dinâmica */}
       <LoadingSpiner loading={loadingSpiner}>
-        <TabelaDinamica<Permissoes>
+        <TabelaDinamica<Cliente>
           dados={registros}
           colunas={colunas}
           acoes={acoes}
@@ -143,6 +185,7 @@ function Tabela() {
         setPagina={setPagina}
         setLimitePorPagina={setLimitePorPagina}
       />
+
       )}
       
 
@@ -158,7 +201,16 @@ function Tabela() {
         />
       )}
 
-     
+      {AbrirModalNovoRegistro && (
+        <ModalAdicionarRegistro
+          AbrirModalNovoRegistro={AbrirModalNovoRegistro}
+          setAbrirModalNovoRegistro={setAbrirModalNovoRegistro}
+          registros={registros}
+          setRegistros={setRegistros}
+          setRelistar={setRelistar}
+          setLoadingSpiner={setLoadingSpiner}
+        />
+      )}
     </>
   );
 }

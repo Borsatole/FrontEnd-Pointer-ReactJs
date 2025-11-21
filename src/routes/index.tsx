@@ -1,5 +1,5 @@
 import { Suspense, lazy, useContext, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute";
 import { Spinner } from "flowbite-react";
 import Alerta from "@src/components/comum/alertas";
@@ -25,11 +25,17 @@ function TelaLoading() {
 const TelaLogin = lazy(() => import("./telaLogin"));
 const Home = lazy(() => import("./dashboard/dashboard"));
 const NivelAcesso = lazy(() => import("./acessos/nivel"));
+const Estoque = lazy(() => import("./estoque/estoque"));
+const Renove = lazy(() => import("./renove/renove"));
+const Clientes = lazy(() => import("./clientes/clientes"));
 
 const routes = [
   { path: "/", element: <Home />, protected: true },
   { path: "/login", element: <TelaLogin />, protected: false },
   { path: "/acesso-niveis", element: <NivelAcesso />, protected: true },
+  { path: "/estoque", element: <Estoque />, protected: true },
+  { path: "/renove", element: <Renove />, protected: true },
+  { path: "/clientes", element: <Clientes />, protected: true },
   { path: "/peixes", element: <NivelAcesso />, protected: true },
 ];
 
@@ -56,15 +62,44 @@ function RotaNaoEncontrada() {
 }
 
 function rotaPermitida(menu: any[], path: string): boolean {
-  for (const item of menu) {
-    if (item.rota === path) return true;
-    if (item.submenu && rotaPermitida(item.submenu, path)) return true;
+  // Normaliza a rota (remove barra final, se existir)
+
+  if (path !== "/") {
+    const rota = path.replace(/\/$/, "");
   }
+  const rota = path;
+
+  // Libera a rota /renove de qualquer forma
+  if (rota === "/renove") return true;
+
+  // Se não tiver menu, não libera outras rotas
+  if (!menu || menu.length === 0) return false;
+
+  // Busca dentro do menu/submenus
+  for (const item of menu) {
+    if (item.rota === rota) return true;
+    if (item.submenu && rotaPermitida(item.submenu, rota)) return true;
+  }
+
   return false;
 }
 
+
 const Rotas = () => {
   const { auth } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // 🔒 Se menu estiver vazio e usuário não estiver na rota /renove, redireciona
+  useEffect(() => {
+    const menuVazio = !auth?.menu || auth.menu.length === 0;
+    const rotaAtual = location.pathname;
+
+    if (menuVazio && rotaAtual !== "/renove" && rotaAtual !== "/login") {
+      navigate("/renove", { replace: true });
+    }
+  }, [auth?.menu, location.pathname, navigate]);
+
 
   // Separa rotas protegidas e não protegidas
   const rotasProtegidas = routes.filter((route) => route.protected);
@@ -87,6 +122,7 @@ const Rotas = () => {
           }
         >
           {rotasProtegidas.map(({ path, element }, index) => {
+            
             const isPermitida = rotaPermitida(auth?.menu || [], path);
             return (
               <Route

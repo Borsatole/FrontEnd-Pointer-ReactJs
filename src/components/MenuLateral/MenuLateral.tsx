@@ -1,7 +1,6 @@
 import { useContext, useMemo } from "react";
 import { AuthContext } from "@src/context/AuthContext";
 import { useMenu } from "@src/context/MenuContext";
-import { Confirm } from "@components/comum/alertas";
 
 
 
@@ -11,6 +10,7 @@ import { BtnFecharMenuLateral } from "@components/MenuLateral/botoesMenu";
 import "./MenuLateral.css";
 
 import { MenuItem, SubMenuItem } from "@src/components/tipos";
+import PremiumRenewButton from "./PremiumRenewButton";
 
 
 
@@ -33,8 +33,9 @@ const MenuLateral = () => {
         bg-[var(--fundo-logo)] rounded-lg backdrop-blur-sm">
           <img
             src={`/logo.png`}
-            className="w-[60%] h-auto object-contain max-w-[40%]"
+            className="w-[60%] h-auto object-contain max-w-[30%] filter invert brightness-0"
             alt="Logo"
+
           />
         </div>
       </div>
@@ -59,21 +60,12 @@ const MenuLateral = () => {
           })}
         </nav>
 
-        {/* Logout */}
-        <div className="mt-auto mb-15">
-          <hr className=" border-white/10" />
-          <OpcaoMenu nome="Sair" 
-          svg={'logout'} 
-          
-          
-          onClick={
-            () => Confirm({
-                onConfirm: logout, 
-                onCancel: () => {},
-                text: "Deseja realmente sair?"
-            })
-          } />
-        </div>
+        {/* Minha Assinatura */}
+        <PremiumRenewButton />
+        
+
+
+
       </div>
     </aside>
   );

@@ -53,6 +53,14 @@ export function PrimeraLetraMaiuscula(str: string): string {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+export function LetraMaiuscula(str: string): string {
+  try {
+    return str.toUpperCase();
+  } catch (error) {
+    return str;
+  }
+}
+
 export function MaxCaracteres(str: string, max: number): string {
   if (str.length > max) return str.slice(0, max) + "...";
   return str;
@@ -66,4 +74,10 @@ export function gerarPaginas(paginaAtual: number, total: number, max = 5): numbe
     if (fim - inicio + 1 < max) inicio = Math.max(1, fim - max + 1);
     for (let i = inicio; i <= fim; i++) paginas.push(i);
     return paginas;
+}
+
+
+export function buscarCep(cep: string) {
+  const url = `https://viacep.com.br/ws/${cep}/json/`;
+  return fetch(url).then((response) => response.json());
 }

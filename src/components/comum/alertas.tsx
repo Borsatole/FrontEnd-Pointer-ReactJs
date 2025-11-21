@@ -48,7 +48,20 @@ function Alerta(alerta = "toast", tipo = "success", mensagem = "") {
       icon: tipo,
       title: mensagem,
       showConfirmButton: true,
-      timer: 1500,
+      // timer: 2500,
+      // theme: 'dark',
+
+      showClass: {
+    popup: `
+      animate__backInUp
+    `
+  },
+  hideClass: {
+    popup: `
+      animate__backInUp
+    `
+  },
+
       confirmButtonColor: "var(--corPrincipal)",
     });
   }

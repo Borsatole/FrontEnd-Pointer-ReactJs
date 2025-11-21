@@ -158,6 +158,8 @@ interface RodapeProps {
   totalPaginas: number
   setPagina: React.Dispatch<React.SetStateAction<number>>
   setLimitePorPagina: React.Dispatch<React.SetStateAction<number>>
+  mostrarTotalResultados?: boolean
+  mostrarSeletorPorPagina?: boolean
 }
 export function Rodape({
   pagina,
@@ -166,14 +168,22 @@ export function Rodape({
   totalResultados,
   totalPaginas,
   setPagina,
-  setLimitePorPagina
+  setLimitePorPagina,
+  mostrarTotalResultados = true,
+  mostrarSeletorPorPagina = true
 }:RodapeProps) {
   return (
     <>
       <div className="flex w-full flex-wrap justify-end items-center gap-6 mt-6">
-          {((pagina - 1) * limitePorPagina) + registros.length} de {totalResultados}
 
-        <select
+        {mostrarTotalResultados && (
+            <span>
+              {((pagina - 1) * limitePorPagina) + registros.length} de {totalResultados}
+            </span>
+        )}
+
+        {mostrarSeletorPorPagina && (
+          <select
           value={limitePorPagina}
           name="limitePorPagina"
           onChange={(e) => setLimitePorPagina(Number(e.target.value))}
@@ -184,9 +194,11 @@ export function Rodape({
           <option value="50">50</option>
           <option value="100">100</option>
         </select>
+        )}
+        
       </div>
 
-      <div className="flex flex-wrap justify-center items-center gap-2">
+      <div className="flex w-full flex-wrap justify-center items-center gap-2">
               <Button
                 onClick={() => setPagina(1)}
                 disabled={pagina <= 1}>Primeira</Button>
