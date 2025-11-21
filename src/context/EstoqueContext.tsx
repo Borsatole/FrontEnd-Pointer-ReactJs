@@ -1,54 +1,59 @@
 import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
-import { Cliente } from '@src/components/tipos';
+import {GrupoEstoque, ItemEstoque } from '@src/components/tipos';
 
-interface ClientesContextType {
-  registros: Cliente[];
-  setRegistros: Dispatch<SetStateAction<Cliente[]>>;
+interface EstoqueContextType {
+  registros: GrupoEstoque[];
+  setRegistros: Dispatch<SetStateAction<GrupoEstoque[]>>;
   relistar: boolean;
   setRelistar: Dispatch<SetStateAction<boolean>>;
   loadingSpiner: boolean;
   setLoadingSpiner: Dispatch<SetStateAction<boolean>>;
-  selectedCliente: Cliente | null;
-  setSelectedCliente: Dispatch<SetStateAction<Cliente | null>>;
+  selectedEstoque: ItemEstoque | null;
+  setSelectedEstoque: Dispatch<SetStateAction<ItemEstoque | null>>;
   abrirModalNovoRegistro: boolean;
   setAbrirModalNovoRegistro: Dispatch<SetStateAction<boolean>>;
   abrirModalEditarRegistro: boolean;
   setAbrirModalEditarRegistro: Dispatch<SetStateAction<boolean>>;
+  AbrirModalDetalhesRegistro: boolean;
+  setAbrirModalDetalhesRegistro: Dispatch<SetStateAction<boolean>>;
 }
 
-const ClientesContext = createContext<ClientesContextType | undefined>(undefined);
+const EstoqueContext = createContext<EstoqueContextType | undefined>(undefined);
 
-export function ClientesProvider({ children }: { children: ReactNode }) {
-  const [registros, setRegistros] = useState<Cliente[]>([]);
+export function EstoqueProvider({ children }: { children: ReactNode }) {
+  const [registros, setRegistros] = useState<GrupoEstoque[]>([]);
   const [relistar, setRelistar] = useState(true);
   const [loadingSpiner, setLoadingSpiner] = useState(true);
-  const [selectedCliente, setSelectedCliente] = useState<Cliente | null>(null);
+  const [selectedEstoque, setSelectedEstoque] = useState<ItemEstoque | null>(null);
   const [abrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
   const [abrirModalEditarRegistro, setAbrirModalEditarRegistro] = useState(false);
+  const [AbrirModalDetalhesRegistro, setAbrirModalDetalhesRegistro] = useState(false);
 
   return (
-    <ClientesContext.Provider value={{
+    <EstoqueContext.Provider value={{
       registros, 
       setRegistros,
       relistar, 
       setRelistar,
       loadingSpiner, 
       setLoadingSpiner,
-      selectedCliente, 
-      setSelectedCliente,
+      selectedEstoque, 
+      setSelectedEstoque,
       abrirModalNovoRegistro, 
       setAbrirModalNovoRegistro,
       abrirModalEditarRegistro,
-      setAbrirModalEditarRegistro
+      setAbrirModalEditarRegistro,
+      AbrirModalDetalhesRegistro,
+      setAbrirModalDetalhesRegistro
 
     }}>
       {children}
-    </ClientesContext.Provider>
+    </EstoqueContext.Provider>
   );
 }
 
-export function useClientes() {
-  const context = useContext(ClientesContext);
+export function useEstoque() {
+  const context = useContext(EstoqueContext);
   if (!context) throw new Error('useClientes deve ser usado dentro de ClientesProvider');
   return context;
 }

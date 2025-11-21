@@ -6,18 +6,16 @@ import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Rotas from "./routes";
 import { MenuProvider } from "./context/MenuContext";
+import { ClientesProvider } from "./context/ClientesContext";
+import { AppProviders } from "./context/Providers";
 
 function App() {
   return (
     <BrowserRouter>
-      <ThemeProvider>
-        <ToastContainer />
-        <AuthProvider>
-          <MenuProvider>
+      <ToastContainer />
+        <AppProviders>
             <Rotas />
-          </MenuProvider>
-        </AuthProvider>
-      </ThemeProvider>
+      </AppProviders>
     </BrowserRouter>
   );
 }

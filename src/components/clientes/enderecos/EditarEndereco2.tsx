@@ -4,7 +4,7 @@ import { Input } from '@src/components/comum/input'
 import { getIcon } from '@src/components/icons'
 import Modal from '@src/components/modal/Modal'
 import { Cliente, Endereco } from '@src/components/tipos'
-import { adicionarRegistro, editarRegistro } from '@src/services/Crud'
+import { useClientes } from '@src/context/ClientesContext'
 import { Update } from '@src/services/crud2'
 import { LetraMaiuscula } from '@src/services/funcoes-globais'
 import { useEffect, useState } from 'react'
@@ -32,7 +32,7 @@ interface NovoEnderecoProps {
 
 }
 
-function EditarEndereco({
+function EditarEndereco2({
     // controles enderecos.tsx
     setAbrirModalEditarRegistro,
     abrirModalEditarRegistro,
@@ -43,16 +43,14 @@ function EditarEndereco({
     enderecos,
     setEnderecos,
 
-    // controles da Tabela.tsx
-    registros, 
-    setRegistros, 
-    setRelistar, 
-    selectedProduto, 
-    setLoadingSpiner, 
-    setSelectedProduto, 
-
-    
     }: NovoEnderecoProps) {
+    const {
+            registros, setRegistros,
+            setRelistar,
+            setLoadingSpiner,
+            selectedCliente, setSelectedCliente
+          } = useClientes();
+    
     const [isLoading, setIsLoading] = useState(false);
 
     // dados
@@ -104,34 +102,19 @@ function EditarEndereco({
                 depoisDeExecutar : () => {
                     setAbrirModalEditarRegistro(false);
                     setLoadingSpiner(false);
-                        setRelistar(true);
+                    setRelistar(true);
                 },
                 endpoint: `/enderecos/${selecionado?.id}`,
             })
             
-            // await editarRegistro<any>({
-            //         data : payload,
-            //         setRelistar,
-
-            //         setSelected: () => {
-            //             setSelecionado(null);
-            //             setAbrirModalEditarRegistro(false)
-            //         },
-                    
-            //         setLoadingSpiner,
-            //         registros,
-            //         setRegistros,
-            //         endpoint:`/enderecos/${selecionado?.id}`,
-            //       })
-            
         }finally {
+            setSelectedCliente(null);
             setIsLoading(false);
         }
 
         
     }
 
-    
 
     function limparFormulario(){
         setCep("");
@@ -143,45 +126,9 @@ function EditarEndereco({
         setEstado("");
     }
 
-    // async function buscaCep(cep: string) {
-    //     try {
-    //         setIsLoading(true);
-    //         const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-
-    //         if (!response.ok) {
-    //             throw new Error("Erro ao buscar o CEP");
-    //         }
-
-    //         const data = await response.json();
-
-    //         if (data.erro) {
-    //             console.log("CEP não encontrado");
-    //                 limparFormulario();
-    //             return;
-    //         }
-
-    //         // preenche automaticamente os campos
-    //         setLogradouro(data.logradouro);
-    //         setBairro(data.bairro);
-    //         setCidade(data.localidade);
-    //         setEstado(data.uf);
-
-    //     } catch (error) {
-    //         // console.error("Erro ao buscar o CEP:", error);
-    //     } finally {
-    //         setIsLoading(false);
-    //     }
-    // }
-
-
-    useEffect(() => {
-        if (cep.length === 8) {
-            // buscaCep(cep);
-        }
-    }, [cep]);
     if (!selecionado) return null;
     if (!abrirModalEditarRegistro) return null;
-  return (
+    return (
     <Modal IsOpen={true} onClose={() => setAbrirModalEditarRegistro(false)} className="min-h-auto">
 
         <form id="formModal" onSubmit={(e) => handleSubmit(e)} className="space-y-4">
@@ -190,7 +137,7 @@ function EditarEndereco({
                 <Input id="cep" type="text"
                     maxLength={8}
                     placeholder="Digite o cep para pesquisar o endereço correspondente"
-                    value={cep}
+                    value={cep || ""}
                     className='uppercase'
                     onChange={(e) => setCep(e.target.value)}
                     disabled={isLoading} 
@@ -199,7 +146,7 @@ function EditarEndereco({
 
             <FormGroup label="Logradouro" id="logradouro">
                 <Input id="logradouro" type="text"  
-                    value={logradouro}
+                    value={logradouro || ""}
                     className='uppercase'
                     onChange={(e) => setLogradouro(e.target.value)}
                     required
@@ -209,7 +156,7 @@ function EditarEndereco({
 
             <FormGroup label="Complemento" id="complemento">
                 <Input id="complemento" type="text"  
-                    value={complemento}
+                    value={complemento || ""}
                     className='uppercase'
                     onChange={(e) => setComplemento(e.target.value)}
                     disabled={isLoading} 
@@ -218,7 +165,7 @@ function EditarEndereco({
 
             <FormGroup label="Bairro" id="bairro">
                 <Input id="bairro" type="text"  
-                    value={bairro}
+                    value={bairro || ""}
                     className='uppercase'
                     onChange={(e) => setBairro(e.target.value)}
                     required
@@ -228,7 +175,7 @@ function EditarEndereco({
 
             <FormGroup label="Numero" id="numero">
                 <Input id="numero" type="text"  
-                    value={numero}
+                    value={numero || ""}
                     className='uppercase'
                     onChange={(e) => setNumero(e.target.value)}
                     required
@@ -238,7 +185,7 @@ function EditarEndereco({
 
             <FormGroup label="Cidade" id="cidade">
                 <Input id="cidade" type="text"  
-                    value={cidade}
+                    value={cidade || ""}
                     className='uppercase'
                     onChange={(e) => setCidade(e.target.value)}
                     required
@@ -248,7 +195,7 @@ function EditarEndereco({
 
             <FormGroup label="Estado" id="estado">
                 <Input id="estado" type="text"  
-                    value={estado}
+                    value={estado || ""}
                     className='uppercase'
                     onChange={(e) => setEstado(e.target.value)}
                     required
@@ -270,8 +217,8 @@ function EditarEndereco({
 
                     <Button type="button" 
                     onClick={() => limparFormulario()}
-                    //  loading={isLoading} 
-                    //  disabled={isLoading}
+                     loading={isLoading} 
+                     disabled={isLoading}
                      >
                       <p className="flex items-center gap-2">
                         <span>Limpar Dados</span>
@@ -285,4 +232,4 @@ function EditarEndereco({
   )
 }
 
-export default EditarEndereco
+export default EditarEndereco2

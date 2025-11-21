@@ -3,39 +3,35 @@ import { Cliente, Endereco } from '@src/components/tipos'
 import { useEffect, useState } from 'react'
 import BotaoSeletor from '@src/components/comum/buttonSelected'
 import { BtnAcao } from '@src/components/comum/personalizado'
-import NovoEndereco from './NovoEndereco'
-import EditarEndereco from './EditarEndereco'
 import { Delete } from '@src/services/crud2'
+import { useClientes } from '@src/context/ClientesContext'
+import EditarEndereco2 from './EditarEndereco2'
+import NovoEndereco2 from './NovoEndereco2'
 
 interface EnderecosProps {
-
   enderecos: Endereco[]
   setEnderecos: React.Dispatch<React.SetStateAction<Endereco[]>>
   rest ?: any
   ClassName ?: string
-  
-  // Comandos da Tabela.tsx
-  selectedProduto: Cliente | null
-  setSelectedProduto: React.Dispatch<React.SetStateAction<Cliente | null>>
-  registros: Cliente[];
-  setRegistros: React.Dispatch<React.SetStateAction<Cliente[]>>
-  setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
-  setRelistar: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function Enderecos({
+function Enderecos2({
   enderecos, 
-  registros, 
-  setRegistros, 
-  setRelistar, 
   setEnderecos, 
-  selectedProduto, 
-  setLoadingSpiner, 
-  setSelectedProduto, 
   ClassName, ...rest} : EnderecosProps) {
+    const {
+        registros, setRegistros,
+        setRelistar,
+        setLoadingSpiner,
+        selectedCliente, setSelectedCliente
+      } = useClientes();
+
+
   const [selecionado, setSelecionado] = useState<Endereco | null>(null);
   const [abrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
   const [abrirModalEditarRegistro, setAbrirModalEditarRegistro] = useState(false);
+
+
 
   function toglleSelecionado(endereco: Endereco) {
     if (selecionado?.id === endereco.id) {
@@ -104,7 +100,7 @@ function Enderecos({
 
 
         {abrirModalNovoRegistro && 
-        <NovoEndereco
+        <NovoEndereco2
           // Comandos do Endereco.tsx
           setAbrirModalNovoRegistro={setAbrirModalNovoRegistro}
           AbrirModalNovoRegistro={abrirModalNovoRegistro}
@@ -113,18 +109,11 @@ function Enderecos({
           enderecos={enderecos} 
           setEnderecos={setEnderecos}
         
-          // Comandos da Tabela.tsx
-          selectedProduto={selectedProduto}
-          setSelectedProduto={setSelectedProduto}
-          registros={registros}
-          setRegistros={setRegistros}
-          setLoadingSpiner={setLoadingSpiner}
-          setRelistar={setRelistar}
           
         /> }
 
         {abrirModalEditarRegistro && 
-        <EditarEndereco
+        <EditarEndereco2
           // Comandos do Endereco.tsx
           setAbrirModalEditarRegistro={setAbrirModalEditarRegistro}
           abrirModalEditarRegistro={abrirModalEditarRegistro}
@@ -136,8 +125,8 @@ function Enderecos({
           setEnderecos={setEnderecos}
         
           // Comandos da Tabela.tsx
-          selectedProduto={selectedProduto}
-          setSelectedProduto={setSelectedProduto}
+          selectedProduto={selectedCliente}
+          setSelectedProduto={setSelectedCliente}
           registros={registros}
           setRegistros={setRegistros}
           setLoadingSpiner={setLoadingSpiner}
@@ -150,4 +139,4 @@ function Enderecos({
   )
 }
 
-export default Enderecos
+export default Enderecos2

@@ -3,8 +3,8 @@ import { FormGroup } from '@src/components/comum/FormGroup'
 import { Input } from '@src/components/comum/input'
 import { getIcon } from '@src/components/icons'
 import Modal from '@src/components/modal/Modal'
-import { Cliente, Endereco } from '@src/components/tipos'
-import { adicionarRegistro } from '@src/services/Crud'
+import { Endereco } from '@src/components/tipos'
+import { useClientes } from '@src/context/ClientesContext'
 import { Create } from '@src/services/crud2'
 import { LetraMaiuscula } from '@src/services/funcoes-globais'
 import { useEffect, useState } from 'react'
@@ -20,18 +20,9 @@ interface NovoEnderecoProps {
     rest ?: any
     ClassName ?: string
     
-    // Comandos da Tabela.tsx
-    selectedProduto: Cliente | null
-    setSelectedProduto ?: React.Dispatch<React.SetStateAction<Cliente | null>>
-    registros: Cliente[];
-    setRegistros: React.Dispatch<React.SetStateAction<Cliente[]>>
-    setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
-    setRelistar: React.Dispatch<React.SetStateAction<boolean>>
-    
-
 }
 
-function NovoEndereco({
+function NovoEndereco2({
     // controles enderecos.tsx
     AbrirModalNovoRegistro,
     setAbrirModalNovoRegistro,
@@ -40,16 +31,15 @@ function NovoEndereco({
     enderecos,
     setEnderecos,
 
-    // controles da Tabela.tsx
-    registros, 
-    setRegistros, 
-    setRelistar, 
-    selectedProduto, 
-    setLoadingSpiner, 
-    setSelectedProduto, 
-
     
     }: NovoEnderecoProps) {
+        const {
+                    registros, setRegistros,
+                    setRelistar,
+                    setLoadingSpiner,
+                    selectedCliente, setSelectedCliente
+                  } = useClientes();
+
     const [isLoading, setIsLoading] = useState(false);
 
     // dados
@@ -66,7 +56,7 @@ function NovoEndereco({
         e.stopPropagation();
 
         const payload = {
-            "cliente_id": selectedProduto?.id,
+            "cliente_id": selectedCliente?.id,
             "cep": cep,
             "logradouro": logradouro,
             "complemento": complemento,
@@ -249,4 +239,4 @@ function NovoEndereco({
   )
 }
 
-export default NovoEndereco
+export default NovoEndereco2

@@ -6,29 +6,23 @@ import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
 import { Cliente, Endereco } from "@components/tipos";
 import { SelectModificado } from "@src/components/comum/select";
-import { adicionarRegistro } from "@src/services/Crud";
 import { getIcon } from "../icons";
 import {LetraMaiuscula} from "@services/funcoes-globais";
 import { Create } from "@src/services/crud2";
+import { useClientes } from "@src/context/ClientesContext";
 
-interface ModalAdicionarRegistroProps {
-  AbrirModalNovoRegistro: boolean;
-  setAbrirModalNovoRegistro: React.Dispatch<React.SetStateAction<boolean>>;
 
-  registros: Cliente[];
-  setRegistros: React.Dispatch<React.SetStateAction<Cliente[]>>;
-  setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
-  setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
-}
 
-function ModalAdicionarRegistro({
-  AbrirModalNovoRegistro,
-  setAbrirModalNovoRegistro,
-  registros,
-  setRegistros,
-  setLoadingSpiner,
-  setRelistar,
-}: ModalAdicionarRegistroProps) {
+function ModalAdicionarRegistro() {
+
+  const {
+      registros, setRegistros,
+      setRelistar,
+      setLoadingSpiner,
+      selectedCliente, setSelectedCliente,
+      abrirModalNovoRegistro, setAbrirModalNovoRegistro
+    } = useClientes();
+
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(false);
 
