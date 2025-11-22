@@ -5,24 +5,23 @@ import { Button } from "@components/comum/button";
 import { useState } from "react";
 import { H2 } from "@components/comum/Textos";
 import { Input } from "@components/comum/input";
-import { editarRegistro } from "@src/services/Crud";
 import { Update } from "@src/services/crud2";
+import { useEstoque } from "@src/context/EstoqueContext";
 
-interface DetalhesRegistroProps {
-  setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedProduto: ItemEstoque | null;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<ItemEstoque | null>>;
-}
+function RetiradaRegistro() {
 
-function RetiradaRegistro({
-  setRelistar,
-  selectedProduto,
-  setSelectedProduto,
-}: DetalhesRegistroProps) {
+  const {
+          registros, setRegistros,
+          relistar, setRelistar,
+          loadingSpiner, setLoadingSpiner,
+          selectedRegistro, setSelectedRegistro,
+          abrirModalNovoRegistro, setAbrirModalNovoRegistro,
+          abrirModalEditarRegistro, setAbrirModalEditarRegistro
+        } = useEstoque();
 
-  if (!selectedProduto) return null;
+  if (!selectedRegistro) return null;
 
-  const fecharModal = () => setSelectedProduto(null);
+  const fecharModal = () => setSelectedRegistro(null);
 
   const [dataRetirada, setDataRetirada] = useState<Date | null>(new Date());
   const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +29,7 @@ function RetiradaRegistro({
 
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (!selectedProduto?.id) return;
+      if (!selectedRegistro?.id) return;
 
       const dataConvertida = dayjs(dataRetirada).format("YYYY-MM-DD");
   
@@ -48,21 +47,21 @@ function RetiradaRegistro({
           },
           depoisDeExecutar : () => {
             setRelistar(true);
-            setSelectedProduto(null);
+            setSelectedRegistro(null);
             setIsLoading(false);
           },
-          endpoint: `/locacoes/${selectedProduto?.dados_locacao?.locacao_id}`,
+          endpoint: `/locacoes/${selectedRegistro?.dados_locacao?.locacao_id}`,
         });
 
-        setSelectedProduto(null);
+        setSelectedRegistro(null);
       } finally {
         setIsLoading(false);
       }
     };
 
-  const dadosLocacao = Array.isArray(selectedProduto.dados_locacao)
+  const dadosLocacao = Array.isArray(selectedRegistro.dados_locacao)
     ? null
-    : selectedProduto.dados_locacao;
+    : selectedRegistro.dados_locacao;
 
   return (
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-[50vh]">
@@ -77,14 +76,14 @@ function RetiradaRegistro({
           <div className="mb-4">
             <p className="text-xs text-gray-500 dark:text-gray-400">Produto</p>
             <p className="text-lg dark:text-gray-100">
-              {selectedProduto.item}
+              {selectedRegistro.item}
             </p>
           </div>
 
           <div className="mb-4">
             <p className="text-xs text-gray-500 dark:text-gray-400">Categoria</p>
             <p className="text-base text-gray-800 dark:text-gray-200">
-              {selectedProduto.categoria}
+              {selectedRegistro.categoria}
             </p>
           </div>
 

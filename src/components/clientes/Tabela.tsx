@@ -29,11 +29,12 @@ import { FiltroCadastros } from "./FiltroRegistro";
 import { Delete } from "@src/services/crud2";
 import { useClientes } from "@src/context/ClientesContext";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
-import { useFetchPaginado } from "@src/hooks/useFetchPaginado";
+import { useFetch } from "@src/hooks/useFetch";
 
 
 
 function Tabela() {
+  const [loading, setLoading] = useState(true);
 
   // Contexto que controla a tabela.tsx
   const {
@@ -54,8 +55,7 @@ function Tabela() {
     totalResultados, setTotalResultados
   } = usePaginacao();
 
-  const [loading, setLoading] = useState(true);
-  const [removendoIds, setRemovendoIds] = useState<number[]>([]);
+  
 
 
   // Configuração das colunas da tabela
@@ -132,6 +132,7 @@ function Tabela() {
   );
 
 
+
     useEffect(() => {
     buscarDados({endpoint: `/clientes`,
       queryFiltro, pagina, limitePorPagina, setRegistros, setTotalResultados, setTotalPaginas, setLoadingSpiner, setRelistar, setLoading});
@@ -157,7 +158,6 @@ function Tabela() {
           colunas={colunas}
           acoes={acoes}
           iconeItem={iconeItem}
-          removendoIds={removendoIds}
           keyExtractor={(item) => item.id ?? 0}
           mensagemVazia="Nenhum cadastro encontrado"
           className="text-center divide-y divide-[var(--base-color)] mt-3 rounded-lg"
@@ -230,7 +230,7 @@ function buscarDados({
     setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   }) {
     setLoadingSpiner(true);
-   requisicaoGet(`/${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
+   requisicaoGet(`${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
       .then((response) => {
         if (response?.data.success) {
           // console.log(response.data);

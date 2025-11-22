@@ -26,6 +26,7 @@ const TelaLogin = lazy(() => import("./telaLogin"));
 const Home = lazy(() => import("./dashboard/dashboard"));
 const NivelAcesso = lazy(() => import("./acessos/nivel"));
 const Estoque = lazy(() => import("./estoque/estoque"));
+const Demandas = lazy(() => import("./demandas/demandas"));
 const Renove = lazy(() => import("./renove/renove"));
 const Clientes = lazy(() => import("./clientes/clientes"));
 
@@ -34,6 +35,7 @@ const routes = [
   { path: "/login", element: <TelaLogin />, protected: false },
   { path: "/acesso-niveis", element: <NivelAcesso />, protected: true },
   { path: "/estoque", element: <Estoque />, protected: true },
+  { path: "/demandas", element: <Demandas />, protected: true },
   { path: "/renove", element: <Renove />, protected: true },
   { path: "/clientes", element: <Clientes />, protected: true },
   { path: "/peixes", element: <NivelAcesso />, protected: true },

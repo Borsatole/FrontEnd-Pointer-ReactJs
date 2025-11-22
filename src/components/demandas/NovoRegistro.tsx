@@ -8,8 +8,7 @@ import { Button } from "@components/comum/button";
 import { SelectModificado } from "@src/components/comum/select";
 import { Cliente, Endereco, GrupoEstoque, ItemEstoque } from "@src/components/tipos";
 import { LuUserRoundSearch } from "react-icons/lu";
-import ProcurarClientes from "./ProcuraClientes";
-import BotaoSeletor from "../comum/buttonSelected";
+import BotaoSeletor from "@src/components/comum/buttonSelected";
 import { Create } from "@src/services/crud2";
 import dayjs from 'dayjs';
 import { useEstoque } from "@src/context/EstoqueContext";
@@ -307,15 +306,7 @@ function ModalAdicionarRegistro() {
       </form>
 
 
-      {abrirModalProcuraClientes && (
-        <ProcurarClientes
-          abrirModalProcuraClientes={abrirModalProcuraClientes}
-          setabrirModalProcuraClientes={setabrirModalProcuraClientes}
-          setCliente_id={setCliente_id}
-          setEnderecos={setEnderecos}
-          setDadosCliente={setDadosCliente}
-        />
-      )}
+      
     </Modal>
   );
 }

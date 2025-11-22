@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode, Dispatch, SetStateAction } from 'react';
 import {GrupoEstoque, ItemEstoque } from '@src/components/tipos';
 
-interface EstoqueContextType {
+interface DemandasContextType {
   registros: GrupoEstoque[];
   setRegistros: Dispatch<SetStateAction<GrupoEstoque[]>>;
   relistar: boolean;
@@ -18,9 +18,9 @@ interface EstoqueContextType {
   setAbrirModalDetalhesRegistro: Dispatch<SetStateAction<boolean>>;
 }
 
-const EstoqueContext = createContext<EstoqueContextType | undefined>(undefined);
+const DemandasContext = createContext<DemandasContextType | undefined>(undefined);
 
-export function EstoqueProvider({ children }: { children: ReactNode }) {
+export function DemandasProvider({ children }: { children: ReactNode }) {
   const [registros, setRegistros] = useState<GrupoEstoque[]>([]);
   const [relistar, setRelistar] = useState(true);
   const [loadingSpiner, setLoadingSpiner] = useState(true);
@@ -30,7 +30,7 @@ export function EstoqueProvider({ children }: { children: ReactNode }) {
   const [abrirModalDetalhesRegistro, setAbrirModalDetalhesRegistro] = useState(false);
 
   return (
-    <EstoqueContext.Provider value={{
+    <DemandasContext.Provider value={{
       registros, 
       setRegistros,
       relistar, 
@@ -48,12 +48,12 @@ export function EstoqueProvider({ children }: { children: ReactNode }) {
 
     }}>
       {children}
-    </EstoqueContext.Provider>
+    </DemandasContext.Provider>
   );
 }
 
-export function useEstoque() {
-  const context = useContext(EstoqueContext);
-  if (!context) throw new Error('useClientes deve ser usado dentro de ClientesProvider');
+export function useDemandas() {
+  const context = useContext(DemandasContext);
+  if (!context) throw new Error('Context deve ser usado dentro de Provider');
   return context;
 }

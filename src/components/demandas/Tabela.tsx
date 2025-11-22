@@ -25,11 +25,12 @@ import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/
 // import EditarRegistro from "./DetalhesRegistro";
 import ModalAdicionarRegistro from "./NovoRegistro";
 import { FiltroCadastros } from "./FiltroRegistro";
-import CardCacambaEstoque from "./CardCacambaEstoque";
 import DetalhesRegistro from "./DetalhesRegistro";
-import RetiradaRegistro from "./RetiradaRegistro";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { useEstoque } from "@src/context/EstoqueContext";
+import { useDemandas } from "@src/context/DemandasContext";
+import DiasSemanaCards from "../renew/DiasSemanaCards";
+import { useDiasSemana } from "./useDiasSemana";
 
 
 function Tabela() {
@@ -46,7 +47,7 @@ function Tabela() {
       abrirModalNovoRegistro, setAbrirModalNovoRegistro,
       abrirModalEditarRegistro, setAbrirModalEditarRegistro,
       abrirModalDetalhesRegistro, setAbrirModalDetalhesRegistro
-    } = useEstoque();
+    } = useDemandas();
 
   {/* Hook que controla a paginacao */}
     const {
@@ -56,6 +57,8 @@ function Tabela() {
       totalPaginas, setTotalPaginas,
       totalResultados, setTotalResultados
     } = usePaginacao();
+
+    const { dias, selecionado, setSelecionado } = useDiasSemana();
 
   {/* Controla Modais Locais */}
   const [abrirModalRegistrarRetirada, setAbrirModalRegistrarRetirada] = useState(false);
@@ -71,57 +74,38 @@ function Tabela() {
       }
     }, [selectedRegistro]);
 
+  useEffect(() => {
+      setQueryFiltro(`dia=${selecionado.dataFormatada}`);
+    }, [selecionado]);
+
   {/* Busca Dados da Api */}
   useEffect(() => {
-      buscarDados({endpoint: `/estoque`,
+      buscarDados({endpoint: `/locacoes`,
         queryFiltro, pagina, limitePorPagina, setRegistros, setTotalResultados, setTotalPaginas, setLoadingSpiner, setRelistar, setLoading});
   }, [pagina, limitePorPagina, queryFiltro, relistar]);
+
 
 
   if (loading) return <LoadingSkeleton />;
   return (
     <>
-      {/* Botão de criar novo */}
-      <div className="flex justify-items-start gap-1">
-      <BotaoNovoRegistro onClick={() => setAbrirModalNovoRegistro(true)} />
-      </div>
+
+    <DiasSemanaCards 
+      dias={dias} 
+      selecionado={selecionado} 
+      setSelecionado={setSelecionado} 
+    />
 
       {/* Listagem Dados */}
       <LoadingSpiner loading={loadingSpiner}>
+
+        <h1 className="text-2xl font-bold">Demandas</h1>
         
-
-        {registros.map((registro, i) => (
-        <div
-          key={i}
-          className="grid mt-3 sm:grid-cols-2 md:grid-cols-3 gap-3 md:mx-auto"
-        >
-          <h1 className="font-bold text-xl col-span-full">
-            {registro.categoria}
-          </h1>
-
-          {registro.itens.map((item, i) => (
-            
-            <div key={i}>
-              <CardCacambaEstoque
-                key={i}
-                item={item}
-                setSelectedRegistro={setSelectedRegistro}
-                setAbrirModalNovoRegistro={setAbrirModalNovoRegistro}
-                setAbrirModalDetalhesRegistro={setAbrirModalDetalhesRegistro}
-                setAbrirModalRegistrarLocacao={setAbrirModalRegistrarLocacao}
-                setAbrirModalRegistrarRetirada={setAbrirModalRegistrarRetirada}
-              />
-              
-            </div>
-          ))}
-        </div>
-        ))}
 
       </LoadingSpiner>
 
       {/* Modais */}
       {abrirModalDetalhesRegistro && selectedRegistro && <DetalhesRegistro/>}
-      {abrirModalRegistrarRetirada && selectedRegistro && <RetiradaRegistro/>}
       {abrirModalNovoRegistro && <ModalAdicionarRegistro/>}
     </>
   );
@@ -135,8 +119,8 @@ function BotaoNovoRegistro({ onClick }: { onClick: () => void }) {
     <div className="flex justify-between">
         <Button onClick={onClick} className="mb-3">
           <p className="flex items-center gap-2">
-            {getIcon("estoque", 20)}
-            <span>Criar Estoque</span>
+            {getIcon("demandas", 20)}
+            <span>Criar Demanda</span>
           </p>
         </Button>
       </div>

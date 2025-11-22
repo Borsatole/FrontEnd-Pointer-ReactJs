@@ -11,11 +11,11 @@
 
 :root {
   /* cores principais */
-  /* --corPrincipal: #FF7B00;
-  --corPrincipalHover: #fbbd04e9; */
+  --corPrincipal: #FF7B00;
+  --corPrincipalHover: #fbbd04e9;
 
-  --corPrincipal: #020100;
-  --corPrincipalHover: #020100b1;
+  /* --corPrincipal: #020100;
+  --corPrincipalHover: #020100b1; */
 
   /* Fundo Logo */
   --fundo-logo: #ffffff50;

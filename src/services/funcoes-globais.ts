@@ -61,9 +61,13 @@ export function LetraMaiuscula(str: string): string {
   }
 }
 
-export function MaxCaracteres(str: string, max: number): string {
-  if (str.length > max) return str.slice(0, max) + "...";
-  return str;
+
+export function MaxCaracteres(str: string, max: number) {
+  try {
+    return str.slice(0, max) + "...";
+  } catch (error) {
+    return str;
+  }
 }
 
 export function gerarPaginas(paginaAtual: number, total: number, max = 5): number[] {

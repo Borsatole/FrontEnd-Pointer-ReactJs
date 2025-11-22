@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 
 interface CardCacambaEstoqueProps {
   item: ItemEstoque;
-  setSelectedProduto: React.Dispatch<React.SetStateAction<ItemEstoque | null>>;
+  setSelectedRegistro: React.Dispatch<React.SetStateAction<ItemEstoque | null>>;
   setAbrirModalNovoRegistro: React.Dispatch<React.SetStateAction<boolean>>;
   setAbrirModalDetalhesRegistro: React.Dispatch<React.SetStateAction<boolean>>;
   setAbrirModalRegistrarRetirada: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +13,7 @@ interface CardCacambaEstoqueProps {
 
 export function CardCacambaEstoque({
   item,
-  setSelectedProduto,
+  setSelectedRegistro,
   setAbrirModalNovoRegistro,
   setAbrirModalDetalhesRegistro,
   setAbrirModalRegistrarRetirada,
@@ -146,7 +146,7 @@ export function CardCacambaEstoque({
 
           <button
             onClick={() => {
-              setSelectedProduto(item); 
+              setSelectedRegistro(item); 
               setAbrirModalDetalhesRegistro(true);
               
             }}
@@ -158,7 +158,7 @@ export function CardCacambaEstoque({
 
           <button
           onClick={() => {
-              setSelectedProduto(item); 
+              setSelectedRegistro(item); 
               setAbrirModalRegistrarRetirada(true);
             }}
           className="cursor-pointer text-xs font-medium px-3 py-1 rounded-md border border-orange-300 text-orange-700 hover:bg-orange-50">
@@ -173,7 +173,7 @@ export function CardCacambaEstoque({
 
           <button 
           onClick={() => {
-              setSelectedProduto(item); 
+              setSelectedRegistro(item); 
               setAbrirModalNovoRegistro(true);
             }}
           className="cursor-pointer text-xs font-medium px-3 py-1 rounded-md border border-green-300 text-green-700 hover:bg-green-50">
