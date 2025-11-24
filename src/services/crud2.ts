@@ -40,7 +40,7 @@ export function Create<T extends BaseRegistro>({
         const msg = response?.data?.message ?? "Erro ao criar a requisição!";
 
         if (response?.data?.success) {
-            console.log(response?.data);
+            // console.log(response?.data);
             
             Alerta("toast", "success", msg);
 

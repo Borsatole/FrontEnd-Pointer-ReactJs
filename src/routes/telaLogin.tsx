@@ -34,7 +34,7 @@ export default function TelaLogin() {
       if (response?.data.success && response.data.token) {
         fecharMenu();
         if (response.data.usuario.ativo === false) {
-          console.log("Usuário inativo");
+          // console.log("Usuário inativo");
           navigate("/renove");
 
           login(response.data);

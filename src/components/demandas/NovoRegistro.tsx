@@ -124,7 +124,7 @@ function ModalAdicionarRegistro() {
     };
   
     
-    console.log(payload);
+    // console.log(payload);
     setIsLoading(true);
 
     

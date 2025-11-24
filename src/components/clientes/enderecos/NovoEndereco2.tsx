@@ -115,7 +115,7 @@ function NovoEndereco2({
             const data = await response.json();
 
             if (data.erro) {
-                console.log("CEP não encontrado");
+                // console.log("CEP não encontrado");
                     limparFormulario();
                 return;
             }

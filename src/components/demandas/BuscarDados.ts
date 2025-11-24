@@ -28,7 +28,7 @@ export function buscarDados({
    requisicaoGet(`${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
       .then((response) => {
         if (response?.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
 
           setRegistros(response.data.registros);
           if (response.data.paginacao) {

@@ -56,10 +56,10 @@ function ModalAdicionarRegistro() {
       }
 
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
 
       if (data.erro) {
-        console.log("CEP não encontrado");
+        // console.log("CEP não encontrado");
         return;
       }
 
