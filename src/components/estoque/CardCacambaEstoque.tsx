@@ -78,7 +78,7 @@ export function CardCacambaEstoque({
 
           <div>
             <h3 className="text-sm font-semibold">{item.item}</h3>
-            <p className="text-xs text-gray-500">{item.categoria}</p>
+            <p className="text-xs">{item.categoria}</p>
           </div>
         </div>
 
@@ -90,7 +90,7 @@ export function CardCacambaEstoque({
       </div>
 
       {/* Lista */}
-      <div className="text-xs text-gray-600 dark:text-gray-300 space-y-1 mb-3">
+      <div className="text-xs space-y-1 mb-3">
 
         <div className="flex justify-between">
           <span>Localização:</span>

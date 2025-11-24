@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import Modal from "@components/modal/Modal";
-import { Button } from "../comum/button";
+import { Button } from "@components/comum/button";
 import { useEstoque } from "@src/context/EstoqueContext";
 
 function DetalhesRegistro() {
@@ -54,7 +54,7 @@ function DetalhesRegistro() {
             <Info label="Código" value={selectedRegistro.id} />
             <Info label="Item" value={selectedRegistro.item} />
             <Info label="Categoria" value={selectedRegistro.categoria} />
-            <Info label="Preço diária" value={`R$ ${selectedRegistro.preco_diaria}`} />
+ 
             <div className="flex flex-col">
               <span className="text-xs text-gray-500">Status</span>
               <span

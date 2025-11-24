@@ -5,6 +5,7 @@ import AvatarOptions from './avatarOptions'
 import Timer from './timer'
 import { RiFullscreenExitFill } from "react-icons/ri";
 import FullScreenButton from './fullscreen'
+import AvatarButton from './avatarButton'
 
 
 
@@ -34,7 +35,9 @@ function BarraSuperior() {
             <DarkmodeButton />
           </Tooltip>
 
-          <AvatarOptions />
+          <Tooltip tooltip="Usuario" position="bottom">
+            <AvatarOptions />
+          </Tooltip>
 
           
       

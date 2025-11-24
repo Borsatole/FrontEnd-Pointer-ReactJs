@@ -90,6 +90,10 @@ export interface DadosLocacao {
   cidade: string;
   estado: string;
   cliente_nome: string;
+  cliente_telefone: string;
+  item_nome: string;
+  item_categoria: string;
+  dados_locacao?: DadosLocacao;
 }
 
 export interface ItemEstoque {
@@ -104,6 +108,7 @@ export interface ItemEstoque {
 }
 
 export interface GrupoEstoque {
+  status: string;
   categoria: string;
   itens: ItemEstoque[];
 }

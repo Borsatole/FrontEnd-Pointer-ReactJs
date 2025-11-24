@@ -16,7 +16,9 @@ import { BsCalendarDateFill } from "react-icons/bs";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { BiSolidBookContent } from "react-icons/bi";
 
+import { FaTruckFront } from "react-icons/fa6";
 import { FaBoxOpen } from "react-icons/fa6";
+import { SiWhatsapp } from "react-icons/si";
 
 
 
@@ -29,7 +31,7 @@ export const icons: Record<string, JSX.Element> = {
   ordemdeservico: <BiSolidBookContent />,
   orcamento: <FaReceipt />,
   clientes: <FaUserFriends />,
-  estoque: <FaBoxOpen />,
+  estoque: <FaTruckFront />,
   
   permissoes: <FaSitemap />,
   rotasetaxas: <FaMapMarkedAlt />,
@@ -37,6 +39,9 @@ export const icons: Record<string, JSX.Element> = {
   
 
   premium: <PiWalletFill />,
+
+  whatsapp: <SiWhatsapp/>,
+  
 
   adicionar : <IoMdAdd  />,
   editar: <TbEdit />,
@@ -58,5 +63,6 @@ export const getIconComponent = (nome: string): React.FC<React.SVGProps<SVGSVGEl
   // Retorna um componente que renderiza o ícone com props dinâmicas
   return (props) => React.cloneElement(icon, props);
 };
+
 
 export default icons;

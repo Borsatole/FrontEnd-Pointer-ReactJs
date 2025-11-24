@@ -82,9 +82,9 @@ function Tabela() {
   return (
     <>
       {/* Botão de criar novo */}
-      <div className="flex justify-items-start gap-1">
+      {/* <div className="flex justify-items-start gap-1">
       <BotaoNovoRegistro onClick={() => setAbrirModalNovoRegistro(true)} />
-      </div>
+      </div> */}
 
       {/* Listagem Dados */}
       <LoadingSpiner loading={loadingSpiner}>
@@ -96,7 +96,7 @@ function Tabela() {
           className="grid mt-3 sm:grid-cols-2 md:grid-cols-3 gap-3 md:mx-auto"
         >
           <h1 className="font-bold text-xl col-span-full">
-            {registro.categoria}
+          {registro.categoria}
           </h1>
 
           {registro.itens.map((item, i) => (

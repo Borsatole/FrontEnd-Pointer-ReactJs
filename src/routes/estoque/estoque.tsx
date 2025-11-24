@@ -10,7 +10,7 @@ function Estoque() {
   return (
     <>
     
-      <TituloPagina>Estoque</TituloPagina>
+      <TituloPagina>Locações</TituloPagina>
 
       
 
@@ -18,13 +18,13 @@ function Estoque() {
 
     <Tabs aria-label="Tabs with icons" variant="underline">
 
-      <TabItem active title="Estoque" icon={getIconComponent("estoque")}>
+      <TabItem active title="Locações" icon={getIconComponent("estoque")}>
         <Tabela />
       </TabItem>
       
-      <TabItem disabled title="Categorias">
+      {/* <TabItem disabled title="Categorias">
         Categorias
-      </TabItem>
+      </TabItem> */}
     </Tabs>
   
 

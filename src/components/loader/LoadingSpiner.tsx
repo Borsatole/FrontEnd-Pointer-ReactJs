@@ -7,11 +7,11 @@ interface Props {
 }
 
 function LoadingSpiner({ children, loading }: Props) {
-
+// [rgb(255,255,255)]
   return (
     <div className="relative">
       {loading && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-auto bg-[rgb(255,255,255)] opacity-50" aria-readonly >
+        <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-auto bg-[var(--base-color)] opacity-60" aria-readonly >
           <Spinner size="xl" className=" fill-[var(--corPrincipal)]" />
 
         </div>

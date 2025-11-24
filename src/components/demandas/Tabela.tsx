@@ -1,24 +1,18 @@
 import { useEffect, useState } from "react";
 
 
-// REQUISICOES E CRUD
-import { requisicaoGet } from "@services/requisicoes";
 
 // LOADERS
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 
 // TIPOS
-import { DadosLocacao, GrupoEstoque, ItemEstoque } from "@src/components/tipos";
+import { DadosLocacao } from "@src/components/tipos";
 
 // FUNCOES
-import { Datas, Valores } from "@src/services/funcoes-globais";
-import { PrimeraLetraMaiuscula } from "@services/funcoes-globais";
-import { Button } from "@components/comum/button";
 import { getIcon } from "@src/components/icons";
 
 // TABELA
-import { MostrarNumeroDeResultados, Rodape } from "@src/components/comum/tabelas";
 import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/TabelaDinamica";
 
 // MODAIS E FILTROS
@@ -27,16 +21,20 @@ import ModalAdicionarRegistro from "./NovoRegistro";
 import { FiltroCadastros } from "./FiltroRegistro";
 import DetalhesRegistro from "./DetalhesRegistro";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
-import { useEstoque } from "@src/context/EstoqueContext";
 import { useDemandas } from "@src/context/DemandasContext";
-import DiasSemanaCards from "../renew/DiasSemanaCards";
+import DiasSemanaCards from "./DiasSemanaCards";
 import { useDiasSemana } from "./useDiasSemana";
+import { Delete } from "@src/services/crud2";
 
+import { BsFillArrowDownLeftSquareFill, BsFillArrowUpRightSquareFill } from "react-icons/bs";
+import { enviarWhatsapp } from "./whatsapp";
+import { buscarDados } from "./BuscarDados";
 
 function Tabela() {
 
   {/* Controla Loading do skeleton */}
     const [loading, setLoading] = useState(true);
+    
 
   {/* Contexto que controla a tabela.tsx */}
     const {
@@ -60,6 +58,62 @@ function Tabela() {
 
     const { dias, selecionado, setSelecionado } = useDiasSemana();
 
+      // Configuração das colunas da tabela
+      const colunas: ColunaConfig<DadosLocacao>[] = [
+        {
+          key: "tipo",
+          label: "TIPO",
+          render: (registro) => { 
+          const isEntrega = registro.data_inicio === selecionado.dataFormatada;
+
+          return (
+            <div className="flex items-center justify-center gap-2">
+              {isEntrega ? (
+                <>
+                  <BsFillArrowUpRightSquareFill size={18} className="text-green-600" />
+                  <span className="font-medium text-green-700">ENTREGA</span>
+                </>
+              ) : (
+                <>
+                  <BsFillArrowDownLeftSquareFill size={18} className="text-blue-600" />
+                  <span className="font-medium text-blue-700">COLETA</span>
+                </>
+              )}
+            </div>
+          );
+        },
+        },
+        {
+          key: "bairro",
+          label: "BAIRRO",
+          render: (registro) => registro.dados_locacao?.bairro || "-",
+        },
+        {
+          key: "cliente",
+          label: "CLIENTE",
+          render: (registro) => registro.dados_locacao?.cliente_nome || "-",
+        },
+      ];
+    
+      // Configuração das ações da tabela
+      const acoes: AcaoConfig<any>[] = [
+         {
+          icon: <div className="cursor-pointer">{getIcon("whatsapp", 20)}</div>,
+          tooltip: "Enviar Whatsapp",
+          onClick: (registro) => {
+            enviarWhatsapp(registro, selecionado);
+          },
+        },
+        
+      ];
+
+      const iconeItem = () => (
+    <div className="bg-[var(--base-color)] rounded-lg p-2">
+      {getIcon("demandas", 25)}
+    </div>
+  );
+    
+
   {/* Controla Modais Locais */}
   const [abrirModalRegistrarRetirada, setAbrirModalRegistrarRetirada] = useState(false);
   const [abrirModalRegistrarLocacao, setAbrirModalRegistrarLocacao] = useState(false);
@@ -80,8 +134,11 @@ function Tabela() {
 
   {/* Busca Dados da Api */}
   useEffect(() => {
+    setLimitePorPagina(500);
+    if (!queryFiltro) return;
       buscarDados({endpoint: `/locacoes`,
         queryFiltro, pagina, limitePorPagina, setRegistros, setTotalResultados, setTotalPaginas, setLoadingSpiner, setRelistar, setLoading});
+        
   }, [pagina, limitePorPagina, queryFiltro, relistar]);
 
 
@@ -98,12 +155,17 @@ function Tabela() {
 
       {/* Listagem Dados */}
       <LoadingSpiner loading={loadingSpiner}>
-
-        <h1 className="text-2xl font-bold">Demandas</h1>
-        
-
+        <TabelaDinamica<any>
+          dados={registros.filter(r => r.status !== "finalizado")}
+          colunas={colunas}
+          acoes={acoes}
+          iconeItem={iconeItem}
+          keyExtractor={(item) => item.id ?? 0}
+          mensagemVazia="Nenhum registro encontrado"
+          className="text-center divide-y divide-[var(--base-color)] mt-3 rounded-lg"
+        />
       </LoadingSpiner>
-
+        
       {/* Modais */}
       {abrirModalDetalhesRegistro && selectedRegistro && <DetalhesRegistro/>}
       {abrirModalNovoRegistro && <ModalAdicionarRegistro/>}
@@ -114,57 +176,4 @@ function Tabela() {
 export default Tabela;
 
 
-function BotaoNovoRegistro({ onClick }: { onClick: () => void }) {
-  return (
-    <div className="flex justify-between">
-        <Button onClick={onClick} className="mb-3">
-          <p className="flex items-center gap-2">
-            {getIcon("demandas", 20)}
-            <span>Criar Demanda</span>
-          </p>
-        </Button>
-      </div>
-  );
-}
 
-function buscarDados({
-    endpoint = "",
-    queryFiltro = "",
-    pagina = 1,
-    limitePorPagina = 7,
-    setRegistros,
-    setTotalResultados,
-    setTotalPaginas,
-    setLoadingSpiner,
-    setRelistar,
-    setLoading,
-    
-  }: {
-    endpoint: string;
-    queryFiltro: string;
-    pagina: number;
-    limitePorPagina: number;
-    setRegistros: React.Dispatch<React.SetStateAction<GrupoEstoque[]>>;
-    setTotalResultados: React.Dispatch<React.SetStateAction<number>>;
-    setTotalPaginas: React.Dispatch<React.SetStateAction<number>>;
-    setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
-    setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
-    setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  }) {
-    setLoadingSpiner(true);
-   requisicaoGet(`${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
-      .then((response) => {
-        if (response?.data.success) {
-          // console.log(response.data);
-
-          setRegistros(response.data.registros);
-          if (response.data.paginacao) {
-          setTotalResultados(response.data.paginacao.total);
-          setTotalPaginas(response.data.paginacao.ultimaPagina);
-          }
-        }
-        setLoadingSpiner(false);
-        setRelistar(false);
-        setLoading(false);
-      });
-}

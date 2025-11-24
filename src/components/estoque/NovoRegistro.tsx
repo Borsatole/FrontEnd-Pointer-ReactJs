@@ -13,6 +13,7 @@ import BotaoSeletor from "../comum/buttonSelected";
 import { Create } from "@src/services/crud2";
 import dayjs from 'dayjs';
 import { useEstoque } from "@src/context/EstoqueContext";
+import Alerta from "../comum/alertas";
 interface ModalAdicionarContaProps {
   AbrirModalNovoRegistro: boolean;
   setAbrirModalNovoRegistro: React.Dispatch<React.SetStateAction<boolean>>;
@@ -104,13 +105,36 @@ function ModalAdicionarRegistro() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!cliente_id) return;
-    if (!locacao_item_id) return;
-    if (!endereco_id) return;
-    if (!data_inicio) return;
-    if (!data_fim) return;
-    if (!preco_total) return;
-    if (!forma_pagamento) return;
+    if (!cliente_id) {
+      Alerta("toast", "error", "Selecione um cliente");
+      return;
+    }
+
+    if (!endereco_id) {
+      Alerta("toast", "error", "Selecione um endereço");
+      return;
+    }
+
+    if (!data_inicio) {
+      Alerta("toast", "error", "Selecione uma data de inicio");
+      return;
+    }
+
+    if (!data_fim) {
+      Alerta("toast", "error", "Selecione uma data de fim");
+      return;
+    }
+
+    if (!preco_total) {
+      Alerta("toast", "error", "Digite um valor valido");
+      return;
+    }
+
+    if (!forma_pagamento) {
+      Alerta("toast", "error", "Selecione uma forma de pagamento");
+      return;
+    }
+  
 
 
 
@@ -262,7 +286,7 @@ function ModalAdicionarRegistro() {
             id="valor"
             type="number"
             name="valor"
-            value={Number(preco_total)}
+            // value={Number(preco_total)}
             onChange={(e) => setPreco_total(Number(e.target.value))}
           />
         </FormGroup>
