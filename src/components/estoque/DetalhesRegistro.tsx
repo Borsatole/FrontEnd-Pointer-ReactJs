@@ -40,14 +40,14 @@ function DetalhesRegistro() {
         {/* --------------------------------------------- */}
         {/* 🔥 TÍTULO */}
         {/* --------------------------------------------- */}
-        <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100 text-center">
+        <h2 className="text-xl font-bold text-center">
           Detalhes da Locaçao
         </h2>
 
         {/* --------------------------------------------- */}
         {/* 🔥 CARD: DADOS DO ITEM */}
         {/* --------------------------------------------- */}
-        <div className="bg-white p-4 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+        <div className="bg-[var(--base-color)] p-4 rounded-xl shadow-md border border-[var(--base-variant)]">
           <h3 className="text-lg font-semibold mb-3">Dados do Item</h3>
 
           <div className="grid grid-cols-2 gap-4">
@@ -56,9 +56,9 @@ function DetalhesRegistro() {
             <Info label="Categoria" value={selectedRegistro.categoria} />
  
             <div className="flex flex-col">
-              <span className="text-xs text-gray-500">Status</span>
+              <span className="text-xs">Status</span>
               <span
-                className={`${badgeStatusItem} text-white text-sm px-2 py-1 rounded font-semibold w-fit`}
+                className={`${badgeStatusItem} text-sm px-2 py-1 rounded font-semibold w-fit`}
               >
                 {selectedRegistro.status.toUpperCase()}
               </span>
@@ -70,7 +70,7 @@ function DetalhesRegistro() {
         {/* 🔥 CARD: DADOS DA LOCAÇÃO */}
         {/* --------------------------------------------- */}
         {loc && (
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+          <div className="bg-[var(--base-color)] p-4 rounded-xl shadow-md border border-[var(--base-variant)]">
             <h3 className="text-lg font-semibold mb-3">Dados da Locação</h3>
 
             <div className="grid grid-cols-2 gap-4">
@@ -78,7 +78,7 @@ function DetalhesRegistro() {
               <Info label="Início" value={dataInicio} />
 
               <div className="flex flex-col">
-                <span className="text-xs text-gray-500">Data de Retirada</span>
+                <span className="text-xs">Data de Retirada</span>
 
                 <span
                   className={`text-sm font-bold px-2 py-1 rounded w-fit ${
@@ -103,8 +103,8 @@ function DetalhesRegistro() {
 
             {loc.observacoes && (
               <div className="mt-3">
-                <span className="text-xs text-gray-500 block">Observações</span>
-                <p className="bg-gray-100 dark:bg-gray-700 p-2 rounded text-sm">
+                <span className="text-xs block">Observações da locação</span>
+                <p className="bg-[var(--base-color)] rounded text-sm">
                   {loc.observacoes}
                 </p>
               </div>
@@ -116,7 +116,7 @@ function DetalhesRegistro() {
         {/* 🔥 CARD: ENDEREÇO */}
         {/* --------------------------------------------- */}
         {loc && (
-          <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border border-gray-200 dark:border-gray-700">
+          <div className="bg-[var(--base-color)] p-4 rounded-xl shadow-md border border-[var(--base-variant)]">
             <h3 className="text-lg font-semibold mb-3">Endereço</h3>
 
             <div className="grid grid-cols-2 gap-4">
@@ -126,6 +126,8 @@ function DetalhesRegistro() {
               <Info label="Número" value={loc.numero} />
               <Info label="Logradouro" value={loc.logradouro} />
               <Info label="Complemento" value={loc.complemento ?? "-"} />
+
+              
             </div>
           </div>
         )}
@@ -158,7 +160,7 @@ interface InfoProps {
 function Info({ label, value }:InfoProps) {
   return (
     <div className="flex flex-col">
-      <span className="text-xs text-gray-500">{label}</span>
+      <span className="text-xs">{label}</span>
       <span className="text-base font-medium">{value}</span>
     </div>
   );

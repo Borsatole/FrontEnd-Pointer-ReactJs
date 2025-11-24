@@ -28,10 +28,10 @@ function AvatarOptions() {
               <span>{auth.user?.nivel_nome}</span>
             </div>
           </DropdownHeader>
-          <DropdownItem>Dashboard</DropdownItem>
-          <DropdownItem>Settings</DropdownItem>
-          <DropdownItem>Earnings</DropdownItem>
-          <DropdownDivider />
+          {/* <DropdownItem>Dashboard</DropdownItem> */}
+          {/* <DropdownItem>Settings</DropdownItem>
+          <DropdownItem>Earnings</DropdownItem> */}
+          {/* <DropdownDivider /> */}
           <DropdownItem onClick={() => 
             Confirm({
                 onConfirm: logout, 

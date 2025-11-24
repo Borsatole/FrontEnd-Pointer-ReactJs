@@ -9,35 +9,37 @@
   text-align: center;
 }
 
+
+
 :root {
   /* cores principais */
-  --corPrincipal: #FF7B00;
+  --corPrincipal: #ffca00;
   --corPrincipalHover: #fbbd04e9;
 
   /* --corPrincipal: #020100;
   --corPrincipalHover: #020100b1; */
 
   /* Fundo Logo */
-  --fundo-logo: #ffffff50;
+  --fundo-logo: #64646450;
 
   /* bases */
   --base-color: #f2f1f3;
   --base-variant: #fff;
 
   /* menu */
-  --sidebarcolor: #020100;
+  --sidebarcolor: #3f3f3f;
   --sidebarsecondarycolor: #020100;
   --sidebartext-color: #f9f9f9;
 
   /* menu - hovers */
-  --sidebarhover-color: #ffffff50;
-  --sidebarhover-text-color: #ffffff;
+  --sidebarhover-color: #ffca00;
+  --sidebarhover-text-color: #3f3f3f;
 
   /* menu - bordinha esquerda do hover */
-  --sidebarhover-border: #f9f9f9;
+  --sidebarhover-border: #ffae00;
 
   /* menu - icones hover */
-  --sidebarhover-icon: #ffffff;
+  --sidebarhover-icon: #3f3f3f;
 
   /* textos */
   --text-color: #2a2f47f2;
@@ -49,19 +51,20 @@
   --fundo-modal: #232738;
 }
 
+
 .darkmode {
   /* cores principais */
   --corPrincipal: #FBBC04;
   --corPrincipalHover: #fbbd04e9;
 
   /* bases */
-  --base-color: #030925;
-  --base-variant: #050c2d;
+  --base-color: #1c1c1c;
+  --base-variant: #242424;
 
   /* menu */
-  --sidebarcolor: #040c31;
+  /* --sidebarcolor: #040c31;
   --sidebarsecondarycolor: #020a3d;
-  --sidebartext-color: #f9f9f9;
+  --sidebartext-color: #f9f9f9; */
 
   
 

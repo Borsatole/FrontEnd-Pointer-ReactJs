@@ -29,13 +29,13 @@ export function CardOpcoes({ titulo, descricao, icone, rota }: CardOpcoesProps) 
           </div>
 
           {/* Título */}
-          <h5 className="mb-2 text-xl font-semibold text-gray-700 dark:text-gray-200 text-center">
+          <h5 className="mb-2 text-xl font-semibold text-center">
             {titulo}
           </h5>
 
           {/* Descrição */}
           {descricao && (
-            <p className="mb-6 text-gray-500 dark:text-gray-400 text-center text-sm">
+            <p className="mb-6 text-center text-sm">
               {MaxCaracteres(descricao, 80)}
             </p>
           )}

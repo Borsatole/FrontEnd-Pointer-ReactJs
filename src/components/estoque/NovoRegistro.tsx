@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { getIcon } from "@src/components/icons";
 
 import Modal from "@components/modal/Modal";
-import { Input } from "@components/comum/input";
+import { Input, TextArea } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
 import { SelectModificado } from "@src/components/comum/select";
@@ -50,6 +50,7 @@ function ModalAdicionarRegistro() {
     const[data_fim, setData_fim] = useState<string>("");
     const[preco_total, setPreco_total] = useState<Number | null>(null);
     const[forma_pagamento, setForma_pagamento] = useState<string>("");
+    const[observacoes, setObservacoes] = useState<string>("");
 
     const [enderecos, setEnderecos] = useState<Endereco[] | []>([]);
     const [enderecoSelecionado, setEnderecoSelecionado] = useState<Endereco | null>(null);
@@ -145,12 +146,9 @@ function ModalAdicionarRegistro() {
       data_inicio,
       data_fim,
       preco_total,
-      forma_pagamento
-    };
-  
-    
-    console.log(payload);
-    setIsLoading(true);
+      forma_pagamento,
+      observacoes
+    };    
 
     
     try {
@@ -161,6 +159,7 @@ function ModalAdicionarRegistro() {
         // registros,
         // setRegistros,
         antesDeExecutar : () => {
+          setIsLoading(true);
           setLoadingSpiner(true);
         },
         depoisDeExecutar : () => {
@@ -307,6 +306,15 @@ function ModalAdicionarRegistro() {
             ))}
           </SelectModificado>
           
+        </FormGroup>
+
+        <FormGroup label="Observação" id="observacao" className="col-span-2">
+          <TextArea
+            id="observacao"
+            name="observacao"
+            value={observacoes}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setObservacoes(e.target.value)}
+          />
         </FormGroup>
         </div>
 
