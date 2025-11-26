@@ -30,6 +30,7 @@ import DetalhesRegistro from "./DetalhesRegistro";
 import RetiradaRegistro from "./RetiradaRegistro";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { useEstoque } from "@src/context/EstoqueContext";
+import EditarRegistro from "./EditarRegistro";
 
 
 function Tabela() {
@@ -63,11 +64,13 @@ function Tabela() {
 
   {/* Fecha Todos Modais Ao Selecionar Registro */}
   useEffect(() => {
+    console.log(selectedRegistro);
       if (selectedRegistro === null) {
         setAbrirModalDetalhesRegistro(false);
         setAbrirModalEditarRegistro(false);
         setAbrirModalRegistrarRetirada(false);
         setAbrirModalRegistrarLocacao(false);
+
       }
     }, [selectedRegistro]);
 
@@ -81,10 +84,6 @@ function Tabela() {
   if (loading) return <LoadingSkeleton />;
   return (
     <>
-      {/* Botão de criar novo */}
-      {/* <div className="flex justify-items-start gap-1">
-      <BotaoNovoRegistro onClick={() => setAbrirModalNovoRegistro(true)} />
-      </div> */}
 
       {/* Listagem Dados */}
       <LoadingSpiner loading={loadingSpiner}>
@@ -122,6 +121,8 @@ function Tabela() {
       {/* Modais */}
       {abrirModalDetalhesRegistro && selectedRegistro && <DetalhesRegistro/>}
       {abrirModalRegistrarRetirada && selectedRegistro && <RetiradaRegistro/>}
+      
+      {abrirModalEditarRegistro && selectedRegistro && <EditarRegistro/>}
       {abrirModalNovoRegistro && <ModalAdicionarRegistro/>}
     </>
   );

@@ -1,6 +1,7 @@
 import { getIcon } from "@src/components/icons";
 import { ItemEstoque } from "../tipos";
 import dayjs from "dayjs";
+import { EditarBtn } from "./EditarBtn";
 
 interface CardCacambaEstoqueProps {
   item: ItemEstoque;
@@ -19,6 +20,8 @@ export function CardCacambaEstoque({
   setAbrirModalRegistrarRetirada,
   setAbrirModalRegistrarLocacao,
 }: CardCacambaEstoqueProps) {
+
+  // console.log(item);
 
   const dados = item.dados_locacao && !Array.isArray(item.dados_locacao)
     ? item.dados_locacao
@@ -63,6 +66,27 @@ export function CardCacambaEstoque({
       transition-all duration-300 ease-in-out"
     >
 
+      <div className="flex justify-end">
+        {
+          dados && <EditarBtn item={item}/>
+        }
+        
+
+        {/* <button
+          onClick={() => {
+            alert("Editar");
+
+          }}
+          className="cursor-pointer w-8 h-8 flex items-center justify-center rounded-lg
+          hover:bg-gray-100 text-gray-600 hover:text-gray-800
+          transition-colors duration-200"
+          title="Editar"
+        >
+          <span className="text-lg font-bold">⋮</span>
+        </button> */}
+      </div>
+     
+
       {/* Cabeçalho */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-3">
@@ -76,11 +100,15 @@ export function CardCacambaEstoque({
             {getIcon("estoque", 22)}
           </div>
 
+          
+
           <div>
             <h3 className="text-sm font-semibold">{item.item}</h3>
             <p className="text-xs">{item.categoria}</p>
           </div>
         </div>
+
+      
 
         <span
           className={`text-[11px] font-medium px-2.5 py-1 rounded-full border ${statusConfig[item.status].bg}`}
@@ -88,6 +116,10 @@ export function CardCacambaEstoque({
           {statusConfig[item.status].label}
         </span>
       </div>
+
+      
+
+      
 
       {/* Lista */}
       <div className="text-xs space-y-1 mb-3">
@@ -134,6 +166,20 @@ export function CardCacambaEstoque({
               : "-"}
           </span>
         </div>
+
+        <div className="flex flex-col">
+        <span className="text-left">Observação:</span>
+        {dados?.observacoes? (
+          <span className="mt-1 whitespace-pre-line text-left bg-[var(--base-color)] p-2 rounded
+          border border-[var(--base-variant)]">
+          {dados?.observacoes ? dados.observacoes : "-"}
+        </span>
+        ) : (
+          <span className="font-medium"></span>
+        )
+      }
+      </div>
+
       </div>
 
       {/* Rodapé */}
