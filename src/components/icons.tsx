@@ -1,5 +1,5 @@
 import React from "react";
-import {MdDashboard, MdWorkspacePremium} from "react-icons/md";
+import {MdChecklist, MdDashboard, MdWorkspacePremium} from "react-icons/md";
 
 import { PiWalletFill } from "react-icons/pi";
 
@@ -9,15 +9,11 @@ import { IoMdAdd } from "react-icons/io";
 import { TbEdit } from "react-icons/tb";
 import { MdDeleteOutline } from "react-icons/md";
 import { MdOutlineSave } from "react-icons/md";
-import { FaUserFriends } from "react-icons/fa";
-import { FaSitemap } from "react-icons/fa";
+import { FaBuilding, FaHome, FaRegCalendarCheck, FaSitemap, FaTools } from "react-icons/fa";
 import { FaReceipt } from "react-icons/fa";
-import { BsCalendarDateFill } from "react-icons/bs";
-import { FaMapMarkedAlt } from "react-icons/fa";
-import { BiSolidBookContent } from "react-icons/bi";
+
 
 import { FaTruckFront } from "react-icons/fa6";
-import { FaBoxOpen } from "react-icons/fa6";
 import { SiWhatsapp } from "react-icons/si";
 
 
@@ -27,14 +23,14 @@ import { SiWhatsapp } from "react-icons/si";
 export const icons: Record<string, JSX.Element> = {
 
   dashboard: <MdDashboard />,
-  demandas: <BsCalendarDateFill />,
-  ordemdeservico: <BiSolidBookContent />,
-  orcamento: <FaReceipt />,
-  clientes: <FaUserFriends />,
-  estoque: <FaTruckFront />,
+
+
+  condominios: <FaHome />,
+  visitas: <FaRegCalendarCheck />,
+  vistorias: <MdChecklist />,
+  chamados: <FaTools />,
   
   permissoes: <FaSitemap />,
-  rotasetaxas: <FaMapMarkedAlt />,
   logout: <RiLogoutBoxRFill />,
   
 

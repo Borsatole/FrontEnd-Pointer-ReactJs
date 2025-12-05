@@ -20,7 +20,7 @@ export default function PremiumRenewButton() {
                    hover:scale-[1.02] active:scale-[0.98]"
       >
         {/* Fundo gradiente animado */}
-        <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/20 via-amber-500/20 to-orange-500/20 
+        <div className="absolute inset-0 bg-gradient-to-r from-[var(--corPrincipal)] via-[var(--corPrincipal)] to-[var(--corSecundaria)] 
                         opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         
         {/* Brilho animado */}
@@ -28,23 +28,23 @@ export default function PremiumRenewButton() {
                         -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
         
         {/* Borda com gradiente */}
-        <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-yellow-500/50 via-amber-500/50 to-orange-500/50 
+        <div className="absolute inset-0 rounded-xl from-[var(--corPrincipal)] via-[var(--corPrincipal)] to-[var(--corSecundaria)] 
                         opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm" />
         
         {/* Borda sólida */}
         <div className="absolute inset-0 rounded-xl border border-white/10 
-                        group-hover:border-yellow-500/50 transition-colors duration-300" />
+                        group-hover:border-[var(--corPrincipal)] transition-colors duration-300" />
 
         {/* Conteúdo do botão */}
         <div className="relative flex items-center justify-center gap-2.5">
           {/* Ícone premium */}
           <div className="relative">
             <MdWorkspacePremium 
-              className={`text-2xl text-yellow-400 transition-all duration-300
+              className={`text-2xl text-[var(--sidebar-text-color)] transition-all duration-300
                          ${isHovered ? 'rotate-12 scale-110' : 'rotate-0 scale-100'}`}
             />
             {isHovered && (
-              <div className="absolute inset-0 text-yellow-400 animate-ping opacity-75">
+              <div className="absolute inset-0 text-[var(--corPrincipal)] animate-ping opacity-75">
                 <MdWorkspacePremium className="text-2xl" />
               </div>
             )}
@@ -52,14 +52,14 @@ export default function PremiumRenewButton() {
 
           {/* Texto */}
           <span className="font-semibold text-[var(--sidebar-text-color)] 
-                           group-hover:text-yellow-400 transition-colors duration-300
+                           group-hover:text-[var(--corPrincial)] transition-colors duration-300
                            tracking-wide">
             Renovar Assinatura
           </span>
 
           {/* Ícone de renovação */}
           <MdAutorenew 
-            className={`text-xl text-yellow-400/70 transition-all duration-500
+            className={`text-xl text-[var(--sidebar-text-color)] transition-all duration-500
                        ${isHovered ? 'rotate-180 opacity-100' : 'rotate-0 opacity-60'}`}
           />
         </div>
@@ -67,11 +67,11 @@ export default function PremiumRenewButton() {
         {/* Partículas de brilho (opcional) */}
         {isHovered && (
           <>
-            <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-yellow-400 rounded-full animate-ping" 
+            <div className="absolute top-1/2 left-1/4 w-1 h-1 bg-[var(--corPrincipal)]/80 rounded-full animate-ping" 
                  style={{ animationDelay: '0ms' }} />
-            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-amber-400 rounded-full animate-ping" 
+            <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-[var(--corPrincipal)]/30 rounded-full animate-ping" 
                  style={{ animationDelay: '150ms' }} />
-            <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-orange-400 rounded-full animate-ping" 
+            <div className="absolute bottom-1/3 left-1/3 w-1 h-1 bg-[var(--corPrincipal)]/60 rounded-full animate-ping" 
                  style={{ animationDelay: '300ms' }} />
           </>
         )}

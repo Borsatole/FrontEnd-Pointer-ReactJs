@@ -8,6 +8,10 @@ import { Button } from "@components/comum/button";
 import { Input } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 
+import { FaInstagram } from "react-icons/fa6";
+import { FaFacebookF } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
+
 // Alert
 import { Alert } from "flowbite-react";
 import { HiInformationCircle } from "react-icons/hi";
@@ -59,93 +63,114 @@ export default function TelaLogin() {
     }
   }
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-[#f0f2f5] px-4">
-      <div className="flex w-full max-w-6xl h-[600px] bg-white rounded-lg shadow-2xl overflow-hidden relative">
-        {/* Coluna da imagem */}
-        <div
-          className="relative flex-1 hidden md:flex bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://www.modelaco.com.br/wp-content/uploads/2023/02/estoque-de-cacambas-estacionarias-modelaco.jpg')",
-          }}
-        >
-          {/* Recorte curvo */}
+   return (
+    <div className="w-screen h-screen relative flex items-center justify-center overflow-hidden bg-gradient-to-br bg-[var(--base-color)]">
+      {/* Padrão de fundo geométrico */}
+      <div 
+        className="absolute inset-0 opacity-10"
+      />
+
+      {/* Container principal com split layout */}
+      <div className="relative z-10 flex w-full max-w-4xl h-[600px] rounded-2xl shadow-2xl overflow-hidden bg-[var(--base-variant)]">
+        
+        {/* Lado esquerdo - Azul com logo */}
+        <div className="w-1/2 bg-[var(--corPrincipal)] p-12 flex flex-col items-center justify-between relative overflow-hidden">
+          
+          {/* Padrão decorativo */}
           <div
-            className="absolute top-0 right-[-120px] w-[240px] h-full bg-white"
+            className="absolute inset-0 opacity-20"
             style={{
-              borderRadius: "50% 0 0 50% / 50% 0 0 50%",
+              backgroundImage: "url('/wallpaper.jpg')",
+              backgroundSize: "cover",
+              backgroundRepeat: "repeat",
             }}
           />
+
+
+          {/* Logo */}
+          <div className="flex-1 flex items-center justify-center relative z-10"
+          
+          
+          
+          >
+            <img 
+              src="/logo.png"
+              alt="TekReja Logo"
+              className="w-28 h-auto"
+            />
+          </div>
+
+          {/* Social e Registro */}
+          <div className="relative z-10 text-center">
+            <div className="flex justify-center gap-3 mb-6">
+              <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-pink-500 hover:bg-blue-50 transition">
+                <FaInstagram />
+              </button>
+              <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-blue-600 hover:bg-blue-50 transition">
+                <FaFacebookF />
+              </button>
+              <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-green-500 hover:bg-blue-50 transition">
+                <FaWhatsapp />
+              </button>
+            </div>
+            <p className="text-white text-sm">
+              Quer saber mais sobre a gente? {' '}
+              <button className="font-semibold underline hover:text-blue-100 transition">
+                Acesse
+              </button>
+            </p>
+          </div>
         </div>
 
-        {/* Coluna do formulário */}
-        <div className="flex flex-1 flex-col justify-center items-start p-10 relative bg-white z-10">
-          {/* Ícone */}
-          <div className="absolute top-10 right-10 w-10 h-10 border border-gray-300 rounded-full flex items-center justify-center font-bold">
-            💡
-          </div>
-
-          <div className="max-w-sm w-full mx-auto">
-            <h2 className="text-2xl font-bold text-gray-800 mb-2 leading-snug">
-              Descarte seus resíduos com <span className="text-[var(--corPrincipal)]">Segurança.</span>
+        {/* Lado direito - Formulário */}
+        <div className="w-1/2 bg-[var(--base-variant)] p-12 flex flex-col justify-center">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold mb-2">
+              Bem Vindo de Volta<br />
             </h2>
-            <p className="text-sm text-gray-500 mb-10">
-              Faça o controle de resíduos e ajude a diminuir o impacto ambiental.
-            </p>
-
-            {/* Alerta de erro */}
-
-            {errorMessage && (
-              <div className="flex items-center w-full mb-4">
-                <Alert color="failure" className="text-left" icon={HiInformationCircle}>
-                  <span className="font-medium ">Ops!</span> {errorMessage}
-                </Alert>
-              </div>
-            )}
-
-            <form onSubmit={verificaLogin} id="formLogin" className="w-full space-y-6">
-              <FormGroup label="E-mail" id="email">
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  
-                />
-              </FormGroup>
-
-              <FormGroup label="Senha" id="password">
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  required
-                  
-                />
-                <div className="text-right mt-1">
-                  <a href="#" className="text-xs text-gray-400 hover:text-[var(--corPrincipal)]">
-                    Esqueceu a senha?
-                  </a>
-                </div>
-              </FormGroup>
-
-              <Button
-                type="submit"
-                loading={loading}
-                className="w-full "
-              >
-                Entrar
-              </Button>
-            </form>
-
-            <p className="text-center text-sm text-gray-500 mt-8">
-              Não tem uma conta?{" "}
-              <a href="#" className="text-[var(--corPrincipal)] font-semibold hover:underline">
-                Cadastre-se
-              </a>
-            </p>
+            <p>Acesse sua conta</p>
           </div>
+
+          <form onSubmit={verificaLogin} className="space-y-5" id="formLogin">
+
+              <FormGroup id="email" label="Email"> 
+                <Input 
+                  id="email" 
+                  name="email" 
+                  type="email" 
+                  placeholder="joan.sterjo@outlook.com"
+                  className="w-full"
+                  required 
+                />
+              </FormGroup>
+
+              <FormGroup id="password" label="Senha"> 
+                <Input 
+                  id="password" 
+                  name="password" 
+                  type="password" 
+                  placeholder="••••••••"
+                  required 
+                />
+              </FormGroup>
+
+                <Button 
+                  type="submit" 
+                  loading={loading} 
+                  className="w-full font-semibold py-3 rounded-lg transition"
+                >
+                  LOG IN
+                </Button>
+
+            <div className="text-center">
+              <button 
+                type="button"
+                className="text-sm  transition"
+              >
+                Esqueceu a senha?
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

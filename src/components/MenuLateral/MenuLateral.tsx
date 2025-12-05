@@ -32,7 +32,7 @@ const MenuLateral = () => {
         <div className="w-full flex justify-center max-w-[100%] p-3 
         bg-[var(--fundo-logo)] rounded-lg backdrop-blur-sm">
           <img
-            src={`/logo.webp`}
+            src={`/logo.png`}
             className="w-[60%] h-auto object-contain max-w-[30%]"
             alt="Logo"
           />

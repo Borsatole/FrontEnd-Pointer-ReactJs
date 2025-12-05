@@ -1,31 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image" href="/icon.ico" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dimolix - Gestão de Caçambas</title>
-    
+    <title>Pointer - Gestão de Condominios</title>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    
 
     <script>
-      (function() {
+      (function () {
         try {
-          var darkModeStored = localStorage.getItem('darkmode');
-          if (darkModeStored === 'true') {
-            document.documentElement.classList.add('dark');
-            document.body.classList.add('darkmode');  
+          var darkModeStored = localStorage.getItem("darkmode");
+          if (darkModeStored === "true") {
+            document.documentElement.classList.add("dark");
+            document.body.classList.add("darkmode");
           }
         } catch (e) {
-          console.error('Erro ao verificar modo escuro:', e);
+          console.error("Erro ao verificar modo escuro:", e);
         }
       })();
     </script>
   </body>
-
 </html>

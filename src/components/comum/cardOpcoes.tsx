@@ -16,7 +16,7 @@ export function CardOpcoes({ titulo, descricao, icone, rota }: CardOpcoesProps) 
   const navigate = useNavigate();
   return (
     <Card
-      className="w-full max-w-sm bg-[var(--base-variant)] mx-auto shadow-lg rounded-2xl border border-[var(--base-color)] hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
+      className="w-full  bg-[var(--base-variant)] mx-auto shadow-lg rounded-2xl border border-[var(--base-color)] hover:shadow-2xl transition-shadow duration-300 cursor-pointer"
     >
       <div className="flex flex-col h-full min-h-[300px]">
         {/* Conteúdo que cresce */}
