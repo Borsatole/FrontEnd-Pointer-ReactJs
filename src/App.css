@@ -49,11 +49,11 @@
   /* menu */
   --sidebarcolor: #040c31;
   --sidebarsecondarycolor: #020a3d;
-  --sidebartext-color: #878787;
+  --sidebartext-color: #fff;
 
   /* menu - hovers */
   --sidebarhover-color: #04592f;
-  --sidebarhover-text-color: #878787;
+  --sidebarhover-text-color: #fff;
 
   /* textos */
   --text-color: #e8e9ed;
