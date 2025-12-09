@@ -3,6 +3,9 @@ import { ReactNode } from "react";
 import { ThemeProvider } from "./ThemeContext";
 import { AuthProvider } from "./AuthContext";
 import { MenuProvider } from "./MenuContext";
+
+import { CondominiosProvider } from "./CondominioContext";
+
 import { ClientesProvider } from "./ClientesContext";
 import { EstoqueProvider } from "./EstoqueContext";
 import { DemandasProvider } from "./DemandasContext";
@@ -17,11 +20,11 @@ export function AppProviders({ children }: AppProvidersProps) {
       <AuthProvider>
         <MenuProvider>
           <ClientesProvider>
-            <EstoqueProvider>
+            <CondominiosProvider>
               <DemandasProvider>
                   {children}
               </DemandasProvider>
-            </EstoqueProvider>
+            </CondominiosProvider>
           </ClientesProvider>
         </MenuProvider>
       </AuthProvider>

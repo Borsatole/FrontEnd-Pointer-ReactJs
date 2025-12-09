@@ -23,10 +23,10 @@ function TelaLoading() {
 }
 
 const TelaLogin = lazy(() => import("./telaLogin"));
+const Condominios = lazy(() => import("./condominios/condominios"));
+const PaginaCondominio = lazy(() => import("./condominios/PaginaCondominio"));
 const Home = lazy(() => import("./dashboard/dashboard"));
 const NivelAcesso = lazy(() => import("./acessos/nivel"));
-const Estoque = lazy(() => import("./estoque/estoque"));
-const Demandas = lazy(() => import("./demandas/demandas"));
 const Renove = lazy(() => import("./renove/renove"));
 const Clientes = lazy(() => import("./clientes/clientes"));
 
@@ -34,8 +34,8 @@ const routes = [
   { path: "/", element: <Home />, protected: true },
   { path: "/login", element: <TelaLogin />, protected: false },
   { path: "/acesso-niveis", element: <NivelAcesso />, protected: true },
-  { path: "/estoque", element: <Estoque />, protected: true },
-  { path: "/demandas", element: <Demandas />, protected: true },
+  { path: "/condominios", element: <Condominios />, protected: true },
+  { path: "/condominios/:id", element: <PaginaCondominio />, protected: true },
   { path: "/renove", element: <Renove />, protected: true },
   { path: "/clientes", element: <Clientes />, protected: true },
   { path: "/peixes", element: <NivelAcesso />, protected: true },
@@ -65,11 +65,7 @@ function RotaNaoEncontrada() {
 
 function rotaPermitida(menu: any[], path: string): boolean {
   // Normaliza a rota (remove barra final, se existir)
-
-  if (path !== "/") {
-    const rota = path.replace(/\/$/, "");
-  }
-  const rota = path;
+  const rota = path !== "/" ? path.replace(/\/$/, "") : path;
 
   // Libera a rota /renove de qualquer forma
   if (rota === "/renove") return true;
@@ -79,7 +75,19 @@ function rotaPermitida(menu: any[], path: string): boolean {
 
   // Busca dentro do menu/submenus
   for (const item of menu) {
+    // Comparação exata
     if (item.rota === rota) return true;
+    
+    // Verifica se a rota do menu tem parâmetros dinâmicos (ex: /condominios/:id)
+    if (item.rota && item.rota.includes(':')) {
+      const regexPattern = item.rota.replace(/:[^/]+/g, '[^/]+');
+      const regex = new RegExp(`^${regexPattern}$`);
+      if (regex.test(rota)) return true;
+    }
+    
+    // Verifica se é uma subrota (ex: /condominios/123 pertence a /condominios)
+    if (item.rota && rota.startsWith(item.rota + '/')) return true;
+    
     if (item.submenu && rotaPermitida(item.submenu, rota)) return true;
   }
 

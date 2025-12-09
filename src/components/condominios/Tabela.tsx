@@ -9,7 +9,7 @@ import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 
 // TIPOS
-import { DadosLocacao, GrupoEstoque, ItemEstoque } from "@src/components/tipos";
+import { Condominio } from "@src/components/tipos";
 
 // FUNCOES
 import { Datas, Valores } from "@src/services/funcoes-globais";
@@ -25,11 +25,11 @@ import TabelaDinamica, { ColunaConfig, AcaoConfig } from "@src/components/comum/
 // import EditarRegistro from "./DetalhesRegistro";
 import ModalAdicionarRegistro from "./NovoRegistro";
 import { FiltroCadastros } from "./FiltroRegistro";
-import CardCacambaEstoque from "./CardCacambaEstoque";
+import { CardCondominio } from "./CardCondominio";
 import DetalhesRegistro from "./DetalhesRegistro";
 import RetiradaRegistro from "./RetiradaRegistro";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
-import { useEstoque } from "@src/context/EstoqueContext";
+import { useCondominios } from "@src/context/CondominioContext";
 import EditarRegistro from "./EditarRegistro";
 
 
@@ -37,6 +37,7 @@ function Tabela() {
 
   {/* Controla Loading do skeleton */}
     const [loading, setLoading] = useState(true);
+    
 
   {/* Contexto que controla a tabela.tsx */}
     const {
@@ -47,7 +48,9 @@ function Tabela() {
       abrirModalNovoRegistro, setAbrirModalNovoRegistro,
       abrirModalEditarRegistro, setAbrirModalEditarRegistro,
       abrirModalDetalhesRegistro, setAbrirModalDetalhesRegistro
-    } = useEstoque();
+    } = useCondominios();
+
+    
 
   {/* Hook que controla a paginacao */}
     const {
@@ -58,13 +61,13 @@ function Tabela() {
       totalResultados, setTotalResultados
     } = usePaginacao();
 
+    
   {/* Controla Modais Locais */}
   const [abrirModalRegistrarRetirada, setAbrirModalRegistrarRetirada] = useState(false);
   const [abrirModalRegistrarLocacao, setAbrirModalRegistrarLocacao] = useState(false);
 
   {/* Fecha Todos Modais Ao Selecionar Registro */}
   useEffect(() => {
-    console.log(selectedRegistro);
       if (selectedRegistro === null) {
         setAbrirModalDetalhesRegistro(false);
         setAbrirModalEditarRegistro(false);
@@ -76,7 +79,8 @@ function Tabela() {
 
   {/* Busca Dados da Api */}
   useEffect(() => {
-      buscarDados({endpoint: `/estoque`,
+      setLimitePorPagina(500);
+      buscarDados({endpoint: `/condominios`,
         queryFiltro, pagina, limitePorPagina, setRegistros, setTotalResultados, setTotalPaginas, setLoadingSpiner, setRelistar, setLoading});
   }, [pagina, limitePorPagina, queryFiltro, relistar]);
 
@@ -88,33 +92,19 @@ function Tabela() {
       {/* Listagem Dados */}
       <LoadingSpiner loading={loadingSpiner}>
         
-
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {registros.map((registro, i) => (
-        <div
-          key={i}
-          className="grid mt-3 sm:grid-cols-2 md:grid-cols-3 gap-3 md:mx-auto"
-        >
-          <h1 className="font-bold text-xl col-span-full">
-          {registro.categoria}
-          </h1>
-
-          {registro.itens.map((item, i) => (
-            
-            <div key={i}>
-              <CardCacambaEstoque
-                key={i}
-                item={item}
-                setSelectedRegistro={setSelectedRegistro}
-                setAbrirModalNovoRegistro={setAbrirModalNovoRegistro}
-                setAbrirModalDetalhesRegistro={setAbrirModalDetalhesRegistro}
-                setAbrirModalRegistrarLocacao={setAbrirModalRegistrarLocacao}
-                setAbrirModalRegistrarRetirada={setAbrirModalRegistrarRetirada}
-              />
-              
-            </div>
+            <CardCondominio
+              key={i}
+              item={registro}
+              setSelectedRegistro={setSelectedRegistro}
+              setAbrirModalNovoRegistro={setAbrirModalNovoRegistro}
+              setAbrirModalEditarRegistro={setAbrirModalEditarRegistro}
+              setAbrirModalDetalhesRegistro={setAbrirModalDetalhesRegistro}
+            />
           ))}
         </div>
-        ))}
+        
 
       </LoadingSpiner>
 
@@ -161,7 +151,7 @@ function buscarDados({
     queryFiltro: string;
     pagina: number;
     limitePorPagina: number;
-    setRegistros: React.Dispatch<React.SetStateAction<GrupoEstoque[]>>;
+    setRegistros: React.Dispatch<React.SetStateAction<Condominio[]>>;
     setTotalResultados: React.Dispatch<React.SetStateAction<number>>;
     setTotalPaginas: React.Dispatch<React.SetStateAction<number>>;
     setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
@@ -172,7 +162,7 @@ function buscarDados({
    requisicaoGet(`${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
       .then((response) => {
         if (response?.data.success) {
-          // console.log(response.data);
+          console.log(response.data);
 
           setRegistros(response.data.registros);
           if (response.data.paginacao) {
