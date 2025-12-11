@@ -7,7 +7,8 @@ export default function CardOrders({
   corRodape,
   corRodapeHover,
   icone, 
-  className
+  className,
+  onClick
 }: any) {
   const [bg, setBg] = useState(corRodape);
   return (
@@ -29,6 +30,7 @@ export default function CardOrders({
 
       {/* Rodapé */}
       <div
+      onClick={onClick || (() => {})}
       className="p-2 text-left text-white flex items-center gap-1 cursor-pointer transition"
       style={{ backgroundColor: corRodapeHover || corRodape }}
       

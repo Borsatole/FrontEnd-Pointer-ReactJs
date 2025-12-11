@@ -16,37 +16,6 @@ export default function Dashboard() {
     <ContainerSecundario>
       <TituloPagina>Condominios</TituloPagina>
       <Tabela />
- 
-      {/* <GridDeCards>
-      
-        <CardOpcoes 
-          icone="condominios"
-          descricao="Demandas Diarias como entregas e retiradas de equipamentos."
-          titulo="Condomínios"
-          rota="/condominios"
-        />
-
-        <CardOpcoes 
-          icone="visitas"
-          descricao="Demandas Diarias como entregas e retiradas de equipamentos."
-          titulo="Visitas"
-          rota="/visitas"
-        />
-
-        <CardOpcoes 
-          icone="vistorias"
-          descricao="Gerencie o cadastro de clientes da sua empresa"
-          titulo="Vistorias"
-          rota="/vistorias"
-        />
-
-        <CardOpcoes 
-          icone="chamados"
-          descricao="Gerencie o cadastro de clientes da sua empresa"
-          titulo="Chamados"
-          rota="/chamados"
-        />
-      </GridDeCards> */}
 
     </ContainerSecundario>
     
