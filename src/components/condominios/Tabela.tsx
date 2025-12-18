@@ -31,9 +31,11 @@ import RetiradaRegistro from "./RetiradaRegistro";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { useCondominios } from "@src/context/CondominioContext";
 import EditarRegistro from "./EditarRegistro";
+import { useParams } from "react-router-dom";
 
 
 function Tabela() {
+  const {id} = useParams();
 
   {/* Controla Loading do skeleton */}
     const [loading, setLoading] = useState(true);

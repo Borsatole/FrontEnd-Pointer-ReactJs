@@ -5,16 +5,16 @@ import { Datas } from "@src/services/funcoes-globais";
 import dayjs from 'dayjs';
 import CardOpcoes from "@src/components/comum/cardOpcoes";
 import ContainerSecundario from "@src/components/comum/containerSecundario";
-import Tabela from "@src/components/condominios/Tabela";
+import Tabela from "@src/components/visitas/Tabela";
 
 
 
-export default function Dashboard() {
+export default function Visitas() {
 
   return (
   <>
     <ContainerSecundario>
-      <TituloPagina>Condominios</TituloPagina>
+      <TituloPagina>Visitas</TituloPagina>
       <Tabela />
 
     </ContainerSecundario>

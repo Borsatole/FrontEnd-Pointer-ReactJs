@@ -9,6 +9,7 @@ import { CondominiosProvider } from "./CondominioContext";
 import { ClientesProvider } from "./ClientesContext";
 import { EstoqueProvider } from "./EstoqueContext";
 import { DemandasProvider } from "./DemandasContext";
+import { VisitasProvider } from "./VisitasContext";
 
 interface AppProvidersProps {
   children: ReactNode;
@@ -21,9 +22,11 @@ export function AppProviders({ children }: AppProvidersProps) {
         <MenuProvider>
           <ClientesProvider>
             <CondominiosProvider>
+              <VisitasProvider>
               <DemandasProvider>
                   {children}
               </DemandasProvider>
+              </VisitasProvider>
             </CondominiosProvider>
           </ClientesProvider>
         </MenuProvider>

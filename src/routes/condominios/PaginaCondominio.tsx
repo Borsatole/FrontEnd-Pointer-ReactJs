@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { Card, Spinner, Tabs, TabItem } from "flowbite-react";
 import { 
   FaBuilding, 
@@ -25,6 +27,8 @@ import { Button } from "@src/components/comum/button";
 
 // Exemplo com dados mockados para demonstração
 export default function PaginaCondominio() {
+    const navigate = useNavigate();
+
   const { id } = useParams();
   const [registros, setRegistros] = useState<Condominio>();
 
@@ -59,6 +63,9 @@ export default function PaginaCondominio() {
         setTelefone(response.data.registro.telefone);
         setRua(response.data.registro.rua);
         setRegistros(response.data.registro);
+        setVisitas(response.data.registro.totalVisitas);
+        setVistorias(response.data.registro.totalVistorias);
+
       } else {
         setErro(response.data.message || "Erro ao carregar dados");
       }
@@ -172,7 +179,9 @@ export default function PaginaCondominio() {
               cor="#03a664"
               corRodape="#228572"
               icone={<FaUserCheck className="text-5xl text-white" />}
-              onClick={() => {}}
+              onClick={() => {
+                navigate(`/visitas/${id}`);
+              }}
             />
 
              <CardOrders 
@@ -240,15 +249,10 @@ export default function PaginaCondominio() {
 
               {/* Botão */}
               <div className="flex justify-end pt-2">
-                <Button onClick={enviarDados} loading={loadingSpiner} className="mb-3">
+                <Button type="submit" onClick={enviarDados} loading={loadingSpiner} className="mb-3">
                   Salvar Alterações
                 </Button>
-                {/* <button
-                  type="submit"
-                  className="bg-emerald-500 hover:bg-emerald-600 transition text-white font-semibold px-6 py-2 rounded-lg shadow"
-                >
-                  Salvar Alterações
-                </button> */}
+              
               </div>
 
             </form>

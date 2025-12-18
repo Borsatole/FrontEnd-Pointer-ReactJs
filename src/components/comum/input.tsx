@@ -80,6 +80,7 @@ export function TextArea({
       placeholder={placeholder}
       autoComplete={autoComplete}
       className={`
+        ${className}
         bg-[var(--base-color)] 
         min-h-[200px]
         w-full px-4 py-2 
@@ -90,7 +91,7 @@ export function TextArea({
         focus:ring-2 focus:ring-[var(--corPrincipal)]
         transition
         resize-y
-        ${className}
+        
       `}
       required={required}
       {...(value !== undefined

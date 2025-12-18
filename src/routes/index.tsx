@@ -25,10 +25,12 @@ function TelaLoading() {
 const TelaLogin = lazy(() => import("./telaLogin"));
 const Condominios = lazy(() => import("./condominios/condominios"));
 const PaginaCondominio = lazy(() => import("./condominios/PaginaCondominio"));
+const PaginaVisitas = lazy(() => import("./condominios/PaginaVisitas"));
 const Home = lazy(() => import("./dashboard/dashboard"));
 const NivelAcesso = lazy(() => import("./acessos/nivel"));
 const Renove = lazy(() => import("./renove/renove"));
 const Clientes = lazy(() => import("./clientes/clientes"));
+const RegistroVisita = lazy(() => import("./registro-visita/registro-visita"));
 
 const routes = [
   { path: "/", element: <Home />, protected: true },
@@ -36,6 +38,8 @@ const routes = [
   { path: "/acesso-niveis", element: <NivelAcesso />, protected: true },
   { path: "/condominios", element: <Condominios />, protected: true },
   { path: "/condominios/:id", element: <PaginaCondominio />, protected: true },
+  { path: "/visitas/:id", element: <PaginaVisitas />, protected: true },
+  { path: "/visitas", element: <RegistroVisita />, protected: true },
   { path: "/renove", element: <Renove />, protected: true },
   { path: "/clientes", element: <Clientes />, protected: true },
   { path: "/peixes", element: <NivelAcesso />, protected: true },
