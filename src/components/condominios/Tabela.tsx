@@ -32,6 +32,7 @@ import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { useCondominios } from "@src/context/CondominioContext";
 import EditarRegistro from "./EditarRegistro";
 import { useParams } from "react-router-dom";
+import RegistroVazio from "@src/components/comum/registroVazio";
 
 
 function Tabela() {
@@ -88,6 +89,7 @@ function Tabela() {
 
 
   if (loading) return <LoadingSkeleton />;
+  if (registros.length === 0 && !loading) return <RegistroVazio />;
   return (
     <>
 
@@ -164,7 +166,7 @@ function buscarDados({
    requisicaoGet(`${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`)
       .then((response) => {
         if (response?.data.success) {
-          console.log(response.data);
+          // console.log(response.data);
 
           setRegistros(response.data.registros);
           if (response.data.paginacao) {

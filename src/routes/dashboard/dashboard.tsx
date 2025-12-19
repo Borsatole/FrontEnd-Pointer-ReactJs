@@ -83,7 +83,7 @@ function BannerBoasVindas() {
       >
         <div className="absolute inset-0 bg-[var(--corPrincipal)] opacity-80 "></div>
 
-        <div className="relative p-6 sm:p-8 md:p-20 z-10 flex items-center gap-4 sm:gap-6">
+        <div className="relative p-6 sm:p-8 md:p-20 flex items-center gap-4 sm:gap-6">
           <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-md flex items-center justify-center overflow-hidden flex-shrink-0">
             <img src="/iconepng.png" alt="Logo" className="w-12 h-12 sm:w-14 sm:h-14 object-contain" />
           </div>

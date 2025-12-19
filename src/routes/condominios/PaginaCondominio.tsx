@@ -24,6 +24,7 @@ import { Input } from "@src/components/comum/input";
 import ContainerSecundario from "@src/components/comum/containerSecundario";
 import Alerta from "@src/components/comum/alertas";
 import { Button } from "@src/components/comum/button";
+import RegistroVazio from "@src/components/comum/registroVazio";
 
 // Exemplo com dados mockados para demonstração
 export default function PaginaCondominio() {
@@ -115,9 +116,7 @@ export default function PaginaCondominio() {
   
   
   if (loading) return <LoadingSkeleton />;
-  if (erro) return <>{erro}</>;
-  if (!registros) return;
-  
+  if (!registros && !loading) return <RegistroVazio />;  
   return (
     <ContainerSecundario>
     <LoadingSpiner loading={loadingSpiner}>
@@ -138,7 +137,7 @@ export default function PaginaCondominio() {
               {/* Nome do Condomínio */}
               <div>
                 <h1 className="text-2xl font-bold">
-                  {registros.nome || "-"}
+                  {registros?.nome || "-"}
                 </h1>
                 
               </div>
@@ -153,12 +152,12 @@ export default function PaginaCondominio() {
                 </div>
                 <div className="flex items-start gap-2">
                   <FaMapMarkerAlt className="mt-1 flex-shrink-0" />
-                  <span className="text-sm ">{registros.rua || "-"}</span>
+                  <span className="text-sm ">{registros?.rua || "-"}</span>
                 </div>
                 
                 <div className="flex justify-between items-center pt-2">
                   <span className="text-sm ">Telefone:</span>
-                  <span className="text-sm ">{registros.telefone || "-"}</span>
+                  <span className="text-sm ">{registros?.telefone || "-"}</span>
                 </div>
                 
               
