@@ -30,6 +30,8 @@ const Home = lazy(() => import("./dashboard/dashboard"));
 const NivelAcesso = lazy(() => import("./acessos/nivel"));
 const Renove = lazy(() => import("./renove/renove"));
 const Clientes = lazy(() => import("./clientes/clientes"));
+const Vistorias = lazy(() => import("./vistorias/vistorias"));
+const PaginaNovaVistoria = lazy(() => import("./vistorias/PaginaNovaVistoria"));
 const RegistroVisita = lazy(() => import("./registro-visita/registro-visita"));
 
 const routes = [
@@ -40,6 +42,12 @@ const routes = [
   { path: "/condominios/:id", element: <PaginaCondominio />, protected: true },
   { path: "/visitas/:id", element: <PaginaVisitas />, protected: true },
   { path: "/visitas", element: <RegistroVisita />, protected: true },
+  { path: "/vistorias", element: <Vistorias />, protected: true },
+  {
+    path: "/vistorias/new/",
+    element: <PaginaNovaVistoria />,
+    protected: true,
+  },
   { path: "/renove", element: <Renove />, protected: true },
   { path: "/clientes", element: <Clientes />, protected: true },
   { path: "/peixes", element: <NivelAcesso />, protected: true },
@@ -81,23 +89,22 @@ function rotaPermitida(menu: any[], path: string): boolean {
   for (const item of menu) {
     // Comparação exata
     if (item.rota === rota) return true;
-    
+
     // Verifica se a rota do menu tem parâmetros dinâmicos (ex: /condominios/:id)
-    if (item.rota && item.rota.includes(':')) {
-      const regexPattern = item.rota.replace(/:[^/]+/g, '[^/]+');
+    if (item.rota && item.rota.includes(":")) {
+      const regexPattern = item.rota.replace(/:[^/]+/g, "[^/]+");
       const regex = new RegExp(`^${regexPattern}$`);
       if (regex.test(rota)) return true;
     }
-    
+
     // Verifica se é uma subrota (ex: /condominios/123 pertence a /condominios)
-    if (item.rota && rota.startsWith(item.rota + '/')) return true;
-    
+    if (item.rota && rota.startsWith(item.rota + "/")) return true;
+
     if (item.submenu && rotaPermitida(item.submenu, rota)) return true;
   }
 
   return false;
 }
-
 
 const Rotas = () => {
   const { auth } = useContext(AuthContext);
@@ -113,7 +120,6 @@ const Rotas = () => {
       navigate("/renove", { replace: true });
     }
   }, [auth?.menu, location.pathname, navigate]);
-
 
   // Separa rotas protegidas e não protegidas
   const rotasProtegidas = routes.filter((route) => route.protected);
@@ -136,7 +142,6 @@ const Rotas = () => {
           }
         >
           {rotasProtegidas.map(({ path, element }, index) => {
-            
             const isPermitida = rotaPermitida(auth?.menu || [], path);
             return (
               <Route

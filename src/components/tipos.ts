@@ -41,12 +41,25 @@ export interface Permissoes {
   updated_at?: string;
 }
 
+export interface ItemDeVistoria {
+  id: number;
+  id_condominio: number;
+  nome_item: string;
+  periodo_dias?: number;
+  ultima_vistoria?: string;
+  situacao?: string;
+  descricao: string;
+  created_at?: string;
+  updated_at?: string;
+}
 
 export interface Condominio {
   id?: number;
   nome: string;
   telefone?: string;
   rua?: string;
+  itens_vistoriados?: ItemDeVistoria[];
   created_at?: string;
   updated_at?: string;
 }
+

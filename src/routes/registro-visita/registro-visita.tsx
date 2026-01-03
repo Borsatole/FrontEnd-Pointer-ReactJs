@@ -15,7 +15,7 @@ export default function Dashboard() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const scannerRef = useRef<QrScanner | null>(null);
 
-  const MODO_TESTE = false;
+  const MODO_TESTE = true;
   const CONDOMINIO_TESTE = "1";
 
   const onScanSuccess = (valor: string) => {

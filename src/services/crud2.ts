@@ -1,4 +1,4 @@
-import { requisicaoDelete, requisicaoPost, requisicaoPut } from "@services/requisicoes";
+import { requisicaoDelete, requisicaoGet, requisicaoPost, requisicaoPut } from "@services/requisicoes";
 import Alerta from "@components/comum/alertas";
 import { Confirm } from "@components/comum/alertas";
 import { useEffect } from "react";
@@ -9,6 +9,56 @@ export interface BaseRegistro {
   nome?: string;
   [key: string]: any;
 }
+
+interface Read {
+  endpoint: string;
+  queryFiltro?: string;
+  pagina?: number;
+  limitePorPagina?: number;
+
+  setRegistros: React.Dispatch<React.SetStateAction<any[]>>;
+  setTotalResultados?: React.Dispatch<React.SetStateAction<number>>;
+  setTotalPaginas?: React.Dispatch<React.SetStateAction<number>>;
+  setLoadingSpiner?: React.Dispatch<React.SetStateAction<boolean>>;
+  setRelistar?: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoading?: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export async function Read({
+  endpoint,
+  queryFiltro = "",
+  pagina,
+  limitePorPagina,
+  setRegistros,
+  setTotalResultados,
+  setTotalPaginas,
+  setLoadingSpiner,
+  setRelistar,
+  setLoading,
+}: Read) {
+
+
+  setLoadingSpiner?.(true);
+  setLoading?.(true);
+
+  return requisicaoGet(
+    `${endpoint}?${queryFiltro}${pagina ? `&pagina=${pagina}` : ""}${limitePorPagina ? `&limite=${limitePorPagina}` : ""}`
+  )
+    .then((response) => {
+      if (response?.data?.success) {
+        setRegistros(response.data.registros);
+        setTotalResultados?.(response.data.paginacao.total);
+        setTotalPaginas?.(response.data.paginacao.ultimaPagina);
+        
+      }
+    })
+    .finally(() => {
+      setLoadingSpiner?.(false);
+      setLoading?.(false);
+      setRelistar?.(false);
+    });
+}
+
 
 interface Create<T extends BaseRegistro> {
     payload: T | FormData;
@@ -27,8 +77,8 @@ export function Create<T extends BaseRegistro>({
   setRegistros,
   endpoint,
 }: Create<T>) {
-
     function atualizarLista(novoRegistro: T) {
+      console.log("Atualizando a lista");
     setRegistros?.((prev) => [...(prev ?? []), novoRegistro]);
     }
 
@@ -44,7 +94,9 @@ export function Create<T extends BaseRegistro>({
             
             Alerta("toast", "success", msg);
 
-            {registros && setRegistros && atualizarLista(response?.data?.registro)};
+            if (registros && setRegistros) {
+              atualizarLista(response?.data?.registro);
+            }
         }
         depoisDeExecutar?.();
 

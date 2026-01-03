@@ -1,0 +1,63 @@
+
+*CRUD*
+
+_____________________________________________________________
+CREATE - Está em crud2.ts
+
+    Methodo: Create
+    url: endpoint
+
+    @parametros {
+        payload - Dados que vai enviar
+        antesDeExecutar - funcoes para executar antes de processar a requisicão
+        depoisDeExecutar - funcoes para executar depois de processar a requisicão
+        registros/setRegistros - Serve para atualizar os registros sem ter que relistar
+
+    }
+_____________________________________________________________
+_____________________________________________________________
+READ - Está em crud2.ts
+
+    (essa camada geralmente é utilizada junto com o usePaginacao)
+
+    @parametros {
+        endpoint - Define a rota onde vamos fazer a requisicao
+        queryFiltro - aqui passamos os paramtros de pesquisa,
+        pagina - parametros de paginacao
+        limitePorPagina = parametros de paginacao
+        setRegistros - variavel que vai receber os dados
+        setTotalResultados - total de resultados
+        setTotalPaginas - total de paginas
+        setLoadingSpiner - Utilizado junto com a camada de loading spiner
+        setRelistar - define se vai relistar depois true/false
+        setLoading - define o loading como true/false
+    }
+_____________________________________________________________
+_____________________________________________________________
+UPDATE - Está em crud2.ts
+
+    Methodo: Update
+    url: endpoint/(id do item que vai fazer o delete)
+
+    @parametros {
+        payload - Dados que vai alterar
+        antesDeExecutar - funcoes para executar antes de processar a requisicão
+        depoisDeExecutar - funcoes para executar depois de processar a requisicão
+        registros/setRegistros - Serve para atualizar os registros sem ter que relistar
+
+    }
+_____________________________________________________________
+_____________________________________________________________
+DELETE - Está em crud2.ts
+
+    Methodo: Delete
+    url: endpoint/(id do item que vai fazer o delete)
+
+    @parametros {
+        payload - Dados que vai alterar
+        antesDeExecutar - funcoes para executar antes de processar a requisicão
+        depoisDeExecutar - funcoes para executar depois de processar a requisicão
+        registros/setRegistros - Serve para atualizar os registros sem ter que relistar
+
+    }
+_____________________________________________________________

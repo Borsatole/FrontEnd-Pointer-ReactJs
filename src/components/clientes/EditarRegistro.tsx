@@ -12,10 +12,12 @@ import Enderecos2 from "./enderecos/Enderecos2";
 
 export default function ModalEditarRegistro2() {
   const {
-    registros, setRegistros,
+    registros,
+    setRegistros,
     setRelistar,
     setLoadingSpiner,
-    selectedCliente, setSelectedCliente
+    selectedCliente,
+    setSelectedCliente,
   } = useClientes();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -29,7 +31,7 @@ export default function ModalEditarRegistro2() {
   const [celular, setCelular] = useState("");
   const [observacao, setObservacao] = useState("");
 
-  const [enderecos, setEnderecos] = useState<Endereco[]>([]);
+  const [enderecos, setEnderecos] = useState<any[]>([]);
 
   const registro = registros.find((p) => p.id === selectedCliente?.id);
 
@@ -72,7 +74,6 @@ export default function ModalEditarRegistro2() {
       });
 
       setSelectedCliente(null);
-
     } finally {
       setIsLoading(false);
     }
@@ -96,7 +97,6 @@ export default function ModalEditarRegistro2() {
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-auto">
       <div className="flex flex-col p-4 border-b border-[var(--base-color)] mb-4">
         <div className="flex items-center gap-4">
-
           <div className="w-20 h-20 rounded-lg bg-[var(--base-color)] flex items-center justify-center text-[var(--corPrincipal)] shadow-inner">
             {getIcon("clientes", 48, "text-[var(--corPrincipal)]")}
           </div>
@@ -112,8 +112,10 @@ export default function ModalEditarRegistro2() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pb-6">
-
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pb-6"
+      >
         <FormGroup label="Nome" id="nome">
           <Input
             id="nome"
@@ -180,7 +182,9 @@ export default function ModalEditarRegistro2() {
             id="observacao"
             className="font-bold uppercase text-[var(--text-color)]"
             value={observacao}
-            onChange={(e : React.ChangeEvent<HTMLTextAreaElement>) => setObservacao(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setObservacao(e.target.value)
+            }
             disabled={isLoading}
           />
         </FormGroup>
@@ -195,7 +199,6 @@ export default function ModalEditarRegistro2() {
             Salvar Cliente
           </Button>
         </div>
-
       </form>
     </Modal>
   );
