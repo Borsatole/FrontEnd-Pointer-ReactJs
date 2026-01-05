@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
 
-import dayjs from "dayjs";
-import "dayjs/locale/pt-br";
-
-import { formatarDataHumana } from "@src/utils/formatarDataHumana";
-
 // REQUISICOES E CRUD
 import { requisicaoGet } from "@services/requisicoes";
 
@@ -12,10 +7,9 @@ import { requisicaoGet } from "@services/requisicoes";
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
 
-// TIPOS
-
 // FUNCOES
-
+import { MaxCaracteres } from "@src/services/funcoes-globais";
+import { LetraMaiuscula } from "@services/funcoes-globais";
 import { Button } from "@components/comum/button";
 import { getIcon } from "@src/components/icons";
 
@@ -30,30 +24,20 @@ import TabelaDinamica, {
 } from "@src/components/comum/TabelaDinamica";
 
 // MODAIS E FILTROS
-import ModalEditarRegistro from "@src/components/clientes/EditarRegistro";
+import ModalEditarRegistro from "@src/components/vistorias/EditarRegistro";
 import ModalAdicionarRegistro from "./NovoRegistro";
 
 import { FiltroCadastros } from "./FiltroRegistro";
-import { Delete } from "@src/services/crud2";
+import { Delete, Read } from "@src/services/crud2";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
-import { useVisitas } from "@src/context/VisitasContext";
-import { useParams } from "react-router-dom";
-
 import { FaUser } from "react-icons/fa";
-import Modal from "@src/components/modal/Modal";
-import { TextArea } from "../comum/input";
-import ModalMensagem from "./ModalMensagem";
+import { formatarDataHumana } from "@src/utils/formatarDataHumana";
+import { useVistorias } from "@src/context/VistoriasContext";
+import { useParams } from "react-router-dom";
 
 function Tabela() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
-
-  const [abrirModalMensagem, setAbrirModalMensagem] = useState(false);
-  const [mensagemSelecionada, setMensagemSelecionada] = useState<string | null>(
-    null
-  );
-
-  dayjs.locale("pt-br");
 
   // Contexto que controla a tabela.tsx
   const {
@@ -69,7 +53,7 @@ function Tabela() {
     setAbrirModalNovoRegistro,
     abrirModalEditarRegistro,
     setAbrirModalEditarRegistro,
-  } = useVisitas();
+  } = useVistorias();
 
   // Hook que controla a paginacao
   const {
@@ -88,16 +72,20 @@ function Tabela() {
   // Configuração das colunas da tabela
   const colunas: ColunaConfig<any>[] = [
     {
-      key: "entrada",
-      label: "ENTRADA",
-      render: (registro) =>
-        registro.entrada ? formatarDataHumana(registro.entrada) : "-",
+      key: "id",
+      label: "ID",
+      render: (registro) => registro.id || "-",
     },
     {
-      key: "saida",
-      label: "SAIDA",
+      key: "data",
+      label: "DATA",
       render: (registro) =>
-        registro.saida ? formatarDataHumana(registro.entrada) : "-",
+        registro.created_at ? formatarDataHumana(registro.created_at) : "-",
+    },
+    {
+      key: "condominio",
+      label: "CONDOMINIO",
+      render: (registro) => registro.condominio_nome,
     },
     {
       key: "responsavel",
@@ -114,23 +102,6 @@ function Tabela() {
           </div>
         );
       },
-    },
-    {
-      key: "mensagem",
-      label: "MENSAGEM",
-      render: (registro) => (
-        <div className="flex items-center justify-center">
-          <span
-            className="underline cursor-pointer"
-            onClick={() => {
-              setMensagemSelecionada(registro.mensagem);
-              setAbrirModalMensagem(true);
-            }}
-          >
-            ver mensagem
-          </span>
-        </div>
-      ),
     },
   ];
 
@@ -152,7 +123,7 @@ function Tabela() {
           registro,
           registros,
           setRegistros,
-          endpoint: `/visitas/${registro.id}`,
+          endpoint: `/vistorias/${registro.id}`,
           antesDeExecutar: () => {
             setLoadingSpiner(true);
           },
@@ -169,14 +140,14 @@ function Tabela() {
   // Função para renderizar o ícone de cada linha
   const iconeItem = () => (
     <div className="bg-[var(--base-color)] rounded-lg p-2">
-      {getIcon("visitas", 25)}
+      {getIcon("vistorias", 25)}
     </div>
   );
 
   useEffect(() => {
-    buscarDados({
-      endpoint: "/visitas",
-      queryFiltro: `id_condominio=${id}&${queryFiltro}`,
+    Read({
+      endpoint: `/vistorias`,
+      queryFiltro: `${id ? `id_condominio=${id}` : ""}`,
       pagina,
       limitePorPagina,
       setRegistros,
@@ -186,14 +157,30 @@ function Tabela() {
       setRelistar,
       setLoading,
     });
-  }, [pagina, limitePorPagina, queryFiltro, relistar, id]);
+  }, [pagina, limitePorPagina, queryFiltro]);
+
+  useEffect(() => {
+    if (!relistar) return;
+
+    Read({
+      endpoint: `/vistorias`,
+      queryFiltro: `${id ? `id_condominio=${id}` : ""}`,
+      pagina,
+      limitePorPagina,
+      setRegistros,
+      setTotalResultados,
+      setTotalPaginas,
+      setLoadingSpiner,
+      setRelistar,
+      setLoading,
+    });
+  }, [relistar]);
 
   if (loading) return <LoadingSkeleton />;
-
   return (
     <>
       <BotaoNovoRegistro onClick={() => setAbrirModalNovoRegistro(true)} />
-      <FiltroCadastros onFiltrar={setQueryFiltro} />
+      {/* <FiltroCadastros onFiltrar={setQueryFiltro} /> */}
 
       <div className="flex justify-between items-center m-3">
         <MostrarNumeroDeResultados totalResultados={totalResultados} />
@@ -213,7 +200,7 @@ function Tabela() {
       </LoadingSpiner>
 
       {/* Rodapé da tabela */}
-      {totalResultados > 0 && (
+      {totalResultados > limitePorPagina && (
         <Rodape
           pagina={pagina}
           limitePorPagina={limitePorPagina}
@@ -226,16 +213,9 @@ function Tabela() {
       )}
 
       {/* Modais */}
+
       {abrirModalEditarRegistro && selectedRegistro && <ModalEditarRegistro />}
       {abrirModalNovoRegistro && <ModalAdicionarRegistro />}
-
-      {abrirModalMensagem && (
-        <ModalMensagem
-          abrirModalMensagem={abrirModalMensagem}
-          setAbrirModalMensagem={setAbrirModalMensagem}
-          mensagemSelecionada={mensagemSelecionada}
-        />
-      )}
     </>
   );
 }
@@ -247,49 +227,10 @@ function BotaoNovoRegistro({ onClick }: { onClick: () => void }) {
     <div className="flex justify-between">
       <Button onClick={onClick} className="mb-3">
         <p className="flex items-center gap-2">
-          {getIcon("clientes", 20)}
-          <span>Criar Cliente</span>
+          {getIcon("vistorias", 20)}
+          <span>Nova Vistoria</span>
         </p>
       </Button>
     </div>
   );
-}
-
-function buscarDados({
-  endpoint = "",
-  queryFiltro = "",
-  pagina = 1,
-  limitePorPagina = 7,
-  setRegistros,
-  setTotalResultados,
-  setTotalPaginas,
-  setLoadingSpiner,
-  setRelistar,
-  setLoading,
-}: {
-  endpoint: string;
-  queryFiltro: string;
-  pagina: number;
-  limitePorPagina: number;
-  setRegistros: React.Dispatch<React.SetStateAction<any[]>>;
-  setTotalResultados: React.Dispatch<React.SetStateAction<number>>;
-  setTotalPaginas: React.Dispatch<React.SetStateAction<number>>;
-  setLoadingSpiner: React.Dispatch<React.SetStateAction<boolean>>;
-  setRelistar: React.Dispatch<React.SetStateAction<boolean>>;
-  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  setLoadingSpiner(true);
-  requisicaoGet(
-    `${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`
-  ).then((response) => {
-    if (response?.data.success) {
-      // console.log(response.data);
-      setRegistros(response.data.registros);
-      setTotalResultados(response.data.paginacao.total);
-      setTotalPaginas(response.data.paginacao.ultimaPagina);
-    }
-    setLoadingSpiner(false);
-    setRelistar(false);
-    setLoading(false);
-  });
 }

@@ -6,17 +6,19 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { Condominio } from "@src/components/tipos";
+import { Condominio, ItemDeVistoria } from "@src/components/tipos";
 
 interface VistoriasContextType {
-  registros: Condominio[];
-  setRegistros: Dispatch<SetStateAction<Condominio[]>>;
+  registros: any[];
+  setRegistros: Dispatch<SetStateAction<any[]>>;
+  registrosItensVistorias: ItemDeVistoria[];
+  setRegistrosItensVistorias: Dispatch<SetStateAction<ItemDeVistoria[]>>;
   relistar: boolean;
   setRelistar: Dispatch<SetStateAction<boolean>>;
   loadingSpiner: boolean;
   setLoadingSpiner: Dispatch<SetStateAction<boolean>>;
-  selectedRegistro: Condominio | null;
-  setSelectedRegistro: Dispatch<SetStateAction<Condominio | null>>;
+  selectedRegistro: any | null;
+  setSelectedRegistro: Dispatch<SetStateAction<any | null>>;
   abrirModalNovoRegistro: boolean;
   setAbrirModalNovoRegistro: Dispatch<SetStateAction<boolean>>;
   abrirModalEditarRegistro: boolean;
@@ -30,12 +32,14 @@ const VistoriasContext = createContext<VistoriasContextType | undefined>(
 );
 
 export function VistoriasProvider({ children }: { children: ReactNode }) {
-  const [registros, setRegistros] = useState<Condominio[]>([]);
+  const [registros, setRegistros] = useState<any[]>([]);
+
+  const [registrosItensVistorias, setRegistrosItensVistorias] = useState<
+    ItemDeVistoria[]
+  >([]);
   const [relistar, setRelistar] = useState(false);
   const [loadingSpiner, setLoadingSpiner] = useState(true);
-  const [selectedRegistro, setSelectedRegistro] = useState<Condominio | null>(
-    null
-  );
+  const [selectedRegistro, setSelectedRegistro] = useState<any | null>(null);
   const [abrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);
   const [abrirModalEditarRegistro, setAbrirModalEditarRegistro] =
     useState(false);
@@ -47,6 +51,8 @@ export function VistoriasProvider({ children }: { children: ReactNode }) {
       value={{
         registros,
         setRegistros,
+        registrosItensVistorias,
+        setRegistrosItensVistorias,
         relistar,
         setRelistar,
         loadingSpiner,

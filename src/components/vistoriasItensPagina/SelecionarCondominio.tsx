@@ -29,29 +29,31 @@ function SelecionarCondominio({
   return (
     <div>
       <ul>
-        <div className="grid grid-cols-1">
-          {registros.map((item: any, index) => (
-            <BotaoSeletor
-              key={index}
-              icon={getIcon("condominios", 25)}
-              value={item.id}
-              className={item.vistoria === false ? "opacity-30" : ""}
-              selectedValue={selectedCondominio}
-              onClick={
-                item.vistoria === false
-                  ? () => {
-                      Alerta(
-                        "swal",
-                        "error",
-                        "Cadastre Itens de Vistoria para esse Condomínio!"
-                      );
-                    }
-                  : setSelectedCondominio
-              }
-              label={item.nome}
-            />
-          ))}
-        </div>
+        {registros.map((item: any) => (
+          <>
+            <div className="grid grid-cols-1">
+              <BotaoSeletor
+                key={item.id}
+                icon={getIcon("condominios", 25)}
+                value={item.id}
+                className={item.vistoria === false ? "opacity-30" : ""}
+                selectedValue={selectedCondominio}
+                onClick={
+                  item.vistoria === false
+                    ? () => {
+                        Alerta(
+                          "swal",
+                          "error",
+                          "Cadastre Itens de Vistoria para esse Condomínio!"
+                        );
+                      }
+                    : setSelectedCondominio
+                }
+                label={item.nome}
+              />
+            </div>
+          </>
+        ))}
       </ul>
     </div>
   );

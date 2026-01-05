@@ -23,31 +23,42 @@ function TelaLoading() {
 }
 
 const TelaLogin = lazy(() => import("./telaLogin"));
+
 const Condominios = lazy(() => import("./condominios/condominios"));
 const PaginaCondominio = lazy(() => import("./condominios/PaginaCondominio"));
 const PaginaVisitas = lazy(() => import("./condominios/PaginaVisitas"));
+const PaginaVistorias = lazy(() => import("./condominios/PaginaVistorias"));
+const PaginaItensVistorias = lazy(
+  () => import("./condominios/PaginaItensVitorias")
+);
+
 const Home = lazy(() => import("./dashboard/dashboard"));
 const NivelAcesso = lazy(() => import("./acessos/nivel"));
 const Renove = lazy(() => import("./renove/renove"));
 const Clientes = lazy(() => import("./clientes/clientes"));
 const Vistorias = lazy(() => import("./vistorias/vistorias"));
-const PaginaNovaVistoria = lazy(() => import("./vistorias/PaginaNovaVistoria"));
+
 const RegistroVisita = lazy(() => import("./registro-visita/registro-visita"));
 
 const routes = [
   { path: "/", element: <Home />, protected: true },
   { path: "/login", element: <TelaLogin />, protected: false },
   { path: "/acesso-niveis", element: <NivelAcesso />, protected: true },
+
   { path: "/condominios", element: <Condominios />, protected: true },
   { path: "/condominios/:id", element: <PaginaCondominio />, protected: true },
-  { path: "/visitas/:id", element: <PaginaVisitas />, protected: true },
+
   { path: "/visitas", element: <RegistroVisita />, protected: true },
+  { path: "/visitas/:id", element: <PaginaVisitas />, protected: true },
+
   { path: "/vistorias", element: <Vistorias />, protected: true },
+  { path: "/vistorias/:id", element: <PaginaVistorias />, protected: true },
   {
-    path: "/vistorias/new/",
-    element: <PaginaNovaVistoria />,
+    path: "/vistorias/itens/:id",
+    element: <PaginaItensVistorias />,
     protected: true,
   },
+
   { path: "/renove", element: <Renove />, protected: true },
   { path: "/clientes", element: <Clientes />, protected: true },
   { path: "/peixes", element: <NivelAcesso />, protected: true },

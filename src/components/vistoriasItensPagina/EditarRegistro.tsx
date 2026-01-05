@@ -7,10 +7,10 @@ import { Button } from "@components/comum/button";
 import { getIcon } from "../icons";
 import { LetraMaiuscula } from "@src/services/funcoes-globais";
 import { Update } from "@src/services/crud2";
-import { useClientes } from "@src/context/ClientesContext";
 import { useVistorias } from "@src/context/VistoriasContext";
 import ListaVistoria from "./ListaVistoria";
 import { ItemDeVistoria } from "../tipos";
+import { SelectModificado } from "../comum/select";
 
 export default function ModalEditarRegistro2() {
   const {
@@ -24,10 +24,13 @@ export default function ModalEditarRegistro2() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(true);
-
-  const [itensDeVistoria, setItensDeVistoria] = useState<ItemDeVistoria[]>([]);
+  const [loadingBtn, setLoadingBtn] = useState(false);
 
   // Campos controlados
+  const [nomeItem, setNomeItem] = useState<string>("");
+  const [periodoDias, setPeriodoDias] = useState<string>("");
+  const [ultimaVistoria, setUltimaVistoria] = useState<string>("");
+  const [situacao, setSituacao] = useState<string>("");
 
   const registro = registros.find((p) => p.id === selectedRegistro?.id);
 
@@ -35,14 +38,13 @@ export default function ModalEditarRegistro2() {
   useEffect(() => {
     if (!registro) return;
 
-    setItensDeVistoria(registro.itens_vistoriados || []);
+    setNomeItem(registro.nome_item || "");
+    setPeriodoDias(registro.periodo_dias || "");
+    setUltimaVistoria(registro.ultima_vistoria || "");
+    setSituacao(registro.situacao || "");
 
     setIsLoadingInit(false);
   }, [registro]);
-
-  useEffect(() => {
-    console.log(itensDeVistoria);
-  }, [itensDeVistoria]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,14 +54,17 @@ export default function ModalEditarRegistro2() {
 
     try {
       const payload = {
-        itens_vistoriados: itensDeVistoria,
+        id_condominio: selectedRegistro.id_condominio,
+        nome_item: nomeItem,
+        periodo_dias: periodoDias || null,
+        ultima_vistoria: ultimaVistoria || null,
+        situacao: situacao,
       };
-      console.log(payload);
       Update<any>({
         payload,
         registros,
         setRegistros,
-        endpoint: `/vistorias/${selectedRegistro.id}`,
+        endpoint: `/itensparavistorias/${selectedRegistro.id}`,
       });
 
       setSelectedRegistro(null);
@@ -101,23 +106,61 @@ export default function ModalEditarRegistro2() {
         </div>
       </div>
 
-      <ListaVistoria
-        regItensCondominio={itensDeVistoria}
-        setRegItensCondominio={setItensDeVistoria}
-        preenchimentoAutomatico={false}
-      />
+      <form action="" onSubmit={handleSubmit}>
+        <div>
+          <FormGroup label="Nome do item" id="nomeItem">
+            <Input
+              id="nomeItem"
+              placeholder="Nome do item"
+              value={nomeItem}
+              onChange={(e) => {
+                setNomeItem(e.target.value);
+              }}
+            />
+          </FormGroup>
 
-      <div className="w-full flex justify-center">
-        <Button
-          type="submit"
-          className="w-full"
-          onClick={handleSubmit}
-          loading={isLoading}
-          disabled={isLoading}
-        >
-          Salvar Vistoria
-        </Button>
-      </div>
+          <FormGroup label="Período de dias" id="periodoDias">
+            <Input
+              id="periodoDias"
+              type="number"
+              placeholder="Período de dias"
+              value={periodoDias}
+              onChange={(e) => {
+                setPeriodoDias(e.target.value);
+              }}
+            />
+          </FormGroup>
+
+          <FormGroup label="Ultima vistoria" id="ultimaVistoria">
+            <Input
+              id="ultimaVistoria"
+              placeholder="Ultima vistoria"
+              type="datetime-local"
+              value={ultimaVistoria}
+              onChange={(e) => {
+                setUltimaVistoria(e.target.value);
+              }}
+            />
+          </FormGroup>
+
+          <FormGroup label="Situacao" id="situacao">
+            <SelectModificado
+              id="situacao"
+              value={situacao}
+              onChange={(e) => {
+                setSituacao(e.target.value);
+              }}
+            >
+              <option value="Conforme">Conforme</option>
+              <option value="Defeito">Defeito</option>
+            </SelectModificado>
+          </FormGroup>
+
+          <Button type="submit" loading={loadingBtn} className="w-full mt-4">
+            Salvar
+          </Button>
+        </div>
+      </form>
     </Modal>
   );
 }

@@ -33,6 +33,7 @@ import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { FaUser } from "react-icons/fa";
 import { formatarDataHumana } from "@src/utils/formatarDataHumana";
 import { useVistorias } from "@src/context/VistoriasContext";
+import { useParams } from "react-router-dom";
 
 function Tabela() {
   const [loading, setLoading] = useState(true);
