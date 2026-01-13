@@ -46,6 +46,7 @@ export async function Read({
   )
     .then((response) => {
       if (response?.data?.success) {
+        console.log(response.data);
         setRegistros(response.data.registros);
         setTotalResultados?.(response.data.paginacao.total);
         setTotalPaginas?.(response.data.paginacao.ultimaPagina);
@@ -63,6 +64,7 @@ export async function Read({
 interface Create<T extends BaseRegistro> {
     payload: T | FormData;
     endpoint: string;
+    isMultipart?: boolean;
     antesDeExecutar?: () => void;
     depoisDeExecutar?: () => void;
     registros?: T[];

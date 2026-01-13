@@ -37,6 +37,7 @@ const NivelAcesso = lazy(() => import("./acessos/nivel"));
 const Renove = lazy(() => import("./renove/renove"));
 const Clientes = lazy(() => import("./clientes/clientes"));
 const Vistorias = lazy(() => import("./vistorias/vistorias"));
+const Chamados = lazy(() => import("./chamados/chamados"));
 
 const RegistroVisita = lazy(() => import("./registro-visita/registro-visita"));
 
@@ -58,6 +59,8 @@ const routes = [
     element: <PaginaItensVistorias />,
     protected: true,
   },
+
+  { path: "/chamados", element: <Chamados />, protected: true },
 
   { path: "/renove", element: <Renove />, protected: true },
   { path: "/clientes", element: <Clientes />, protected: true },

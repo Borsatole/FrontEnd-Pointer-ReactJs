@@ -64,6 +64,7 @@
   --fundo-modal: var(--base-color);
 }
 
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }

@@ -6,7 +6,7 @@ import { MenuProvider } from "./MenuContext";
 
 import { CondominiosProvider } from "./CondominioContext";
 
-import { ClientesProvider } from "./ClientesContext";
+import { ChamadosProvider } from "./ChamadosContext";
 import { EstoqueProvider } from "./EstoqueContext";
 import { DemandasProvider } from "./DemandasContext";
 import { VisitasProvider } from "./VisitasContext";
@@ -21,7 +21,7 @@ export function AppProviders({ children }: AppProvidersProps) {
     <ThemeProvider>
       <AuthProvider>
         <MenuProvider>
-          <ClientesProvider>
+          <ChamadosProvider>
             <CondominiosProvider>
               <VisitasProvider>
                 <VistoriasProvider>
@@ -29,7 +29,7 @@ export function AppProviders({ children }: AppProvidersProps) {
                 </VistoriasProvider>
               </VisitasProvider>
             </CondominiosProvider>
-          </ClientesProvider>
+          </ChamadosProvider>
         </MenuProvider>
       </AuthProvider>
     </ThemeProvider>
