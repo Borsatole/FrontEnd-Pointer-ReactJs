@@ -6,9 +6,7 @@ import { useContext } from "react";
 const rotaApi = import.meta.env.VITE_API;
 import { Navigate, useNavigate } from "react-router-dom";
 
-
 export async function requisicaoGet(rota: string) {
-
   const token = localStorage.getItem("token");
 
   const config = {
@@ -19,12 +17,9 @@ export async function requisicaoGet(rota: string) {
   };
 
   try {
-
     const response = await axios.get(`${rotaApi}${rota}`, config);
     return response;
-
   } catch (error: any) {
-
     if (error.response.status === 401) {
       window.location.href = "/";
     }
@@ -37,14 +32,16 @@ export async function requisicaoGet(rota: string) {
   }
 }
 
-
-export async function requisicaoPost(rota: string, dados: Record<string, any> | FormData) {
+export async function requisicaoPost(
+  rota: string,
+  dados: Record<string, any> | FormData,
+) {
   const token = localStorage.getItem("token");
 
   let config = {
     headers: {
-      Authorization: `Bearer ${token}`
-    } as Record<string, string>
+      Authorization: `Bearer ${token}`,
+    } as Record<string, string>,
   };
 
   let payload: any;
@@ -59,9 +56,7 @@ export async function requisicaoPost(rota: string, dados: Record<string, any> | 
   try {
     const response = await axios.post(`${rotaApi}${rota}`, payload, config);
     return response;
-
   } catch (error: any) {
-
     Alerta("toast", "error", `${error.response.data.message}`);
 
     if (error.response.status === 401) {
@@ -74,19 +69,18 @@ export async function requisicaoPost(rota: string, dados: Record<string, any> | 
 
     return error.response;
   }
-
-  
-
-  
 }
 
-export async function requisicaoPostSemRedirect(rota: string, dados: Record<string, any> | FormData) {
+export async function requisicaoPostSemRedirect(
+  rota: string,
+  dados: Record<string, any> | FormData,
+) {
   const token = localStorage.getItem("token");
 
   let config = {
     headers: {
-      Authorization: `Bearer ${token}`
-    } as Record<string, string>
+      Authorization: `Bearer ${token}`,
+    } as Record<string, string>,
   };
 
   let payload: any;
@@ -107,14 +101,16 @@ export async function requisicaoPostSemRedirect(rota: string, dados: Record<stri
   }
 }
 
-
-export async function requisicaoPut(rota: string, dados: Record<string, any> | FormData) {
+export async function requisicaoPut(
+  rota: string,
+  dados: Record<string, any> | FormData,
+) {
   const token = localStorage.getItem("token");
 
   let config = {
     headers: {
-      Authorization: `Bearer ${token}`
-    } as Record<string, string>
+      Authorization: `Bearer ${token}`,
+    } as Record<string, string>,
   };
 
   let payload: any;
@@ -126,12 +122,10 @@ export async function requisicaoPut(rota: string, dados: Record<string, any> | F
     payload = JSON.stringify(dados);
   }
 
-  try{
+  try {
     const response = await axios.put(`${rotaApi}${rota}`, payload, config);
     return response;
-
-  }catch (error: any) {
-
+  } catch (error: any) {
     if (error.response.status === 401) {
       window.location.href = "/";
     }
@@ -142,9 +136,7 @@ export async function requisicaoPut(rota: string, dados: Record<string, any> | F
 
     return error.response;
   }
-
 }
-
 
 export async function requisicaoDelete(rota: string) {
   const token = localStorage.getItem("token");
@@ -158,8 +150,9 @@ export async function requisicaoDelete(rota: string) {
 
   try {
     const response = await axios.delete(`${rotaApi}${rota}`, config);
-    return response;  
-  }catch (error: any) {
+    return response;
+  } catch (error: any) {
+    console.log(error);
 
     if (error.response.status === 401) {
       window.location.href = "/";
@@ -171,5 +164,4 @@ export async function requisicaoDelete(rota: string) {
 
     return error.response;
   }
-  
 }

@@ -63,3 +63,9 @@ export interface Condominio {
   updated_at?: string;
 }
 
+export type ImagemApi = {
+  id: string;
+  arquivo: string;
+};
+
+export type ImagemPreview = File | ImagemApi;

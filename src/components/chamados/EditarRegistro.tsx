@@ -7,10 +7,11 @@ import { Button } from "@components/comum/button";
 import { getIcon } from "../icons";
 import { LetraMaiuscula } from "@src/services/funcoes-globais";
 import { Update } from "@src/services/crud2";
-import { useClientes } from "@src/context/ClientesContext";
-import { useVistorias } from "@src/context/VistoriasContext";
 import ListaVistoria from "./ListaVistoria";
-import { ItemDeVistoria } from "../tipos";
+import { ImagemPreview, ItemDeVistoria } from "../tipos";
+import { useChamados } from "@src/context/ChamadosContext";
+import PreviewImagens from "../ImageUploader/PreviewImagens";
+import Uploader from "../ImageUploader/Uploader";
 
 export default function ModalEditarRegistro2() {
   const {
@@ -20,29 +21,27 @@ export default function ModalEditarRegistro2() {
     setLoadingSpiner,
     selectedRegistro,
     setSelectedRegistro,
-  } = useVistorias();
+  } = useChamados();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(true);
 
-  const [itensDeVistoria, setItensDeVistoria] = useState<ItemDeVistoria[]>([]);
-
   // Campos controlados
+  const [titulo, setTitulo] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [imagens, setImagens] = useState<ImagemPreview[]>([]);
+  const [imageToUpload, setImageToUpload] = useState<File[]>([]);
 
   const registro = registros.find((p) => p.id === selectedRegistro?.id);
 
   // Preenche os campos quando abrir o modal
   useEffect(() => {
     if (!registro) return;
-
-    setItensDeVistoria(registro.itens_vistoriados || []);
-
+    setTitulo(registro.titulo || "");
+    setDescricao(registro.descricao || "");
+    setImagens(registro.imagens || []);
     setIsLoadingInit(false);
   }, [registro]);
-
-  useEffect(() => {
-    console.log(itensDeVistoria);
-  }, [itensDeVistoria]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,14 +51,16 @@ export default function ModalEditarRegistro2() {
 
     try {
       const payload = {
-        itens_vistoriados: itensDeVistoria,
+        titulo,
+        descricao,
+        imagens: imageToUpload || [],
       };
       console.log(payload);
       Update<any>({
         payload,
         registros,
         setRegistros,
-        endpoint: `/vistorias/${selectedRegistro.id}`,
+        endpoint: `/chamados/${selectedRegistro.id}`,
       });
 
       setSelectedRegistro(null);
@@ -87,12 +88,12 @@ export default function ModalEditarRegistro2() {
       <div className="flex flex-col p-4 border-b border-[var(--base-color)] mb-4">
         <div className="flex items-center gap-4">
           <div className="w-20 h-20 rounded-lg bg-[var(--base-color)] flex items-center justify-center text-[var(--corPrincipal)] shadow-inner">
-            {getIcon("vistorias", 48, "text-[var(--corPrincipal)]")}
+            {getIcon("chamados", 48, "text-[var(--corPrincipal)]")}
           </div>
 
           <div>
             <h2 className="text-xl font-semibold text-[var(--text-color)]">
-              {`Vistoria - ${registro?.id || "-"}`}
+              {`Chamado - ${registro?.id || "-"}`}
             </h2>
             <p className="text-sm text-[var(--text-color)]/70">
               Edite ou visualize sua vistora.
@@ -101,10 +102,31 @@ export default function ModalEditarRegistro2() {
         </div>
       </div>
 
-      <ListaVistoria
-        regItensCondominio={itensDeVistoria}
-        setRegItensCondominio={setItensDeVistoria}
-        preenchimentoAutomatico={false}
+      <FormGroup label="Título" id="titulo">
+        <Input
+          value={titulo || ""}
+          id="titulo"
+          onChange={(e) => setTitulo(e.target.value)}
+          className="bg-[var(--base-color)]"
+        />
+      </FormGroup>
+
+      <FormGroup label="Descrição" id="descricao">
+        <TextArea
+          value={descricao || ""}
+          id="descricao"
+          disabled={true}
+          className="bg-[var(--base-color)]"
+        />
+      </FormGroup>
+
+      {/* <PreviewImagens imagens={imagens || []} setImagens={setRegistros} /> */}
+      <Uploader
+        imagens={imagens || []}
+        setImagens={setImagens}
+        imageToUpload={imageToUpload}
+        setImageToUpload={setImageToUpload}
+        loading={isLoading}
       />
 
       <div className="w-full flex justify-center">

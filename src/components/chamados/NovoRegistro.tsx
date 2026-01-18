@@ -10,6 +10,7 @@ import { useChamados } from "@src/context/ChamadosContext";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Input, TextArea } from "@components/comum/input";
 import Uploader from "@components/ImageUploader/Uploader";
+import { ImagemPreview } from "@src/components/tipos";
 
 function ModalAdicionarRegistro() {
   const {
@@ -40,7 +41,7 @@ function ModalAdicionarRegistro() {
   const [chamadoId, setChamadoId] = useState<number | null>(null);
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
-  const [imagens, setImagens] = useState<File[]>([]);
+  const [imagens, setImagens] = useState<ImagemPreview[]>([]);
   const [imageToUpload, setImageToUpload] = useState<File[]>([]);
 
   const handleSubmit = async (e: React.FormEvent) => {

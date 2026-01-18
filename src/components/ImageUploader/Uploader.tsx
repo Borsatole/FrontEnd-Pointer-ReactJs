@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { FaCloudUploadAlt, FaImage } from "react-icons/fa";
 import { MdCloudUpload } from "react-icons/md";
@@ -8,12 +8,13 @@ import { Button } from "@src/components/comum/button";
 import { Input } from "@src/components/comum/input";
 import { TabItem, Tabs } from "flowbite-react";
 import { HiAdjustments, HiClipboardList, HiUserCircle } from "react-icons/hi";
-
+import { ImagemPreview } from "@src/components/tipos";
 import LoadingSpiner from "../loader/LoadingSpiner";
 
 interface UploaderProps {
-  imagens: File[];
-  setImagens: React.Dispatch<React.SetStateAction<File[]>>;
+  imagens: ImagemPreview[];
+  setImagens: React.Dispatch<React.SetStateAction<ImagemPreview[]>>;
+
   imageToUpload: File[];
   setImageToUpload: React.Dispatch<React.SetStateAction<File[]>>;
   loading: boolean;
@@ -26,18 +27,28 @@ function Uploader({
   setImageToUpload,
   loading,
 }: UploaderProps) {
+  const [temImagens, setTemImagens] = useState<boolean>(imagens?.length! > 0);
   return (
-    <LoadingSpiner loading={loading}>
+    <LoadingSpiner loading={loading || false}>
       <div className=" border border-[var(--base-color)] rounded-lg">
         <Tabs aria-label="Tabs with icons" variant="underline">
           {/* Imagens vindas do banco */}
-          <TabItem active title="Galeria" icon={FaImage}>
+          <TabItem
+            title="Galeria"
+            icon={FaImage}
+            disabled={!temImagens}
+            active={temImagens}
+          >
             <div className="flex flex-col gap-3 items-center justify-center h-[250px]">
-              <PreviewImagens imagens={imageToUpload} setImagens={setImagens} />
+              <PreviewImagens
+                imagens={imagens || []}
+                setImagens={setImagens || []}
+                endpoint={`chamados`}
+              />
             </div>
           </TabItem>
           {/* Upload de imagens */}
-          <TabItem title="Upload" icon={MdCloudUpload}>
+          <TabItem title="Upload" icon={MdCloudUpload} active={!temImagens}>
             <div className="flex flex-col gap-3  items-center  h-[250px]">
               <div className="w-full">
                 {/* Input escondido */}
@@ -80,8 +91,8 @@ function Uploader({
                 </div>
               </div>
               <PreviewImagens
-                imagens={imageToUpload}
-                setImagens={setImageToUpload}
+                imagens={imageToUpload || []}
+                setImagens={setImageToUpload || []}
               />
             </div>
           </TabItem>

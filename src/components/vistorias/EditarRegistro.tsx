@@ -7,7 +7,6 @@ import { Button } from "@components/comum/button";
 import { getIcon } from "../icons";
 import { LetraMaiuscula } from "@src/services/funcoes-globais";
 import { Update } from "@src/services/crud2";
-import { useClientes } from "@src/context/ClientesContext";
 import { useVistorias } from "@src/context/VistoriasContext";
 import ListaVistoria from "./ListaVistoria";
 import { ItemDeVistoria } from "../tipos";

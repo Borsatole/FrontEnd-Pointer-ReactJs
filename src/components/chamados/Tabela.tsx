@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 
-// REQUISICOES E CRUD
-import { requisicaoGet } from "@services/requisicoes";
-
 // LOADERS
 import LoadingSkeleton from "@components/loader/LoadingSkeleton";
 import LoadingSpiner from "@components/loader/LoadingSpiner";
@@ -24,7 +21,7 @@ import TabelaDinamica, {
 } from "@src/components/comum/TabelaDinamica";
 
 // MODAIS E FILTROS
-import ModalEditarRegistro from "@src/components/vistorias/EditarRegistro";
+import ModalEditarRegistro from "@src/components/chamados/EditarRegistro";
 import ModalAdicionarRegistro from "./NovoRegistro";
 
 import { FiltroCadastros } from "./FiltroRegistro";
@@ -80,11 +77,6 @@ function Tabela() {
       key: "titulo",
       label: "TITULO",
       render: (registro) => registro.titulo || "-",
-    },
-    {
-      key: "descricao",
-      label: "DESCRICAO",
-      render: (registro) => registro.descricao || "-",
     },
     {
       key: "condominio",
@@ -233,6 +225,7 @@ function BotaoNovoRegistro({ onClick }: { onClick: () => void }) {
       <Button onClick={onClick} className="mb-3">
         <p className="flex items-center gap-2">
           {getIcon("vistorias", 20)}
+          {/* <span>Novo Chamado</span> */}
           <span>Novo Chamado</span>
         </p>
       </Button>
