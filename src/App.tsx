@@ -6,7 +6,6 @@ import { AuthProvider } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Rotas from "./routes";
 import { MenuProvider } from "./context/MenuContext";
-import { ClientesProvider } from "./context/ClientesContext";
 import { AppProviders } from "./context/Providers";
 
 function App() {

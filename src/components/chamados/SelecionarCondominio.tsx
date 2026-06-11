@@ -11,10 +11,12 @@ import { Button } from "@src/components/comum/button";
 interface SelecionarCondominioProps {
   selectedCondominio: any;
   setSelectedCondominio: any;
+  setSelecionarDadosCompletos?: any;
 }
 function SelecionarCondominio({
   selectedCondominio,
   setSelectedCondominio,
+  setSelecionarDadosCompletos,
 }: SelecionarCondominioProps) {
   const [registros, setRegistros] = useState<any[]>([]);
   const [relistar, setRelistar] = useState(false);
@@ -36,7 +38,10 @@ function SelecionarCondominio({
               icon={getIcon("condominios", 25)}
               value={item.id}
               selectedValue={selectedCondominio}
-              onClick={setSelectedCondominio}
+              onClick={() => {
+                setSelectedCondominio(item.id);
+                setSelecionarDadosCompletos(item);
+              }}
               label={item.nome}
             />
           ))}

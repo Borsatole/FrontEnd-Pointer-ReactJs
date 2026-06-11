@@ -43,6 +43,7 @@ function ModalAdicionarRegistro() {
   const [descricao, setDescricao] = useState("");
   const [imagens, setImagens] = useState<ImagemPreview[]>([]);
   const [imageToUpload, setImageToUpload] = useState<File[]>([]);
+  const [progress, setProgress] = useState<number | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,10 +61,13 @@ function ModalAdicionarRegistro() {
     Create({
       payload: formData,
       endpoint: "/chamados",
-      antesDeExecutar: () => setLoadingSpiner(true),
+      setProgress,
+      // antesDeExecutar: () => setLoadingSpiner(true),
       depoisDeExecutar: () => {
         setAbrirModalNovoRegistro(false);
-        setLoadingSpiner(false);
+        // setLoadingSpiner(false);
+
+        setProgress(null);
         setRelistar(true);
       },
     });
@@ -111,7 +115,7 @@ function ModalAdicionarRegistro() {
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-auto">
       {/* {itensDeVistoria.length === 0 && <RegistroVazio />} */}
       <form onSubmit={handleSubmit}>
-        <FormGroup label="Titulo">
+        <FormGroup label="Titulo" id="titulo">
           <Input
             type="text"
             id="titulo"
@@ -121,7 +125,7 @@ function ModalAdicionarRegistro() {
           />
         </FormGroup>
 
-        <FormGroup label="Descricao">
+        <FormGroup label="Descricao" id="mensagem">
           <TextArea
             id="mensagem"
             label="Mensagem"
@@ -137,6 +141,8 @@ function ModalAdicionarRegistro() {
           setImagens={setImagens}
           imageToUpload={imageToUpload}
           setImageToUpload={setImageToUpload}
+          progress={progress}
+          // setRelistar={setRelistar}
           loading={false}
         />
 

@@ -69,12 +69,13 @@ export default function PaginaCondominio() {
           setRegistros(response.data.registro);
           setVisitas(response.data.registro.totalVisitas);
           setVistorias(response.data.registro.totalVistorias);
+          setChamados(response.data.registro.totalChamados);
         } else {
           setErro(response.data.message || "Erro ao carregar dados");
         }
       } catch (e) {
         if (isMounted) setErro("Erro na requisição");
-        console.log(e);
+        // console.log(e);
       } finally {
         setRelistar(false);
         setLoadingSpiner(false);
@@ -106,7 +107,7 @@ export default function PaginaCondominio() {
         setRelistar(true);
       }
     } catch (e) {
-      console.log(e);
+      // console.log(e);
     }
   }
 
@@ -175,7 +176,9 @@ export default function PaginaCondominio() {
                     cor="#ff840b"
                     corRodape="#bc6209"
                     icone={<FaHeadset className="text-5xl text-white" />}
-                    onClick={() => {}}
+                    onClick={() => {
+                      navigate(`/chamados/${id}`);
+                    }}
                   />
 
                   <CardOrders

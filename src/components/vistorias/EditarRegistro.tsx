@@ -39,9 +39,9 @@ export default function ModalEditarRegistro2() {
     setIsLoadingInit(false);
   }, [registro]);
 
-  useEffect(() => {
-    console.log(itensDeVistoria);
-  }, [itensDeVistoria]);
+  // useEffect(() => {
+  //   console.log(itensDeVistoria);
+  // }, [itensDeVistoria]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

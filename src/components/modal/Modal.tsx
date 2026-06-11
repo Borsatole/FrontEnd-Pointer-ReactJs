@@ -82,7 +82,7 @@ function Modal({ IsOpen, onClose, children, ...rest }: any) {
         }
       `}</style>
     </div>,
-    document.body
+    document.body,
   );
 }
 

@@ -17,6 +17,8 @@ interface Read {
   limitePorPagina?: number;
 
   setRegistros: React.Dispatch<React.SetStateAction<any[]>>;
+  setData?: React.Dispatch<React.SetStateAction<any>>;
+  setPaginacao?: React.Dispatch<React.SetStateAction<any>>;
   setTotalResultados?: React.Dispatch<React.SetStateAction<number>>;
   setTotalPaginas?: React.Dispatch<React.SetStateAction<number>>;
   setLoadingSpiner?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -29,6 +31,8 @@ export async function Read({
   queryFiltro = "",
   pagina,
   limitePorPagina,
+  setData,
+  setPaginacao,
   setRegistros,
   setTotalResultados,
   setTotalPaginas,
@@ -46,11 +50,12 @@ export async function Read({
   )
     .then((response) => {
       if (response?.data?.success) {
-        console.log(response.data);
+        setData?.(response.data);
+        // console.log("Read response data:", response.data);
         setRegistros(response.data.registros);
         setTotalResultados?.(response.data.paginacao.total);
         setTotalPaginas?.(response.data.paginacao.ultimaPagina);
-        
+        setPaginacao?.(response.data.paginacao);
       }
     })
     .finally(() => {
@@ -69,6 +74,7 @@ interface Create<T extends BaseRegistro> {
     depoisDeExecutar?: () => void;
     registros?: T[];
     setRegistros?: React.Dispatch<React.SetStateAction<T[]>>;
+    setProgress?: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 export function Create<T extends BaseRegistro>({
@@ -77,17 +83,21 @@ export function Create<T extends BaseRegistro>({
   depoisDeExecutar,
   registros,
   setRegistros,
+  setProgress,
   endpoint,
 }: Create<T>) {
+    
     function atualizarLista(novoRegistro: T) {
-      console.log("Atualizando a lista");
+      // console.log("Atualizando a lista");
     setRegistros?.((prev) => [...(prev ?? []), novoRegistro]);
     }
 
     if (!payload) return;
     antesDeExecutar?.();
 
-    requisicaoPost(endpoint, payload)
+    requisicaoPost(endpoint, payload, (percent: number) => {
+      setProgress?.(percent);
+    })
         .then((response) => {
         const msg = response?.data?.message ?? "Erro ao criar a requisição!";
 

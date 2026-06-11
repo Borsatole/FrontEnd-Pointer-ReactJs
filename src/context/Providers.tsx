@@ -11,6 +11,7 @@ import { EstoqueProvider } from "./EstoqueContext";
 import { DemandasProvider } from "./DemandasContext";
 import { VisitasProvider } from "./VisitasContext";
 import { VistoriasProvider } from "./VistoriasContext";
+import { TabelaProvider } from "@src/components/comum/Tabelas/TabelaContext";
 
 interface AppProvidersProps {
   children: ReactNode;
@@ -25,7 +26,9 @@ export function AppProviders({ children }: AppProvidersProps) {
             <CondominiosProvider>
               <VisitasProvider>
                 <VistoriasProvider>
-                  <DemandasProvider>{children}</DemandasProvider>
+                  <TabelaProvider>
+                    <DemandasProvider>{children}</DemandasProvider>
+                  </TabelaProvider>
                 </VistoriasProvider>
               </VisitasProvider>
             </CondominiosProvider>

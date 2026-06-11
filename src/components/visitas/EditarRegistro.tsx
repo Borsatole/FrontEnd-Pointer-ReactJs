@@ -4,20 +4,20 @@ import Modal from "@components/modal/Modal";
 import { Input, TextArea } from "@components/comum/input";
 import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
-import { Cliente, Endereco } from "@components/tipos";
 import { getIcon } from "../icons";
 import { LetraMaiuscula } from "@src/services/funcoes-globais";
 import { Update } from "@src/services/crud2";
-import { useClientes } from "@src/context/ClientesContext";
-import Enderecos2 from "./enderecos/Enderecos2";
+import { useVisitas } from "@src/context/VisitasContext";
 
 export default function ModalEditarRegistro2() {
   const {
-    registros, setRegistros,
+    registros,
+    setRegistros,
     setRelistar,
     setLoadingSpiner,
-    selectedCliente, setSelectedCliente
-  } = useClientes();
+    selectedRegistro,
+    setSelectedRegistro,
+  } = useVisitas();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(true);
@@ -73,7 +73,6 @@ export default function ModalEditarRegistro2() {
       });
 
       setSelectedCliente(null);
-
     } finally {
       setIsLoading(false);
     }
@@ -97,7 +96,6 @@ export default function ModalEditarRegistro2() {
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-auto">
       <div className="flex flex-col p-4 border-b border-[var(--base-color)] mb-4">
         <div className="flex items-center gap-4">
-
           <div className="w-20 h-20 rounded-lg bg-[var(--base-color)] flex items-center justify-center text-[var(--corPrincipal)] shadow-inner">
             {getIcon("clientes", 48, "text-[var(--corPrincipal)]")}
           </div>
@@ -113,8 +111,10 @@ export default function ModalEditarRegistro2() {
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pb-6">
-
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 px-4 pb-6"
+      >
         <FormGroup label="Nome" id="nome">
           <Input
             id="nome"
@@ -181,7 +181,9 @@ export default function ModalEditarRegistro2() {
             id="observacao"
             className="font-bold uppercase text-[var(--text-color)]"
             value={observacao}
-            onChange={(e : React.ChangeEvent<HTMLTextAreaElement>) => setObservacao(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setObservacao(e.target.value)
+            }
             disabled={isLoading}
           />
         </FormGroup>
@@ -196,7 +198,6 @@ export default function ModalEditarRegistro2() {
             Salvar Cliente
           </Button>
         </div>
-
       </form>
     </Modal>
   );

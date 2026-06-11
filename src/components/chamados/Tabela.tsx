@@ -29,11 +29,11 @@ import { Delete, Read } from "@src/services/crud2";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { FaUser } from "react-icons/fa";
 import { formatarDataHumana } from "@src/utils/formatarDataHumana";
-import { useVistorias } from "@src/context/VistoriasContext";
 import { useParams } from "react-router-dom";
 import { useChamados } from "@src/context/ChamadosContext";
 
 function Tabela() {
+  const { id } = useParams();
   const [loading, setLoading] = useState(false);
 
   // Contexto que controla a tabela.tsx
@@ -74,6 +74,22 @@ function Tabela() {
       render: (registro) => registro.id || "-",
     },
     {
+      key: "data_criacao",
+      label: "DATA ABERTURA",
+      render: (registro) =>
+        registro.created_at ? formatarDataHumana(registro.created_at) : "-",
+    },
+    {
+      key: "situacao",
+      label: "SITUACAO",
+      render: () => (
+        <span className="w-full text-center flex items-center gap-2 justify-center font-medium text-primary border-1 border-[var(--corPrincipal)] text-[var(--corPrincipal)] px-2 py-1 rounded">
+          Aberto
+        </span>
+      ),
+    },
+
+    {
       key: "titulo",
       label: "TITULO",
       render: (registro) => registro.titulo || "-",
@@ -83,6 +99,7 @@ function Tabela() {
       label: "CONDOMINIO",
       render: (registro) => registro.condominio_nome,
     },
+
     {
       key: "responsavel",
       label: "RESPONSAVEL",
@@ -141,10 +158,14 @@ function Tabela() {
     </div>
   );
 
+  const filtroCondicional = id
+    ? `id_condominio=${id}&${queryFiltro}`
+    : queryFiltro;
+
   useEffect(() => {
     Read({
       endpoint: `/chamados`,
-      queryFiltro,
+      queryFiltro: filtroCondicional,
       pagina,
       limitePorPagina,
       setRegistros,
@@ -152,16 +173,16 @@ function Tabela() {
       setTotalPaginas,
       setLoadingSpiner,
       setRelistar,
-      setLoading: () => {},
+      setLoading,
     });
-  }, [pagina, limitePorPagina, queryFiltro]);
+  }, [pagina, limitePorPagina, queryFiltro, id]);
 
   useEffect(() => {
     if (!relistar) return;
 
     Read({
       endpoint: `/chamados`,
-      queryFiltro,
+      queryFiltro: filtroCondicional,
       pagina,
       limitePorPagina,
       setRegistros,
@@ -169,11 +190,11 @@ function Tabela() {
       setTotalPaginas,
       setLoadingSpiner,
       setRelistar,
-      setLoading: () => {},
+      setLoading,
     });
   }, [relistar]);
 
-  if (loading) return <LoadingSkeleton />;
+  // if (loading) return <LoadingSkeleton />;
   return (
     <>
       <BotaoNovoRegistro onClick={() => setAbrirModalNovoRegistro(true)} />

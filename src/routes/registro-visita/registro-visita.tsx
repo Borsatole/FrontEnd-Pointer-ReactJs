@@ -10,70 +10,74 @@ import OpcoesVistias from "./opcoesVisita";
 export default function Dashboard() {
   const [isOpen, setOpen] = useState(false);
   const [abrirModalOpcoes, setAbrirModalOpcoes] = useState(false);
-  const [scanStatus, setScanStatus] = useState<"idle" | "scanning" | "success">("idle");
+  const [scanStatus, setScanStatus] = useState<"idle" | "scanning" | "success">(
+    "idle",
+  );
   const [scannedData, setScannedData] = useState("");
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const scannerRef = useRef<QrScanner | null>(null);
 
-  const MODO_TESTE = true;
-  const CONDOMINIO_TESTE = "1";
+  const MODO_TESTE = false;
+  const CONDOMINIO_TESTE = "7";
 
   const onScanSuccess = (valor: string) => {
-  setScannedData(valor);
-  setScanStatus("success");
+    setScannedData(valor);
+    setScanStatus("success");
 
-  setTimeout(() => {
-    setOpen(false);
-    setScanStatus("idle");
-    setAbrirModalOpcoes(true);
-  }, 1000);
+    setTimeout(() => {
+      setOpen(false);
+      setScanStatus("idle");
+      setAbrirModalOpcoes(true);
+    }, 1000);
   };
-
 
   useEffect(() => {
-  if (MODO_TESTE && isOpen) {
-    onScanSuccess(CONDOMINIO_TESTE);
-    return;
-  }
-
-  // 👉 Produção (scanner real)
-  if (!isOpen || !videoRef.current) return;
-
-  
-
-  setScanStatus("scanning");
-
-  scannerRef.current = new QrScanner(
-    videoRef.current,
-    (result) => onScanSuccess(result.data),
-    {
-      highlightScanRegion: true,
-      highlightCodeOutline: true,
+    if (MODO_TESTE && isOpen) {
+      onScanSuccess(CONDOMINIO_TESTE);
+      return;
     }
-  );
 
-  scannerRef.current.start();
+    // 👉 Produção (scanner real)
+    if (!isOpen || !videoRef.current) return;
 
-  return () => {
-    scannerRef.current?.stop();
-    scannerRef.current?.destroy();
-    scannerRef.current = null;
-  };
+    setScanStatus("scanning");
+
+    scannerRef.current = new QrScanner(
+      videoRef.current,
+      (result) => onScanSuccess(result.data),
+      {
+        highlightScanRegion: true,
+        highlightCodeOutline: true,
+      },
+    );
+
+    scannerRef.current.start();
+
+    return () => {
+      scannerRef.current?.stop();
+      scannerRef.current?.destroy();
+      scannerRef.current = null;
+    };
   }, [isOpen]);
-
 
   const handleClose = () => {
     setOpen(false);
     setScanStatus("idle");
     setScannedData("");
-    
   };
 
   return (
     <ContainerSecundario>
       <TituloPagina>Registro de Visita</TituloPagina>
 
-      <Button onClick={() => {setOpen(true); setAbrirModalOpcoes(false);}}>Abrir QR Code</Button>
+      <Button
+        onClick={() => {
+          setOpen(true);
+          setAbrirModalOpcoes(false);
+        }}
+      >
+        Abrir QR Code
+      </Button>
 
       {isOpen && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
@@ -97,9 +101,9 @@ export default function Dashboard() {
                     <p className="text-white text-xl font-bold mb-2">
                       QR Code Lido!
                     </p>
-                    <p className="text-white/70 text-sm px-4 break-all">
+                    {/* <p className="text-white/70 text-sm px-4 break-all">
                       {scannedData}
-                    </p>
+                    </p> */}
                   </div>
                 </div>
               ) : (
@@ -111,21 +115,21 @@ export default function Dashboard() {
                     muted
                     playsInline
                   />
-                  
+
                   {/* Overlay de Scanner */}
                   <div className="absolute inset-0 pointer-events-none">
                     {/* Escurecimento das bordas */}
                     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40"></div>
-                    
+
                     {/* Frame de Scan - Cantos */}
                     <div className="absolute top-8 left-8 w-16 h-16 border-t-4 border-l-4 border-[var(--corPrincipal)] rounded-tl-2xl animate-pulse"></div>
                     <div className="absolute top-8 right-8 w-16 h-16 border-t-4 border-r-4 border-[var(--corPrincipal)] rounded-tr-2xl animate-pulse"></div>
                     <div className="absolute bottom-8 left-8 w-16 h-16 border-b-4 border-l-4 border-[var(--corPrincipal)] rounded-bl-2xl animate-pulse"></div>
                     <div className="absolute bottom-8 right-8 w-16 h-16 border-b-4 border-r-4 border-[var(--corPrincipal)] rounded-br-2xl animate-pulse"></div>
-                    
+
                     {/* Linha de Varredura Animada */}
                     <div className="absolute inset-x-8 h-0.5 bg-gradient-to-r from-transparent border-[var(--corPrincipal)] to-transparent animate-scan"></div>
-                    
+
                     {/* Grid de Referência Sutil */}
                     <div className="absolute inset-8 border-2 border-dashed border-white/20 rounded-2xl"></div>
                   </div>
@@ -149,16 +153,11 @@ export default function Dashboard() {
       )}
 
       {abrirModalOpcoes && (
-        <OpcoesVistias 
-          codigoLido={scannedData} 
-          setAbrirModalOpcoes={setAbrirModalOpcoes} 
+        <OpcoesVistias
+          codigoLido={scannedData}
+          setAbrirModalOpcoes={setAbrirModalOpcoes}
         />
-        
       )}
-
-
-
-      
     </ContainerSecundario>
   );
 }

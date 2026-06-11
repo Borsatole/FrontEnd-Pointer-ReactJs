@@ -9,12 +9,14 @@ interface PreviewImagensProps {
   endpoint?: string;
   imagens: any[];
   setImagens: React.Dispatch<React.SetStateAction<any[]>>;
+  setRelistar?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function PreviewImagens({
   endpoint,
   imagens,
   setImagens,
+  setRelistar,
 }: PreviewImagensProps) {
   const rotaApi = import.meta.env.VITE_API;
   const [imagemSelecionada, setImagemSelecionada] =
@@ -24,7 +26,7 @@ function PreviewImagens({
 
   return (
     <div
-      className="p-2 h-[320px] w-full overflow-y-scroll"
+      className="p-2 w-full overflow-y-scroll max-h-[300px]"
       style={{
         scrollbarColor: "var(--corPrincipal) var(--base-color)",
         scrollbarWidth: "thin",
@@ -42,6 +44,7 @@ function PreviewImagens({
               file={file}
               setImageToUpload={setImagens}
               endpoint={endpoint}
+              setRelistar={setRelistar}
             />
             {/* Imagem */}
             <Imagem file={file} index={index} endpoint={`${rotaApi}/upload`} />
@@ -68,6 +71,7 @@ interface ButtonDeleteProps {
   file: ImagemPreview;
   setImageToUpload: React.Dispatch<React.SetStateAction<ImagemPreview[]>>;
   endpoint?: string;
+  setRelistar?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ButtonDelete({
@@ -75,6 +79,7 @@ export function ButtonDelete({
   file,
   setImageToUpload,
   endpoint,
+  setRelistar,
 }: ButtonDeleteProps) {
   function isImagemApi(file: ImagemPreview): file is ImagemApi {
     return !(file instanceof File);
@@ -88,15 +93,15 @@ export function ButtonDelete({
     if (!isImagemApi(file)) return;
     if (!endpoint) return;
 
-    try {
-      setImageToUpload((prev) => prev.filter((_, i) => i !== index));
-      // aqui precisa deletar do backend
-      // precisa ajustar o upload inteiro
-      await requisicaoDelete(`/upload/${file.id}`);
-    } catch (error) {
-      console.error("Erro ao remover imagem", error);
-      Alerta("toast", "error", "Erro ao remover imagem");
-    }
+    setImageToUpload((prev) => prev.filter((_, i) => i !== index));
+
+    const response = await requisicaoDelete(
+      `/chamados/imagem/delete/${file.arquivo}`,
+    );
+
+    if (response.status !== 200) return;
+    setRelistar?.(true);
+    Alerta("toast", "success", "Imagem removida com sucesso.");
   }
 
   return (

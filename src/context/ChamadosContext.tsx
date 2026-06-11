@@ -23,12 +23,12 @@ interface ChamadosContextType {
 }
 
 const ChamadosContext = createContext<ChamadosContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export function ChamadosProvider({ children }: { children: ReactNode }) {
   const [registros, setRegistros] = useState<any[]>([]);
-  const [relistar, setRelistar] = useState(true);
+  const [relistar, setRelistar] = useState(false);
   const [loadingSpiner, setLoadingSpiner] = useState(false);
   const [selectedRegistro, setSelectedRegistro] = useState<any | null>(null);
   const [abrirModalNovoRegistro, setAbrirModalNovoRegistro] = useState(false);

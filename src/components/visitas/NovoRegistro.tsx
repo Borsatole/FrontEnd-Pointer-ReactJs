@@ -8,7 +8,7 @@ import { SelectModificado } from "@src/components/comum/select";
 import { getIcon } from "../icons";
 import { LetraMaiuscula } from "@services/funcoes-globais";
 import { Create } from "@src/services/crud2";
-import { useClientes } from "@src/context/ClientesContext";
+import { useVisitas } from "@src/context/VisitasContext";
 
 function ModalAdicionarRegistro() {
   const {
@@ -16,11 +16,11 @@ function ModalAdicionarRegistro() {
     setRegistros,
     setRelistar,
     setLoadingSpiner,
-    selectedCliente,
-    setSelectedCliente,
+    selectedRegistro,
+    setSelectedRegistro,
     abrirModalNovoRegistro,
     setAbrirModalNovoRegistro,
-  } = useClientes();
+  } = useVisitas();
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingInit, setIsLoadingInit] = useState(false);
@@ -33,66 +33,14 @@ function ModalAdicionarRegistro() {
   const [celular, setCelular] = useState("");
   const [observacao, setObservacao] = useState("");
 
-  // estado do endereço
-  const [endereco, setEndereco] = useState<Endereco>({
-    cep: "",
-    logradouro: "",
-    bairro: "",
-    cidade: "",
-    estado: "",
-    numero: "",
-    complemento: "",
-  });
-
-  // busca de CEP
-  async function buscaCep(cep: string) {
-    try {
-      setIsLoading(true);
-      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-
-      if (!response.ok) {
-        throw new Error("Erro ao buscar o CEP");
-      }
-
-      const data = await response.json();
-      // console.log(data);
-
-      if (data.erro) {
-        // console.log("CEP não encontrado");
-        return;
-      }
-
-      setEndereco((prev) => ({
-        ...prev,
-        bairro: data.bairro || "",
-        logradouro: data.logradouro || "",
-        complemento: data.complemento || "",
-        cidade: data.localidade || "",
-        estado: data.uf || "",
-      }));
-    } catch (error) {
-      console.error("Erro ao buscar o CEP:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    const apenasNumeros = endereco.cep.replace(/\D/g, "");
-    if (apenasNumeros.length === 8) {
-      buscaCep(apenasNumeros);
-    }
-  }, [endereco.cep]);
-
   // coleta dos dados para envio
-  const coletarDadosFormulario = (): Cliente => ({
+  const coletarDadosFormulario = (): any => ({
     nome: LetraMaiuscula(nome),
     razao_social: LetraMaiuscula(razaoSocial),
     email: LetraMaiuscula(email),
     telefone,
     celular,
     observacao: LetraMaiuscula(observacao),
-    enderecos: [endereco],
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -234,8 +182,8 @@ function ModalAdicionarRegistro() {
             id="cep"
             className="uppercase"
             type="text"
-            value={endereco.cep}
-            onChange={(e) => setEndereco({ ...endereco, cep: e.target.value })}
+            // value={endereco.cep}
+            onChange={(e) => console.log(e.target.value)}
             disabled={isLoading}
             placeholder="Digite o CEP para buscar o endereço"
           />
@@ -246,10 +194,6 @@ function ModalAdicionarRegistro() {
             id="bairro"
             className="uppercase"
             type="text"
-            value={endereco.bairro}
-            onChange={(e) =>
-              setEndereco({ ...endereco, bairro: e.target.value })
-            }
             disabled={isLoading}
             placeholder="Bairro"
           />
@@ -260,10 +204,6 @@ function ModalAdicionarRegistro() {
             id="logradouro"
             className="uppercase"
             type="text"
-            value={endereco.logradouro}
-            onChange={(e) =>
-              setEndereco({ ...endereco, logradouro: e.target.value })
-            }
             disabled={isLoading}
             placeholder="Logradouro"
           />
@@ -274,10 +214,6 @@ function ModalAdicionarRegistro() {
             id="complemento"
             className="uppercase"
             type="text"
-            value={endereco.complemento}
-            onChange={(e) =>
-              setEndereco({ ...endereco, complemento: e.target.value })
-            }
             disabled={isLoading}
             placeholder="Complemento"
           />
@@ -288,10 +224,6 @@ function ModalAdicionarRegistro() {
             id="numero"
             className="uppercase"
             type="text"
-            value={endereco.numero}
-            onChange={(e) =>
-              setEndereco({ ...endereco, numero: e.target.value })
-            }
             disabled={isLoading}
             placeholder="Número"
           />
@@ -302,54 +234,9 @@ function ModalAdicionarRegistro() {
             id="cidade"
             className="uppercase"
             type="text"
-            value={endereco.cidade}
-            onChange={(e) =>
-              setEndereco({ ...endereco, cidade: e.target.value })
-            }
             disabled={isLoading}
             placeholder="Cidade"
           />
-        </FormGroup>
-
-        <FormGroup label="Estado" id="estado">
-          <SelectModificado
-            id="estado"
-            disabled={isLoading}
-            value={endereco.estado}
-            onChange={(e) =>
-              setEndereco({ ...endereco, estado: e.target.value })
-            }
-            className="uppercase"
-          >
-            <option value="">SELECIONE O ESTADO</option>
-            <option value="AC">ACRE (AC)</option>
-            <option value="AL">ALAGOAS (AL)</option>
-            <option value="AP">AMAPÁ (AP)</option>
-            <option value="AM">AMAZONAS (AM)</option>
-            <option value="BA">BAHIA (BA)</option>
-            <option value="CE">CEARÁ (CE)</option>
-            <option value="DF">DISTRITO FEDERAL (DF)</option>
-            <option value="ES">ESPÍRITO SANTO (ES)</option>
-            <option value="GO">GOIÁS (GO)</option>
-            <option value="MA">MARANHÃO (MA)</option>
-            <option value="MT">MATO GROSSO (MT)</option>
-            <option value="MS">MATO GROSSO DO SUL (MS)</option>
-            <option value="MG">MINAS GERAIS (MG)</option>
-            <option value="PA">PARÁ (PA)</option>
-            <option value="PB">PARAÍBA (PB)</option>
-            <option value="PR">PARANÁ (PR)</option>
-            <option value="PE">PERNAMBUCO (PE)</option>
-            <option value="PI">PIAUÍ (PI)</option>
-            <option value="RJ">RIO DE JANEIRO (RJ)</option>
-            <option value="RN">RIO GRANDE DO NORTE (RN)</option>
-            <option value="RS">RIO GRANDE DO SUL (RS)</option>
-            <option value="RO">RONDÔNIA (RO)</option>
-            <option value="RR">RORAIMA (RR)</option>
-            <option value="SC">SANTA CATARINA (SC)</option>
-            <option value="SP">SÃO PAULO (SP)</option>
-            <option value="SE">SERGIPE (SE)</option>
-            <option value="TO">TOCANTINS (TO)</option>
-          </SelectModificado>
         </FormGroup>
 
         <FormGroup label="Observação" id="observacao" className="md:col-span-2">

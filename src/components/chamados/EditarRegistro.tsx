@@ -6,7 +6,7 @@ import { FormGroup } from "@components/comum/FormGroup";
 import { Button } from "@components/comum/button";
 import { getIcon } from "../icons";
 import { LetraMaiuscula } from "@src/services/funcoes-globais";
-import { Update } from "@src/services/crud2";
+import { Create, Update } from "@src/services/crud2";
 import ListaVistoria from "./ListaVistoria";
 import { ImagemPreview, ItemDeVistoria } from "../tipos";
 import { useChamados } from "@src/context/ChamadosContext";
@@ -24,54 +24,62 @@ export default function ModalEditarRegistro2() {
   } = useChamados();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingInit, setIsLoadingInit] = useState(true);
+  const [isLoadingInit, setIsLoadingInit] = useState(false);
 
   // Campos controlados
   const [titulo, setTitulo] = useState("");
   const [descricao, setDescricao] = useState("");
   const [imagens, setImagens] = useState<ImagemPreview[]>([]);
   const [imageToUpload, setImageToUpload] = useState<File[]>([]);
+  const [progress, setProgress] = useState<number | null>(null);
 
   const registro = registros.find((p) => p.id === selectedRegistro?.id);
 
   // Preenche os campos quando abrir o modal
   useEffect(() => {
-    if (!registro) return;
+    // if (!registro) return;
     setTitulo(registro.titulo || "");
     setDescricao(registro.descricao || "");
     setImagens(registro.imagens || []);
-    setIsLoadingInit(false);
+    // setIsLoadingInit(false);
   }, [registro]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedRegistro?.id) return;
+    if (!registro) return;
 
     setIsLoading(true);
+    const formData = new FormData();
+    formData.append("titulo", titulo);
+    formData.append("descricao", descricao);
+
+    imageToUpload.forEach((file) => {
+      formData.append("imagens[]", file);
+    });
 
     try {
-      const payload = {
-        titulo,
-        descricao,
-        imagens: imageToUpload || [],
-      };
-      console.log(payload);
-      Update<any>({
-        payload,
-        registros,
-        setRegistros,
+      Create({
+        payload: formData,
         endpoint: `/chamados/${selectedRegistro.id}`,
+        setProgress,
+        // antesDeExecutar: () => setLoadingSpiner(true),
+        depoisDeExecutar: () => {
+          // setLoadingSpiner(false);
+          setProgress(null);
+          setRelistar(true);
+          fecharModal();
+        },
       });
-
-      setSelectedRegistro(null);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const fecharModal = () => setSelectedRegistro(null);
+  const fecharModal = () => {
+    setSelectedRegistro(null);
+  };
 
-  if (!selectedRegistro) return null;
+  if (!registro) return null;
 
   if (isLoadingInit) {
     return (
@@ -115,17 +123,20 @@ export default function ModalEditarRegistro2() {
         <TextArea
           value={descricao || ""}
           id="descricao"
-          disabled={true}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setDescricao(e.target.value)
+          }
           className="bg-[var(--base-color)]"
         />
       </FormGroup>
 
-      {/* <PreviewImagens imagens={imagens || []} setImagens={setRegistros} /> */}
       <Uploader
         imagens={imagens || []}
         setImagens={setImagens}
         imageToUpload={imageToUpload}
         setImageToUpload={setImageToUpload}
+        setRelistar={setRelistar}
+        progress={progress}
         loading={isLoading}
       />
 

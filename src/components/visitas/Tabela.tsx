@@ -30,7 +30,7 @@ import TabelaDinamica, {
 } from "@src/components/comum/TabelaDinamica";
 
 // MODAIS E FILTROS
-import ModalEditarRegistro from "@src/components/clientes/EditarRegistro";
+// import ModalEditarRegistro from "@src/components/visitas/EditarRegistro";
 import ModalAdicionarRegistro from "./NovoRegistro";
 
 import { FiltroCadastros } from "./FiltroRegistro";
@@ -40,8 +40,7 @@ import { useVisitas } from "@src/context/VisitasContext";
 import { useParams } from "react-router-dom";
 
 import { FaUser } from "react-icons/fa";
-import Modal from "@src/components/modal/Modal";
-import { TextArea } from "../comum/input";
+
 import ModalMensagem from "./ModalMensagem";
 
 function Tabela() {
@@ -50,7 +49,7 @@ function Tabela() {
 
   const [abrirModalMensagem, setAbrirModalMensagem] = useState(false);
   const [mensagemSelecionada, setMensagemSelecionada] = useState<string | null>(
-    null
+    null,
   );
 
   dayjs.locale("pt-br");
@@ -226,7 +225,7 @@ function Tabela() {
       )}
 
       {/* Modais */}
-      {abrirModalEditarRegistro && selectedRegistro && <ModalEditarRegistro />}
+      {/* {abrirModalEditarRegistro && selectedRegistro && <ModalEditarRegistro />} */}
       {abrirModalNovoRegistro && <ModalAdicionarRegistro />}
 
       {abrirModalMensagem && (
@@ -280,7 +279,7 @@ function buscarDados({
 }) {
   setLoadingSpiner(true);
   requisicaoGet(
-    `${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`
+    `${endpoint}?${queryFiltro}&pagina=${pagina}&limite=${limitePorPagina}`,
   ).then((response) => {
     if (response?.data.success) {
       // console.log(response.data);

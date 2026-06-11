@@ -18,7 +18,9 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
     data_maxima: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
     setFiltros((prev) => ({ ...prev, [name]: value }));
   };
@@ -32,15 +34,15 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
   };
 
   const handleLimpar = () => {
-    setFiltros({ 
-      data_minima: "", 
+    setFiltros({
+      data_minima: "",
       data_maxima: "",
     });
     onFiltrar("");
   };
 
   const contarFiltrosAtivos = () => {
-    return Object.values(filtros).filter(value => value.trim() !== "").length;
+    return Object.values(filtros).filter((value) => value.trim() !== "").length;
   };
 
   const filtrosAtivos = contarFiltrosAtivos();
@@ -48,7 +50,7 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
   return (
     <div className="bg-[var(--base-variant)] rounded-2xl shadow-lg border border-[var(--base-color)] overflow-hidden mb-6 transition-all duration-300">
       {/* Header do Filtro */}
-      <div 
+      <div
         className="flex items-center justify-between p-4 cursor-pointer hover:bg-[var(--base-color)]/30 transition-colors duration-200"
         onClick={() => setExpandido(!expandido)}
       >
@@ -57,22 +59,25 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
             <FaFilter className="text-lg" />
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-[var(--text-color)]">Filtros</h3>
+            <h3 className="text-lg font-semibold text-[var(--text-color)]">
+              Filtros
+            </h3>
             {filtrosAtivos > 0 && (
               <span className="text-xs text-[var(--text-color)]/60">
-                {filtrosAtivos} filtro{filtrosAtivos > 1 ? 's' : ''} ativo{filtrosAtivos > 1 ? 's' : ''}
+                {filtrosAtivos} filtro{filtrosAtivos > 1 ? "s" : ""} ativo
+                {filtrosAtivos > 1 ? "s" : ""}
               </span>
             )}
           </div>
         </div>
-        
+
         <div className="flex items-center gap-3">
           {filtrosAtivos > 0 && (
             <span className="px-3 py-1 bg-[var(--corPrincipal)] text-white text-xs font-medium rounded-full">
               {filtrosAtivos}
             </span>
           )}
-          <button 
+          <button
             type="button"
             className="p-2 rounded-lg hover:bg-[var(--base-color)] transition-colors duration-200"
           >
@@ -86,55 +91,52 @@ export function FiltroCadastros({ onFiltrar }: FiltroProps) {
       </div>
 
       {/* Conteúdo do Filtro */}
-      <div 
+      <div
         className={`transition-all duration-300 ease-in-out ${
-          expandido ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'
+          expandido
+            ? "max-h-[1000px] opacity-100"
+            : "max-h-0 opacity-0 overflow-hidden"
         }`}
       >
         <form className="p-6 pt-2" onSubmit={(e) => e.preventDefault()}>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
-            
-
-            <FormGroup id="data_minima" label="ENTRADA">
-              <Input 
-                type="date" 
-                id="data_minima" 
-                name="data_minima" 
-                value={filtros.data_minima} 
+            <FormGroup id="data_minima" label="DATA MINIMA">
+              <Input
+                type="date"
+                id="data_minima"
+                name="data_minima"
+                value={filtros.data_minima}
                 onChange={handleChange}
                 className="w-full"
               />
             </FormGroup>
 
-            <FormGroup id="data_maxima" label="SAIDA">
-              <Input 
-                type="date" 
-                id="data_maxima" 
-                name="data_maxima" 
-                value={filtros.data_maxima} 
+            <FormGroup id="data_maxima" label="DATA MAXIMA">
+              <Input
+                type="date"
+                id="data_maxima"
+                name="data_maxima"
+                value={filtros.data_maxima}
                 onChange={handleChange}
                 className="w-full"
               />
             </FormGroup>
-
-            
-
           </div>
 
           {/* Botões de Ação */}
           <div className="mt-6 pt-4 border-t border-[var(--base-color)] flex gap-3 justify-end">
-            <button 
+            <button
               type="button"
-              onClick={handleLimpar} 
+              onClick={handleLimpar}
               className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--base-color)] hover:bg-[var(--base-color)]/70 text-[var(--text-color)] font-medium transition-all duration-200 transform hover:scale-105"
             >
               <FaEraser className="text-sm" />
               Limpar
             </button>
-            
-            <button 
+
+            <button
               type="submit"
-              onClick={handleFiltrar} 
+              onClick={handleFiltrar}
               className="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[var(--corPrincipal)] hover:brightness-110 text-white font-medium transition-all duration-200 transform hover:scale-105 shadow-lg"
             >
               <FaFilter className="text-sm" />

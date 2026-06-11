@@ -5,6 +5,9 @@ import { Alert } from "flowbite-react";
 import { useContext } from "react";
 const rotaApi = import.meta.env.VITE_API;
 import { Navigate, useNavigate } from "react-router-dom";
+import { AxiosProgressEvent } from "axios";
+
+type UploadProgress = (percent: number) => void;
 
 export async function requisicaoGet(rota: string) {
   const token = localStorage.getItem("token");
@@ -35,40 +38,30 @@ export async function requisicaoGet(rota: string) {
 export async function requisicaoPost(
   rota: string,
   dados: Record<string, any> | FormData,
+  onProgress?: UploadProgress,
 ) {
   const token = localStorage.getItem("token");
 
-  let config = {
+  const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     } as Record<string, string>,
+
+    onUploadProgress: (event: AxiosProgressEvent) => {
+      if (!event.total || !onProgress) return;
+
+      const percent = Math.round((event.loaded * 100) / event.total);
+      onProgress(percent);
+    },
   };
 
-  let payload: any;
+  const payload = dados instanceof FormData ? dados : JSON.stringify(dados);
 
-  if (dados instanceof FormData) {
-    payload = dados;
-  } else {
+  if (!(dados instanceof FormData)) {
     config.headers["Content-Type"] = "application/json";
-    payload = JSON.stringify(dados);
   }
 
-  try {
-    const response = await axios.post(`${rotaApi}${rota}`, payload, config);
-    return response;
-  } catch (error: any) {
-    Alerta("toast", "error", `${error.response.data.message}`);
-
-    if (error.response.status === 401) {
-      window.location.href = "/";
-    }
-
-    if (error.response.status === 403) {
-      Alerta("toast", "error", `${error.response.data.message}`);
-    }
-
-    return error.response;
-  }
+  return axios.post(`${rotaApi}${rota}`, payload, config);
 }
 
 export async function requisicaoPostSemRedirect(
@@ -152,7 +145,7 @@ export async function requisicaoDelete(rota: string) {
     const response = await axios.delete(`${rotaApi}${rota}`, config);
     return response;
   } catch (error: any) {
-    console.log(error);
+    // console.log(error);
 
     if (error.response.status === 401) {
       window.location.href = "/";

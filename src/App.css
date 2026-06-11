@@ -20,8 +20,8 @@
 
   /* menu */
   --fundo-logo: #04592e1d;
-  --sidebarcolor: #040c31;
-  --sidebarsecondarycolor: #020a3d;
+  --sidebarcolor: #043031;
+  --sidebarsecondarycolor: #000;
   --sidebartext-color: #fff;
 
   /* menu - hovers */
@@ -47,8 +47,8 @@
   --base-variant: #050c2d;
 
   /* menu */
-  --sidebarcolor: #040c31;
-  --sidebarsecondarycolor: #020a3d;
+  --sidebarcolor: #050c2d;
+  --sidebarsecondarycolor: #000;
   --sidebartext-color: #fff;
 
   /* menu - hovers */
@@ -63,6 +63,7 @@
   /* Fundo Modal */
   --fundo-modal: var(--base-color);
 }
+
 
 
 .scrollbar-hide::-webkit-scrollbar {
@@ -108,4 +109,37 @@ body {
   100% {
     background-position: center top;
   }
+}
+
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--corPrincipal) transparent;
+}
+
+/* Chrome, Edge, Opera e Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: var(--corPrincipal);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--corPrincipalHover);
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }

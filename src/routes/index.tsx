@@ -29,15 +29,26 @@ const PaginaCondominio = lazy(() => import("./condominios/PaginaCondominio"));
 const PaginaVisitas = lazy(() => import("./condominios/PaginaVisitas"));
 const PaginaVistorias = lazy(() => import("./condominios/PaginaVistorias"));
 const PaginaItensVistorias = lazy(
-  () => import("./condominios/PaginaItensVitorias")
+  () => import("./condominios/PaginaItensVitorias"),
 );
 
 const Home = lazy(() => import("./dashboard/dashboard"));
 const NivelAcesso = lazy(() => import("./acessos/nivel"));
 const Renove = lazy(() => import("./renove/renove"));
-const Clientes = lazy(() => import("./clientes/clientes"));
 const Vistorias = lazy(() => import("./vistorias/vistorias"));
 const Chamados = lazy(() => import("./chamados/chamados"));
+const PaginaChamados = lazy(() => import("./condominios/PaginaChamados"));
+
+const Financeiro = lazy(() => import("./financeiro/financeiro"));
+const FinanceiroCategorias = lazy(() => import("./financeiro/Categorias"));
+const FinanceiroContasFixas = lazy(() => import("./financeiro/ContasFixas"));
+const FinanceiroContasReceber = lazy(
+  () => import("./financeiro/ContasReceber"),
+);
+const FinanceiroContasReceberNovo = lazy(
+  () => import("./financeiro/ContaPagarNovo"),
+);
+const FinanceiroContasPagar = lazy(() => import("./financeiro/ContasPagar"));
 
 const RegistroVisita = lazy(() => import("./registro-visita/registro-visita"));
 
@@ -61,9 +72,36 @@ const routes = [
   },
 
   { path: "/chamados", element: <Chamados />, protected: true },
+  { path: "/chamados/:id", element: <PaginaChamados />, protected: true },
+
+  { path: "/financeiro", element: <Financeiro />, protected: true },
+  {
+    path: "/financeiro/categorias",
+    element: <FinanceiroCategorias />,
+    protected: true,
+  },
+  {
+    path: "/financeiro/contas-fixas",
+    element: <FinanceiroContasFixas />,
+    protected: true,
+  },
+  {
+    path: "/financeiro/receber",
+    element: <FinanceiroContasReceber />,
+    protected: true,
+  },
+  {
+    path: "/financeiro/pagar",
+    element: <FinanceiroContasPagar />,
+    protected: true,
+  },
+  {
+    path: "/financeiro/pagar/create",
+    element: <FinanceiroContasReceberNovo />,
+    protected: true,
+  },
 
   { path: "/renove", element: <Renove />, protected: true },
-  { path: "/clientes", element: <Clientes />, protected: true },
   { path: "/peixes", element: <NivelAcesso />, protected: true },
 ];
 

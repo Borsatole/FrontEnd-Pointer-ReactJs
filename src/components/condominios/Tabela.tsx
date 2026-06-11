@@ -28,14 +28,9 @@ import TabelaDinamica, {
 
 // MODAIS E FILTROS
 // import EditarRegistro from "./DetalhesRegistro";
-import ModalAdicionarRegistro from "./NovoRegistro";
-import { FiltroCadastros } from "./FiltroRegistro";
 import { CardCondominio } from "./CardCondominio";
-import DetalhesRegistro from "./DetalhesRegistro";
-import RetiradaRegistro from "./RetiradaRegistro";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { useCondominios } from "@src/context/CondominioContext";
-import EditarRegistro from "./EditarRegistro";
 import { useParams } from "react-router-dom";
 import RegistroVazio from "@src/components/comum/registroVazio";
 import { Read } from "@src/services/crud2";
@@ -138,11 +133,7 @@ function Tabela() {
       </LoadingSpiner>
 
       {/* Modais */}
-      {abrirModalDetalhesRegistro && selectedRegistro && <DetalhesRegistro />}
-      {abrirModalRegistrarRetirada && selectedRegistro && <RetiradaRegistro />}
-
-      {abrirModalEditarRegistro && selectedRegistro && <EditarRegistro />}
-      {abrirModalNovoRegistro && <ModalAdicionarRegistro />}
+      {/* {abrirModalDetalhesRegistro && selectedRegistro && <DetalhesRegistro />} */}
     </>
   );
 }
