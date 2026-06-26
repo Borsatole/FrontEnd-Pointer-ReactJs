@@ -12,4 +12,17 @@ export const FinanceiroViewService = {
       },
     });
   },
+
+  gerarRelatorioPdf(params: {
+  id_condominio: number;
+  data_minima?: string;
+  data_maxima?: string;
+}) {
+  return api.get("/financeiro-views/relatorios", {
+    params: {
+      tipo_relatorio: "pdf_financeiro",
+      ...params,
+    },
+  });
+}
 };

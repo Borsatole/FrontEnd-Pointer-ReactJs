@@ -20,4 +20,5 @@ export const FinanceiroService = {
   deletar(id: number) {
     return api.delete(`/financeiro/${id}`);
   },
+
 };

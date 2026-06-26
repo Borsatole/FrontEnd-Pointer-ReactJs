@@ -20,6 +20,8 @@
     "axios": "^1.7.9",
     "dayjs": "^1.11.18",
     "flowbite-react": "^0.11.8",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
     "path": "^0.12.7",
     "qr-scanner": "^1.4.2",
     "react": "^18.3.1",

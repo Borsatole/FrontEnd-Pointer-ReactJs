@@ -62,6 +62,9 @@ const FinanceiroContasPagarEditar = lazy(
 );
 
 const FinanceiroContasPagar = lazy(() => import("./financeiro/ContasPagar"));
+const ImpressaoRelatorios = lazy(
+  () => import("./financeiro/ImpressaoRelatorios"),
+);
 
 const RegistroVisita = lazy(() => import("./registro-visita/registro-visita"));
 
@@ -126,6 +129,11 @@ const routes = [
   {
     path: "/financeiro/receber/edit/:id",
     element: <FinanceiroContasReceberEditar />,
+    protected: true,
+  },
+  {
+    path: "/financeiro/printer",
+    element: <ImpressaoRelatorios />,
     protected: true,
   },
 
