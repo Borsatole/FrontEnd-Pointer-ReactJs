@@ -5,6 +5,10 @@ export const FinanceiroService = {
     return api.get("/financeiro", { params });
   },
 
+  buscar(id: number, params?: any) {
+  return api.get(`/financeiro/${id}`, { params });
+},
+
   criar(data: any) {
     return api.post("/financeiro", data);
   },

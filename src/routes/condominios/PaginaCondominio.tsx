@@ -28,7 +28,7 @@ import { Input } from "@src/components/comum/input";
 import ContainerSecundario from "@src/components/comum/containerSecundario";
 import Alerta from "@src/components/comum/alertas";
 import { Button } from "@src/components/comum/button";
-import RegistroVazio from "@src/components/comum/registroVazio";
+import PaginaNaoEncontrada from "@src/components/comum/PaginaNaoEncontrada";
 
 // Exemplo com dados mockados para demonstração
 export default function PaginaCondominio() {
@@ -112,7 +112,7 @@ export default function PaginaCondominio() {
   }
 
   if (loading) return <LoadingSkeleton />;
-  if (!registros && !loading) return <RegistroVazio />;
+  if (!registros && !loading) return <PaginaNaoEncontrada />;
   return (
     <ContainerSecundario>
       <LoadingSpiner loading={loadingSpiner}>

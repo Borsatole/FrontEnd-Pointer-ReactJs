@@ -34,12 +34,12 @@ function SelectMesAno({ onChange }: any) {
 
   return (
     <div className="flex text-lg flex-col mt-6 rounded p-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between ">
         {/* MÊS */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 ">
           <button
             onClick={voltarMes}
-            className="bg-[var(--corPrincipal)] cursor-pointer rounded-full px-2 py-1 transition-all hover:bg-[var(--corPrincipal)]/80"
+            className="bg-[var(--corPrincipal)] text-white  cursor-pointer rounded-full px-2 py-1 transition-all hover:bg-[var(--corPrincipal)]/80"
           >
             <SlArrowLeft />
           </button>
@@ -50,7 +50,7 @@ function SelectMesAno({ onChange }: any) {
 
           <button
             onClick={avancarMes}
-            className="bg-[var(--corPrincipal)] cursor-pointer rounded-full px-2 py-1 transition-all hover:bg-[var(--corPrincipal)]/80"
+            className="bg-[var(--corPrincipal)] text-white cursor-pointer rounded-full px-2 py-1 transition-all hover:bg-[var(--corPrincipal)]/80"
           >
             <SlArrowRight />
           </button>
@@ -60,7 +60,7 @@ function SelectMesAno({ onChange }: any) {
         <div className="flex items-center gap-3">
           <button
             onClick={voltarAno}
-            className="bg-[var(--corPrincipal)] cursor-pointer rounded-full px-2 py-1 transition-all hover:bg-[var(--corPrincipal)]/80"
+            className="bg-[var(--corPrincipal)] text-white cursor-pointer rounded-full px-2 py-1 transition-all hover:bg-[var(--corPrincipal)]/80"
           >
             <SlArrowLeft />
           </button>
@@ -69,7 +69,7 @@ function SelectMesAno({ onChange }: any) {
 
           <button
             onClick={avancarAno}
-            className="bg-[var(--corPrincipal)] cursor-pointer rounded-full px-2 py-1 transition-all hover:bg-[var(--corPrincipal)]/80"
+            className="bg-[var(--corPrincipal)] text-white cursor-pointer rounded-full px-2 py-1 transition-all hover:bg-[var(--corPrincipal)]/80"
           >
             <SlArrowRight />
           </button>

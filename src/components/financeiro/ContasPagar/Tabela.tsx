@@ -8,8 +8,8 @@ import { getIcon } from "@src/components/icons";
 import TabelaDinamica from "@src/components/comum/TabelaDinamica";
 
 // MODAIS E FILTROS
-import ModalEditarRegistro from "./EditarRegistro";
-import ModalAdicionarRegistro from "./NovoRegistro";
+// import ModalEditarRegistro from "./EditarRegistro";
+// import ModalAdicionarRegistro from "./NovoRegistro";
 
 import Novoregistrobtn from "@src/components/comum/Tabelas/Novoregistrobtn";
 import { UseTabela } from "@src/components/comum/Tabelas/TabelaContext";
@@ -21,6 +21,10 @@ import { useBuscarDados } from "@src/hooks/UseBuscarDadosTabela";
 import { colunas } from "./tabelaColunas";
 import { useTabelaAcoes } from "./tabelaAcoes";
 import Paginacao from "@src/components/comum/Paginacao";
+import { useNavigate } from "react-router-dom";
+import { Condominio } from "@src/components/tipos";
+import { useEffect, useState } from "react";
+import { condominioService } from "@src/services/modules/condominios/condominioService";
 
 type Config = {
   endpoint: string;
@@ -33,6 +37,8 @@ const config: Config = {
 };
 
 function Tabela() {
+  const navigate = useNavigate();
+  const [condominios, setCondominios] = useState<Condominio[]>([]);
   const { filtros, setFiltros, queryString } = useFiltro({
     tipo_movimentacao: "saida",
     data_minima: dayjs().startOf("month").format("YYYY-MM-DD"),
@@ -67,20 +73,37 @@ function Tabela() {
     </div>
   );
 
+  useEffect(() => {
+    condominioService
+      .listar({})
+      .then((dados) => {
+        console.log(dados);
+        setCondominios(dados.registros || []);
+      })
+      .catch(console.error);
+  }, []);
+
   return (
     <>
       <Novoregistrobtn
         icone={config.icone}
-        onClick={() => setAbrirModalNovoRegistro(true)}
+        onClick={() => navigate("/financeiro/pagar/create")}
       />
       <StatsFinanceiro />
-      {/* <MostrarNumeroDeResultados totalResultados={totalResultados} /> */}
 
       <FiltroUniversal
         filtros={filtros}
         setFiltros={setFiltros}
         expandir={false}
         campos={[
+          {
+            name: "id_condominio",
+            label: "CONDOMINIO",
+            type: "select",
+            options: condominios,
+            labelKey: "nome",
+            valueKey: "id",
+          },
           {
             name: "data_minima",
             label: "DATA INICIO",
@@ -133,8 +156,8 @@ function Tabela() {
       </LoadingSpiner>
 
       {/* Modais */}
-      {abrirModalEditarRegistro && selectedRegistro && <ModalEditarRegistro />}
-      {abrirModalNovoRegistro && <ModalAdicionarRegistro />}
+      {/* {abrirModalEditarRegistro && selectedRegistro && <ModalEditarRegistro />}
+      {abrirModalNovoRegistro && <ModalAdicionarRegistro />} */}
     </>
   );
 }

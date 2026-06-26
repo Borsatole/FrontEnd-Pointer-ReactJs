@@ -32,7 +32,7 @@ import { CardCondominio } from "./CardCondominio";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { useCondominios } from "@src/context/CondominioContext";
 import { useParams } from "react-router-dom";
-import RegistroVazio from "@src/components/comum/registroVazio";
+import PaginaNaoEncontrada from "@src/components/comum/PaginaNaoEncontrada";
 import { Read } from "@src/services/crud2";
 
 function Tabela() {
@@ -113,7 +113,7 @@ function Tabela() {
   }, []);
 
   if (loading) return <LoadingSkeleton />;
-  if (registros.length === 0 && !loading) return <RegistroVazio />;
+  if (registros.length === 0 && !loading) return <PaginaNaoEncontrada />;
   return (
     <>
       {/* Listagem Dados */}

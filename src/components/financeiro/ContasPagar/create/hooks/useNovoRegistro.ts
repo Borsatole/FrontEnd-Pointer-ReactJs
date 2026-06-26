@@ -6,7 +6,6 @@ import { categoriasService } from "@src/services/modules/financeiro/categoriasSe
 import { validarFinanceiro } from "../validacao";
 import { FinanceiroService } from "@src/services/modules/financeiro/financeiroService";
 import { Condominio } from "@src/components/tipos";
-import { toast } from "react-toastify";
 import Alerta from "@src/components/comum/alertas";
 
 interface FormDataFinanceiro {

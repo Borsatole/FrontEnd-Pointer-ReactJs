@@ -3,14 +3,40 @@ import dayjs from "dayjs";
 
 export const colunas: ColunaConfig<any>[] = [
   {
-    key: "id",
-    label: "ID",
-    render: (registro) => registro.id || "-",
+    key: "condominio",
+    label: "CONDOMÍNIO",
+    render: (registro) => registro.condominio?.nome || "-",
   },
   {
     key: "descricao",
-    label: "DESCRICAO",
-    render: (registro) => registro.descricao ?? "-",
+    label: "DESCRIÇÃO",
+    render: (registro) => {
+      const desc = registro.descricao ?? "-";
+
+      return (
+        /* O segredo está na classe 'group' no elemento pai e 'group-hover:scale-100' no balão */
+        <div className="relative flex justify-center items-center group max-w-[120px] mx-auto">
+          {/* Texto encurtado na tabela */}
+          <span className="truncate block w-full text-center cursor-help text-sm">
+            {desc}
+          </span>
+
+          {/* O Tooltip flutuante que aparece no Hover */}
+          {registro.descricao && (
+            <div
+              className="absolute bottom-full mb-2 left-1/2 -translate-x-1/2 
+              scale-0 group-hover:scale-100 transition-all duration-150 origin-bottom
+              bg-gray-900 text-white text-xs rounded py-2 px-3 
+              w-max max-w-[250px] whitespace-normal break-words shadow-lg z-50 pointer-events-none"
+            >
+              {desc}
+              {/* Pequena setinha apontando para baixo */}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 -mt-1 border-4 border-transparent border-t-gray-900"></div>
+            </div>
+          )}
+        </div>
+      );
+    },
   },
   {
     key: "categoria",
@@ -26,10 +52,10 @@ export const colunas: ColunaConfig<any>[] = [
             from-[var(--corPrincipal)]/30 
             to-[var(--corPrincipal)]/20
             rounded-full 
-            px-4 py-1.5 
-            text-xs font-semibold 
+            px-2.5 py-1 md:px-4 md:py-1.5
+            text-[10px] sm:text-xs font-semibold
             uppercase tracking-wide 
-            shadow-md"
+            shadow-md whitespace-nowrap"
           >
             <span>{categoria}</span>
           </div>

@@ -103,8 +103,6 @@ function ModalAdicionarRegistro() {
 
   return (
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-auto">
-      {/* {itensDeVistoria.length === 0 && <RegistroVazio />} */}
-
       <form action="" onSubmit={handleSubmit}>
         <div>
           <FormGroup label="Nome do item" id="nomeItem">

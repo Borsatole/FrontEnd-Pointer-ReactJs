@@ -1,14 +1,14 @@
 import ContainerSecundario from "@src/components/comum/containerSecundario";
 import { TituloPagina } from "@src/components/comum/Textos";
-import Index from "@src/components/financeiro/ContasPagar/create/index";
+import Index from "@src/components/financeiro/ContasReceber/edit/index";
 
-function NewContaPagar() {
+function ContaReceberEdit() {
   return (
     <ContainerSecundario className="flex flex-col gap-4">
-      <TituloPagina>Novo Lançamento</TituloPagina>
+      <TituloPagina>Editar Lançamento</TituloPagina>
       <Index />
     </ContainerSecundario>
   );
 }
 
-export default NewContaPagar;
+export default ContaReceberEdit;

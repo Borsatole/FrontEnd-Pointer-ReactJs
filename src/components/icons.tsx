@@ -21,6 +21,7 @@ import { BsGraphDownArrow, BsGraphUpArrow } from "react-icons/bs";
 
 import { FaMoneyBillTransfer, FaTruckFront } from "react-icons/fa6";
 import { SiWhatsapp } from "react-icons/si";
+import { RiPrinterLine } from "react-icons/ri";
 
 export const icons: Record<string, JSX.Element> = {
   dashboard: <MdDashboard />,
@@ -40,6 +41,7 @@ export const icons: Record<string, JSX.Element> = {
   contasapagar: <BsGraphDownArrow />,
   contasareceber: <BsGraphUpArrow />,
   filter: <FaFilter />,
+  impressao: <RiPrinterLine />,
 
   premium: <PiWalletFill />,
 

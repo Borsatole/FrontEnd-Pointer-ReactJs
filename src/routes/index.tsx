@@ -46,8 +46,21 @@ const FinanceiroContasReceber = lazy(
   () => import("./financeiro/ContasReceber"),
 );
 const FinanceiroContasReceberNovo = lazy(
+  () => import("./financeiro/ContaReceberNovo"),
+);
+
+const FinanceiroContasReceberEditar = lazy(
+  () => import("./financeiro/ContaReceberEdit"),
+);
+
+const FinanceiroContasPagarNovo = lazy(
   () => import("./financeiro/ContaPagarNovo"),
 );
+
+const FinanceiroContasPagarEditar = lazy(
+  () => import("./financeiro/ContaPagarEdit"),
+);
+
 const FinanceiroContasPagar = lazy(() => import("./financeiro/ContasPagar"));
 
 const RegistroVisita = lazy(() => import("./registro-visita/registro-visita"));
@@ -98,6 +111,21 @@ const routes = [
   {
     path: "/financeiro/pagar/create",
     element: <FinanceiroContasReceberNovo />,
+    protected: true,
+  },
+  {
+    path: "/financeiro/pagar/edit/:id",
+    element: <FinanceiroContasReceberEditar />,
+    protected: true,
+  },
+  {
+    path: "/financeiro/receber/create",
+    element: <FinanceiroContasReceberNovo />,
+    protected: true,
+  },
+  {
+    path: "/financeiro/receber/edit/:id",
+    element: <FinanceiroContasReceberEditar />,
     protected: true,
   },
 

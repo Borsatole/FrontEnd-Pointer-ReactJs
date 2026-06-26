@@ -5,7 +5,7 @@ import { Button } from "@components/comum/button";
 import ListaVistoria from "./ListaVistoria";
 import { useVistorias } from "@src/context/VistoriasContext";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
-import RegistroVazio from "../comum/registroVazio";
+import PaginaNaoEncontrada from "../comum/PaginaNaoEncontrada";
 import { Create, Read } from "@src/services/crud2";
 import SelecionarCondominio from "./SelecionarCondominio";
 
@@ -105,7 +105,7 @@ function ModalAdicionarRegistro() {
 
   return (
     <Modal IsOpen={true} onClose={fecharModal} className="min-h-auto">
-      {itensDeVistoria.length === 0 && <RegistroVazio />}
+      {itensDeVistoria.length === 0 && <PaginaNaoEncontrada />}
 
       {itensDeVistoria.length > 0 && (
         <ListaVistoria
