@@ -8,6 +8,8 @@ import { getIcon } from "@src/components/icons";
 import TabelaDinamica from "@src/components/comum/TabelaDinamica";
 
 // MODAIS E FILTROS
+import CreateForm from "./forms/CreateForm";
+import EditForm from "./forms/EditForm";
 import ModalEditarRegistro from "./EditarRegistro";
 import ModalAdicionarRegistro from "./NovoRegistro";
 
@@ -33,9 +35,9 @@ const config: Config = {
 
 function Tabela() {
   const { filtros, setFiltros, queryString } = useFiltro({
-    tipo_movimentacao: "saida",
-    data_minima: dayjs().startOf("month").format("YYYY-MM-DD"),
-    data_maxima: dayjs().endOf("month").format("YYYY-MM-DD"),
+    // tipo_movimentacao: "saida",
+    // data_minima: dayjs().startOf("month").format("YYYY-MM-DD"),
+    // data_maxima: dayjs().endOf("month").format("YYYY-MM-DD"),
   });
 
   useBuscarDados({
@@ -132,8 +134,9 @@ function Tabela() {
       </LoadingSpiner>
 
       {/* Modais */}
-      {abrirModalEditarRegistro && selectedRegistro && <ModalEditarRegistro />}
-      {abrirModalNovoRegistro && <ModalAdicionarRegistro />}
+      {abrirModalEditarRegistro && selectedRegistro && <EditForm />}
+      {/* {abrirModalEditarRegistro && selectedRegistro && <ModalEditarRegistro />} */}
+      {abrirModalNovoRegistro && <CreateForm />}
     </>
   );
 }

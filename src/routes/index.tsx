@@ -113,12 +113,12 @@ const routes = [
   },
   {
     path: "/financeiro/pagar/create",
-    element: <FinanceiroContasReceberNovo />,
+    element: <FinanceiroContasPagarNovo />,
     protected: true,
   },
   {
     path: "/financeiro/pagar/edit/:id",
-    element: <FinanceiroContasReceberEditar />,
+    element: <FinanceiroContasPagarEditar />,
     protected: true,
   },
   {

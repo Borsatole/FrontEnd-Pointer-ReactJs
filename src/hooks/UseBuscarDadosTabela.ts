@@ -33,6 +33,8 @@ export function useBuscarDados<T = any>({
     const pagina = paginacao?.paginaAtual;
 const limite = paginacao?.porPagina;
 
+
+
     Read({
       endpoint,
       queryFiltro,

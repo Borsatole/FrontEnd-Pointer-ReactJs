@@ -60,9 +60,9 @@ export function usePrinter() {
         }
 
         gerarPdfFinanceiro(response.data.registro);
-        console.log(response);
+        
 
-        Alerta("toast", "success", response.data.message);
+        Alerta("toast", "success", "Relatório gerado com sucesso!");
     } catch (error) {
         console.error(error);
     }

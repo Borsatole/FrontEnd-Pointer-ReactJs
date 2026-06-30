@@ -96,7 +96,7 @@ function Tabela() {
       key: "saida",
       label: "SAIDA",
       render: (registro) =>
-        registro.saida ? formatarDataHumana(registro.entrada) : "-",
+        registro.saida ? formatarDataHumana(registro.saida) : "-",
     },
     {
       key: "responsavel",
@@ -135,14 +135,14 @@ function Tabela() {
 
   // Configuração das ações da tabela
   const acoes: AcaoConfig<any>[] = [
-    {
-      icon: <div className="cursor-pointer">{getIcon("editar", 20)}</div>,
-      tooltip: "Editar",
-      onClick: (registro) => {
-        setSelectedRegistro(registro);
-        setAbrirModalEditarRegistro(true);
-      },
-    },
+    // {
+    //   icon: <div className="cursor-pointer">{getIcon("editar", 20)}</div>,
+    //   tooltip: "Editar",
+    //   onClick: (registro) => {
+    //     setSelectedRegistro(registro);
+    //     setAbrirModalEditarRegistro(true);
+    //   },
+    // },
     {
       icon: <div className="cursor-pointer">{getIcon("deletar", 20)}</div>,
       tooltip: "Excluir",
@@ -191,7 +191,7 @@ function Tabela() {
 
   return (
     <>
-      <BotaoNovoRegistro onClick={() => setAbrirModalNovoRegistro(true)} />
+      {/* <BotaoNovoRegistro onClick={() => setAbrirModalNovoRegistro(true)} /> */}
       <FiltroCadastros onFiltrar={setQueryFiltro} />
 
       <div className="flex justify-between items-center m-3">

@@ -9,6 +9,11 @@ export const colunas: ColunaConfig<any>[] = [
     render: (registro) => registro.id || "-",
   },
   {
+    key: "condominio",
+    label: "ID",
+    render: (registro) => registro.condominio.nome || "-",
+  },
+  {
     key: "descricao",
     label: "DESCRICAO",
     render: (registro) => registro.descricao ?? "-",

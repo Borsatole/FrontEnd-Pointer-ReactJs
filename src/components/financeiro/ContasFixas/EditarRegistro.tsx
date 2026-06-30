@@ -12,6 +12,7 @@ import { BtnSelectMes } from "./NovoRegistro";
 import { SelectAtualizado } from "@src/components/comum/SelectAtualizado";
 import CalendarDays from "./CalendarDays";
 import { Alert } from "flowbite-react";
+import { Condominio } from "@src/components/tipos";
 
 const config: Options = {
   endpoint: "/financeiro-contas-fixas",
@@ -36,6 +37,7 @@ export default function ModalEditarRegistro() {
   const [categorias, setCategorias] = useState<any[]>([]);
 
   /* Campos Controlados */
+  const [condominio, setCondominio] = useState<Condominio | null>(null);
   const [descricao, setDescricao] = useState<string>("");
   const [valor, setValor] = useState<number>(0);
   const [recorrencia, setRecorrencia] = useState<number>(1);
@@ -48,6 +50,7 @@ export default function ModalEditarRegistro() {
   const [erro, setErro] = useState<string | null>(null);
 
   function validar() {
+    if (!condominio) return "O campo condomínio é obrigatório";
     if (!descricao.trim()) return "O campo descrição é obrigatório";
     if (valor <= 0) return "O valor deve ser maior que zero";
     if (recorrencia < 1) return "Recorrência inválida";
@@ -68,6 +71,7 @@ export default function ModalEditarRegistro() {
 
   useEffect(() => {
     if (registro) {
+      setCondominio(registro.condominio);
       setDescricao(registro.descricao);
       setValor(registro.valor);
       setRecorrencia(registro.recorrencia);
@@ -83,6 +87,7 @@ export default function ModalEditarRegistro() {
     valor,
     recorrencia,
     id_categoria,
+    id_condominio: condominio?.id,
     forma_pagamento,
     dia_vencimento,
     data_fim,
