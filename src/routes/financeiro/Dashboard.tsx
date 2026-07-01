@@ -9,7 +9,7 @@ import { UseTabela } from "@src/components/comum/Tabelas/TabelaContext";
 import { useFiltro } from "@src/hooks/useFiltros";
 import { useBuscarDados } from "@src/hooks/UseBuscarDadosTabela";
 import LoadingSpiner from "@src/components/loader/LoadingSpiner";
-import { formatarDinheiro } from "@src/utils/dinheiro";
+import { formatarDinheiro } from "@src/shared/utils/dinheiro";
 import { HiTrendingUp } from "react-icons/hi";
 import ListarCategorias from "./ListarCategorias";
 import ContainerCaixa from "@src/components/comum/ContainerCaixa";

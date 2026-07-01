@@ -28,7 +28,7 @@ import { FiltroCadastros } from "./FiltroRegistro";
 import { Delete, Read } from "@src/services/crud2";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
 import { FaUser } from "react-icons/fa";
-import { formatarDataHumana } from "@src/utils/formatarDataHumana";
+import { formatarDataHumana } from "@src/shared/utils/formatarDataHumana";
 import { useParams } from "react-router-dom";
 import { useChamados } from "@src/context/ChamadosContext";
 

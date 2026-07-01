@@ -1,4 +1,4 @@
-import { formatarDinheiro } from "@src/utils/dinheiro";
+import { formatarDinheiro } from "@src/shared/utils/dinheiro";
 import Progressbar from "@src/components/financeiro/Progressbar";
 
 type CategoriasProps = {

@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import LogoPointer from "/iconepng.png";
 import LogoGroupconect from "/group_conect_pdf.png";
 
-import { formatarDinheiro } from "@src/utils/dinheiro";
+import { formatarDinheiro } from "@src/shared/utils/dinheiro";
 import { pdfTheme } from "../utils/pdfTheme";
 import {
   formatarDataPdf,

@@ -13,6 +13,7 @@ interface FormDataEditar {
   id_categoria: string;
   forma_pagamento: string;
   dia_vencimento: number | null;
+  ultima_recorrencia: string | null;
   data_fim: string | null;
 }
 
@@ -42,6 +43,7 @@ export function useEditarRegistro() {
   id_categoria: "",
   forma_pagamento: "",
   dia_vencimento: 1,
+  ultima_recorrencia: null,
   data_fim: null,
 });
 
@@ -78,6 +80,7 @@ export function useEditarRegistro() {
     id_categoria: registro.id_categoria,
     forma_pagamento: registro.forma_pagamento,
     dia_vencimento: registro.dia_vencimento,
+    ultima_recorrencia: registro.ultima_recorrencia,
     data_fim: registro.data_fim,
   });
 }, [registro]);
@@ -89,7 +92,7 @@ export function useEditarRegistro() {
       definicoes: config.definicoes,
     });
 
-  const formData = {
+  const Payload = {
   descricao: form.descricao,
   valor: form.valor,
   recorrencia: form.recorrencia,
@@ -97,20 +100,21 @@ export function useEditarRegistro() {
   id_condominio: form.condominio?.id,
   forma_pagamento: form.forma_pagamento,
   dia_vencimento: form.dia_vencimento,
+
   data_fim: form.data_fim,
 };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const erroValidacao = validarRegistro(formData);
+    const erroValidacao = validarRegistro(Payload);
 
     if (erroValidacao) {
       setErro(erroValidacao);
       return;
     }
 
-    handleSubmit(e, formData);
+    handleSubmit(e, Payload);
   };
 
   return {

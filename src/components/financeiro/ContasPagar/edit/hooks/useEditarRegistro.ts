@@ -112,16 +112,19 @@ export function useEditarRegistro() {
 
   // Gerador automático de descrição
   useEffect(() => {
-    if (!data.categoria || data.valor <= 0 || loading) return;
+  if (!data.categoria || data.valor <= 0 || loading) return;
 
-    const categoria = encontrarPorId(categorias, String(data.categoria));
-    if (data.descricao && data.descricao.includes("referente a")) return;
+  if (data.descricao.trim() !== "") return;
 
-    setField(
-      "descricao",
-      `${categoria?.tipo || "Saída"} referente a ${categoria?.categoria_item?.toLowerCase() || ""} no valor de R$ ${data.valor.toFixed(2)}`,
-    );
-  }, [data.categoria, data.valor, loading]);
+  const categoria = encontrarPorId(categorias, String(data.categoria));
+
+  setField(
+    "descricao",
+    `${categoria?.tipo || "Saída"} referente a ${
+      categoria?.categoria_item?.toLowerCase() || ""
+    } no valor de R$ ${data.valor.toFixed(2)}`,
+  );
+}, [data.categoria, data.valor, loading]);
 
   async function salvar(acao: "salvar" | "novo") {
     const payload = {

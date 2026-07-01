@@ -11,6 +11,7 @@ import CalendarDays from "../CalendarDays";
 import { Alert } from "flowbite-react";
 import { SelectAtualizado } from "@src/components/comum/SelectAtualizado";
 import InpuSelecionarCondominio from "@src/components/comum/InputCondominio";
+import { dateUtils } from "@src/shared/utils/date";
 
 function EditForm() {
   const {
@@ -140,6 +141,17 @@ function EditForm() {
                 data limite.
               </span>
             </Alert>
+          </FormGroup>
+
+          <FormGroup label="Ultima Recorrencia" id="ultima_recorrencia">
+            <Input
+              disabled
+              type="text"
+              name="descricao"
+              id="descricao"
+              value={dateUtils.formatarParaBr(form.ultima_recorrencia) || ""}
+              onChange={(e) => setField("ultima_recorrencia", e.target.value)}
+            />
           </FormGroup>
 
           <FormGroup label="Categoria" id="id_categoria">

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/pt-br";
 
-import { formatarDataHumana } from "@src/utils/formatarDataHumana";
+import { formatarDataHumana } from "@src/shared/utils/formatarDataHumana";
 
 // REQUISICOES E CRUD
 import { requisicaoGet } from "@services/requisicoes";

@@ -30,7 +30,7 @@ import ModalAdicionarRegistro from "./NovoRegistro";
 import { FiltroCadastros } from "./FiltroRegistro";
 import { Delete, Read } from "@src/services/crud2";
 import { usePaginacao } from "@src/hooks/UsePaginacao";
-import { formatarDataHumana } from "@src/utils/formatarDataHumana";
+import { formatarDataHumana } from "@src/shared/utils/formatarDataHumana";
 import { useVistorias } from "@src/context/VistoriasContext";
 import { useParams } from "react-router-dom";
 

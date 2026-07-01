@@ -1,6 +1,6 @@
 import CardOrders from "@src/components/comum/CardStats";
 import { UseTabela } from "@src/components/comum/Tabelas/TabelaContext";
-import { formatarDinheiro } from "@src/utils/dinheiro";
+import { formatarDinheiro } from "@src/shared/utils/dinheiro";
 
 import { HiTrendingUp, HiTrendingDown, HiCash } from "react-icons/hi";
 
